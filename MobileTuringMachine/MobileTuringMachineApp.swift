@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct MobileTuringMachineApp: App {
+    
+    @StateObject private var viewModel = TapeContentViewModel()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(viewModel)
         }
     }
 }

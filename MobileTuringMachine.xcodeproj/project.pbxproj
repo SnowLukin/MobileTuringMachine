@@ -11,6 +11,15 @@
 		D7CF6DD227DE288A0010949B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CF6DD127DE288A0010949B /* ContentView.swift */; };
 		D7CF6DD427DE28910010949B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D7CF6DD327DE28910010949B /* Assets.xcassets */; };
 		D7CF6DD727DE28910010949B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D7CF6DD627DE28910010949B /* Preview Assets.xcassets */; };
+		D7CF6DDF27DE28A20010949B /* TapeContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CF6DDE27DE28A20010949B /* TapeContentView.swift */; };
+		D7CF6DE327DE29180010949B /* TapeContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CF6DE227DE29180010949B /* TapeContent.swift */; };
+		D7CF6DE527DE2BA00010949B /* TapeContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CF6DE427DE2BA00010949B /* TapeContentViewModel.swift */; };
+		D7CF6DE727DE312D0010949B /* TapeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CF6DE627DE312D0010949B /* TapeView.swift */; };
+		D7CF6DEC27DE53B60010949B /* InputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CF6DEB27DE53B60010949B /* InputView.swift */; };
+		D7CF6DEF27DE606F0010949B /* Extention + Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CF6DEE27DE606F0010949B /* Extention + Color.swift */; };
+		D7CF6DF127DE64000010949B /* ConfigTapesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CF6DF027DE64000010949B /* ConfigTapesView.swift */; };
+		D7CF6DF527DE731F0010949B /* TapeView + ConfigTapesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CF6DF427DE731F0010949B /* TapeView + ConfigTapesView.swift */; };
+		D7CF6DF727DE8F080010949B /* Tape.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CF6DF627DE8F080010949B /* Tape.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +28,15 @@
 		D7CF6DD127DE288A0010949B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D7CF6DD327DE28910010949B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D7CF6DD627DE28910010949B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		D7CF6DDE27DE28A20010949B /* TapeContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapeContentView.swift; sourceTree = "<group>"; };
+		D7CF6DE227DE29180010949B /* TapeContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapeContent.swift; sourceTree = "<group>"; };
+		D7CF6DE427DE2BA00010949B /* TapeContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapeContentViewModel.swift; sourceTree = "<group>"; };
+		D7CF6DE627DE312D0010949B /* TapeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapeView.swift; sourceTree = "<group>"; };
+		D7CF6DEB27DE53B60010949B /* InputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputView.swift; sourceTree = "<group>"; };
+		D7CF6DEE27DE606F0010949B /* Extention + Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extention + Color.swift"; sourceTree = "<group>"; };
+		D7CF6DF027DE64000010949B /* ConfigTapesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigTapesView.swift; sourceTree = "<group>"; };
+		D7CF6DF427DE731F0010949B /* TapeView + ConfigTapesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TapeView + ConfigTapesView.swift"; sourceTree = "<group>"; };
+		D7CF6DF627DE8F080010949B /* Tape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tape.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +71,10 @@
 			children = (
 				D7CF6DCF27DE288A0010949B /* MobileTuringMachineApp.swift */,
 				D7CF6DD127DE288A0010949B /* ContentView.swift */,
+				D7CF6DED27DE60580010949B /* Extentions */,
+				D7CF6DE127DE28F30010949B /* Model */,
+				D7CF6DE027DE28E70010949B /* ViewModel */,
+				D7CF6DDD27DE28960010949B /* View */,
 				D7CF6DD327DE28910010949B /* Assets.xcassets */,
 				D7CF6DD527DE28910010949B /* Preview Content */,
 			);
@@ -65,6 +87,43 @@
 				D7CF6DD627DE28910010949B /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		D7CF6DDD27DE28960010949B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D7CF6DDE27DE28A20010949B /* TapeContentView.swift */,
+				D7CF6DE627DE312D0010949B /* TapeView.swift */,
+				D7CF6DEB27DE53B60010949B /* InputView.swift */,
+				D7CF6DF027DE64000010949B /* ConfigTapesView.swift */,
+				D7CF6DF427DE731F0010949B /* TapeView + ConfigTapesView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		D7CF6DE027DE28E70010949B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				D7CF6DE427DE2BA00010949B /* TapeContentViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		D7CF6DE127DE28F30010949B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D7CF6DE227DE29180010949B /* TapeContent.swift */,
+				D7CF6DF627DE8F080010949B /* Tape.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		D7CF6DED27DE60580010949B /* Extentions */ = {
+			isa = PBXGroup;
+			children = (
+				D7CF6DEE27DE606F0010949B /* Extention + Color.swift */,
+			);
+			path = Extentions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,7 +196,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D7CF6DDF27DE28A20010949B /* TapeContentView.swift in Sources */,
+				D7CF6DE727DE312D0010949B /* TapeView.swift in Sources */,
+				D7CF6DEF27DE606F0010949B /* Extention + Color.swift in Sources */,
+				D7CF6DE327DE29180010949B /* TapeContent.swift in Sources */,
+				D7CF6DF127DE64000010949B /* ConfigTapesView.swift in Sources */,
+				D7CF6DE527DE2BA00010949B /* TapeContentViewModel.swift in Sources */,
+				D7CF6DF727DE8F080010949B /* Tape.swift in Sources */,
+				D7CF6DEC27DE53B60010949B /* InputView.swift in Sources */,
 				D7CF6DD227DE288A0010949B /* ContentView.swift in Sources */,
+				D7CF6DF527DE731F0010949B /* TapeView + ConfigTapesView.swift in Sources */,
 				D7CF6DD027DE288A0010949B /* MobileTuringMachineApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
