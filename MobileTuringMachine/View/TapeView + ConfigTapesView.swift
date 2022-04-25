@@ -57,6 +57,7 @@ extension TapeViewConfigTapesView {
             Text("Remove")
                 .animation(.easeInOut, value: !isConfigShown)
         }
+        .disabled(viewModel.amountOfTapes < 2)
 
     }
     

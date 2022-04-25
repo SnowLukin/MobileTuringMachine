@@ -22,10 +22,10 @@ struct TapeView: View {
             ScrollViewReader { value in
                 tapeGrid
                     .onAppear {
-                        viewModel.currentIndex = 0
+                        viewModel.tapes[tapeID].headIndex = 0
                         value.scrollTo(0, anchor: .center)
                     }
-                    .onChange(of: viewModel.currentIndex) { newValue in
+                    .onChange(of: viewModel.tapes[tapeID].headIndex) { newValue in
                         withAnimation {
                             value.scrollTo(newValue, anchor: .center)
                         }
@@ -56,7 +56,7 @@ extension TapeView {
     private var tapeGrid: some View {
         LazyHGrid(rows: layout) {
             ForEach(-216..<217, id: \.self) { contentID in
-                TapeContentView(tapeContent: TapeContent(id: contentID, value: getValueForTapeContent(contentID)))
+                TapeContentView(tapeContent: TapeContent(id: contentID, value: getValueForTapeContent(contentID)), tapeID: tapeID)
             }
         }
         .padding(.horizontal)

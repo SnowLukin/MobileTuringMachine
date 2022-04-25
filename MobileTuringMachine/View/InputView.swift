@@ -51,8 +51,7 @@ extension InputView {
     
     private var textfield: some View {
         TextField("", text: $text)
-            .foregroundColor(.white)
-            .font(.caption.bold())
+            .font(.title3.bold())
             .frame(height: 30)
             .padding(EdgeInsets(top: 0, leading: 12, bottom: 0, trailing: 12))
             .background(Color.secondaryBackground)
@@ -66,11 +65,16 @@ extension InputView {
     
     private func setNewInputValue() {
         // if not last
-        guard let lastCharacter = text.popLast() else { return }
+        guard let lastCharacter = text.popLast() else {
+            viewModel.tapes[tapeID].input = text
+            return
+        }
         
         // if new character is "space" change it to "_"
         if lastCharacter == " " {
             text.append("_")
+            viewModel.tapes[tapeID].input = text
+            return
         }
         // if there is such character in alphabet - save it
         // otherwise delete it
@@ -81,10 +85,17 @@ extension InputView {
     }
     
     private func setNewAlphabetValue() {
+        if text.isEmpty {
+            return
+        }
         // Checking new character already exist
         // if it is - delete it
-        if let lastCharacter = text.popLast(), text.contains(lastCharacter) {
-            text.append(contentsOf: String(lastCharacter))
+        if let lastCharacter = text.popLast() {
+            if lastCharacter == " " {
+                return
+            } else if !text.contains(lastCharacter) {
+                text.append(String(lastCharacter))
+            }
         }
         viewModel.tapes[tapeID].alphabet = text
     }

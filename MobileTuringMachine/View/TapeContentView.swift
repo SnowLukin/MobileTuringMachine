@@ -12,17 +12,26 @@ struct TapeContentView: View {
     @EnvironmentObject private var viewModel: TapeContentViewModel
     
     let tapeContent: TapeContent
+    let tapeID: Int
     
     var body: some View {
         Button {
-            viewModel.changeCurrentIndex(to: tapeContent.id)
+            viewModel.tapes[tapeID].headIndex = tapeContent.id
         } label: {
             Text(tapeContent.value)
-                .foregroundColor(viewModel.isTapeContentSelected(tapeContent) ? .white : .secondary)
+                .foregroundColor(
+                    viewModel.tapes[tapeID].headIndex == tapeContent.id
+                    ? .white
+                    : .secondary
+                )
                 .font(.title2)
                 .fontWeight(.semibold)
                 .frame(width: 25, height: 35)
-                .background(viewModel.isTapeContentSelected(tapeContent) ? .blue : Color.secondaryBackground)
+                .background(
+                    viewModel.tapes[tapeID].headIndex == tapeContent.id
+                    ? .blue
+                    : .secondaryBackground
+                )
                 .cornerRadius(6)
                 .overlay(
                     RoundedRectangle(cornerRadius: 6)
@@ -34,7 +43,7 @@ struct TapeContentView: View {
 
 struct TapeContentView_Previews: PreviewProvider {
     static var previews: some View {
-        TapeContentView(tapeContent: TapeContent(id: 1))
+        TapeContentView(tapeContent: TapeContent(id: 1), tapeID: 0)
             .environmentObject(TapeContentViewModel())
     }
 }
