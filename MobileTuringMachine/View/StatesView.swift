@@ -12,7 +12,7 @@ struct StatesView: View {
     @EnvironmentObject private var viewModel: TapeContentViewModel
     
     private var layout = [
-        GridItem(.fixed(70))
+        GridItem(.fixed(80))
     ]
     
     var body: some View {
@@ -24,10 +24,12 @@ struct StatesView: View {
                     Text("\(state)")
                         .font(.caption)
                         .fontWeight(.semibold)
-                }.frame(width: 50, height: 30)
+                }.frame(width: 80, height: 30 + CGFloat(viewModel.tapes.count * 30))
+                    .background(Color.secondaryBackground)
+                    .cornerRadius(9)
+                    .padding(.bottom, 10)
             }
-            .background(Color.secondaryBackground)
-            .cornerRadius(9)
+            
         }
     }
 }

@@ -12,7 +12,7 @@ struct CombinationsView: View {
     @EnvironmentObject private var viewModel: TapeContentViewModel
     
     var body: some View {
-        LazyVGrid(columns: getLayout()) {
+        LazyVGrid(columns: getLayout(), alignment: .leading) {
             ForEach(viewModel.getArrayOfAllExits(), id: \.self) { combination in
                 VStack {
                     ForEach(combination.map { String($0) }, id: \.self) { letter in

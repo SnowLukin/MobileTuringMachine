@@ -13,17 +13,21 @@ struct SolveView: View {
     
     var body: some View {
         ScrollView(.vertical) {
-            HStack {
-                StatesView()
-                    .frame(width: 50)
-                    .padding(.top, CGFloat(viewModel.tapes.count * (30 + 8)))
-                
-//                ScrollView(.horizontal) {
-//                    VStack(alignment: .trailing) {
-//                        CombinationsView()
-//                        OptionStatesView()
-//                    }.padding([.top, .bottom])
-//                }
+            HStack(alignment: .top) {
+                VStack(spacing: 6) {
+                    AllTapesNumberView()
+                        .frame(width: 80)
+                        .padding([.top], 13)
+                    StatesView()
+                        .frame(width: 50)
+                }
+                ScrollView(.horizontal) {
+                    VStack(alignment: .trailing) {
+                        CombinationsView()
+                            .padding(.leading)
+                        AllExitsView()
+                    }.padding([.top, .bottom])
+                }
             }.padding(.horizontal)
         }
     }
