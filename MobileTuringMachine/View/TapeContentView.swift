@@ -26,16 +26,21 @@ struct TapeContentView: View {
                 )
                 .font(.title2)
                 .fontWeight(.semibold)
-                .frame(width: 25, height: 35)
+                .frame(width: 35, height: 35)
                 .background(
                     viewModel.tapes[tapeID].headIndex == tapeContent.id
                     ? .blue
                     : .secondaryBackground
                 )
-                .cornerRadius(6)
+                .cornerRadius(35 / 2)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 6)
-                        .stroke(.secondary, lineWidth: 1)
+                    Circle()
+//                        .background(Color.secondaryBackground)
+                        .stroke(.secondary)
+                    
+//                        .padding(6)
+//                    RoundedRectangle(cornerRadius: 6)
+//                        .stroke(.secondary, lineWidth: 1)
                 )
         }
     }
