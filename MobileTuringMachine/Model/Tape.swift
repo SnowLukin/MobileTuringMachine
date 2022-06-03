@@ -20,17 +20,3 @@ struct Tape: Identifiable {
         return result
     }
 }
-
-struct Exit: Identifiable {
-    enum Side {
-        case stay
-        case left
-        case right
-    }
-    
-    var id: Int
-    var expectedLetters = "_"
-    var toLetters = ["_", "_", "_", "_", "_"]
-    
-    var moving: [Side] = [.stay, .stay, .stay, .stay, .stay]
-}

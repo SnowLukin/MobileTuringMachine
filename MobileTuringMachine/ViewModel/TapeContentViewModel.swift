@@ -9,8 +9,8 @@ import Foundation
 
 class TapeContentViewModel: ObservableObject {
     
-    @Published var amountOfTapes = 1
-    @Published var tapes: [Tape] = [Tape(id: 0)]
+    @Published var amountOfTapes = 2
+    @Published var tapes: [Tape] = [Tape(id: 0), Tape(id: 1)]
     @Published var amountOfStates: Int = 5
     @Published var exits: [Exit] = [Exit(id: 0), Exit(id: 1), Exit(id: 2), Exit(id: 3), Exit(id: 4)]
     
@@ -36,6 +36,30 @@ class TapeContentViewModel: ObservableObject {
 
 extension TapeContentViewModel {
     
+    func addState(expectedString: String) {
+        amountOfStates += 1
+    }
+    
+    func deleteExitState(exitID: Int, stateID: Int) {
+        exits[exitID].toLetters.remove(at: stateID)
+    }
+    
+    func editExitStateToLetters(exitID: Int, stateID: Int, string: String) {
+        exits[exitID].toLetters[stateID] = string
+    }
+    
+    func addExit() {
+        let lastIndex = exits.count - 1
+//        exits.append(Exit(id: lastIndex, expectedLetters: getArrayOfAllExits().last!, toLetters: <#T##[String]#>, moving: <#T##[Exit.Side]#>))ч
+    }
+    
+    func updateExits(exitID: Int, expectedString: String) {
+        exits[exitID].expectedLetters = expectedString
+        for _ in 0..<amountOfStates {
+            exits[exitID].toLetters.append(expectedString)
+        }
+    }
+    
     func getArrayOfStates() -> [Int] {
         var array: [Int] = []
         
@@ -56,7 +80,7 @@ extension TapeContentViewModel {
     func addTape() {
         amountOfTapes += 1
         tapes.append(Tape(id: amountOfTapes - 1))
-        updateExits()
+//        updateExitExpectedLetters(exitID: amountOfStates - 1, expectedString: <#T##String#>)
     }
     
     func removeTape(id: Int) {

@@ -12,9 +12,9 @@ struct AllExitsView: View {
     @EnvironmentObject private var viewModel: TapeContentViewModel
     
     var body: some View {
-        LazyHGrid(rows: getLayout(viewModel.amountOfStates)) {
+        LazyVGrid(columns: getLayout(viewModel.exits.count,spacing: 1), alignment: .leading) {
             ForEach(0..<viewModel.exits.count) { exitID in
-                LazyVGrid(columns: getLayout(viewModel.exits.count)) {
+                LazyHGrid(rows: getLayout(viewModel.amountOfStates, spacing: 30)) {
                     ForEach(0..<viewModel.amountOfStates, id: \.self) { stateID in
                         ExitView(stateID: stateID, exitID: exitID)
                     }
@@ -32,10 +32,10 @@ struct AllExitsView_Previews: PreviewProvider {
 }
 
 extension AllExitsView {
-    private func getLayout(_ amountOfObjects: Int) -> [GridItem] {
+    private func getLayout(_ amountOfObjects: Int, spacing: CGFloat?) -> [GridItem] {
         var layout: [GridItem] = []
         for _ in 0..<amountOfObjects {
-            layout.append(GridItem(.fixed(70)))
+            layout.append(GridItem(.fixed(70), spacing: spacing))
         }
         return layout
     }

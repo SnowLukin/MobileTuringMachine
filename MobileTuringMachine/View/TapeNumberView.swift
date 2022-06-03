@@ -18,7 +18,7 @@ struct TapeNumberView: View {
                 .fontWeight(.semibold)
             Text("\(tapeID)")
                 .fontWeight(.semibold)
-        }.frame(width: 80, height: 40)
+        }.frame(width: 80, height: 30)
             .background(Color.secondaryBackground)
             .cornerRadius(10)
     }

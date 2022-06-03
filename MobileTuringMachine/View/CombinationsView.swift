@@ -21,7 +21,9 @@ struct CombinationsView: View {
                             .fontWeight(.semibold)
                             .foregroundColor(.primary)
                             .frame(height: 30)
-                    }.frame(width: CGFloat(35 * viewModel.tapes.count))
+                    }
+//                    .frame(width: CGFloat(35 * viewModel.tapes.count))
+                    .frame(width: 30)
                 }
             }
         }
@@ -40,7 +42,7 @@ extension CombinationsView {
     private func getLayout() -> [GridItem] {
         var layout: [GridItem] = []
         for _ in 0..<viewModel.getArrayOfAllExits().count {
-            layout.append( GridItem(.fixed(70)) )
+            layout.append( GridItem(.fixed(70), spacing: 0) )
         }
         return layout
     }

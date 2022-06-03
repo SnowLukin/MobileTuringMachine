@@ -11,6 +11,7 @@
 		D703EABE28146FD200E1E486 /* AllTapesNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703EABD28146FD200E1E486 /* AllTapesNumberView.swift */; };
 		D703EAC02814793000E1E486 /* ExitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703EABF2814793000E1E486 /* ExitView.swift */; };
 		D703EAC228147EDB00E1E486 /* AllExitsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703EAC128147EDB00E1E486 /* AllExitsView.swift */; };
+		D70C8DFF2816F31B009458A3 /* Exit.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70C8DFE2816F31B009458A3 /* Exit.swift */; };
 		D721795827E2445600F39152 /* StatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D721795727E2445600F39152 /* StatesView.swift */; };
 		D721795A27E246C400F39152 /* CombinationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D721795927E246C400F39152 /* CombinationsView.swift */; };
 		D721795E27E4ED4B00F39152 /* OptionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D721795D27E4ED4B00F39152 /* OptionState.swift */; };
@@ -36,6 +37,7 @@
 		D703EABD28146FD200E1E486 /* AllTapesNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllTapesNumberView.swift; sourceTree = "<group>"; };
 		D703EABF2814793000E1E486 /* ExitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExitView.swift; sourceTree = "<group>"; };
 		D703EAC128147EDB00E1E486 /* AllExitsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllExitsView.swift; sourceTree = "<group>"; };
+		D70C8DFE2816F31B009458A3 /* Exit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exit.swift; sourceTree = "<group>"; };
 		D721795727E2445600F39152 /* StatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatesView.swift; sourceTree = "<group>"; };
 		D721795927E246C400F39152 /* CombinationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationsView.swift; sourceTree = "<group>"; };
 		D721795D27E4ED4B00F39152 /* OptionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionState.swift; sourceTree = "<group>"; };
@@ -117,12 +119,12 @@
 				D7CF6DF427DE731F0010949B /* TapeView + ConfigTapesView.swift */,
 				D721795727E2445600F39152 /* StatesView.swift */,
 				D721795927E246C400F39152 /* CombinationsView.swift */,
-				D721796127E5D4AD00F39152 /* SolveView.swift */,
 				D7CF6DFC27DFCD030010949B /* CustomVerticalGrid.swift */,
 				D703EABB2814442B00E1E486 /* TapeNumberView.swift */,
 				D703EABD28146FD200E1E486 /* AllTapesNumberView.swift */,
 				D703EABF2814793000E1E486 /* ExitView.swift */,
 				D703EAC128147EDB00E1E486 /* AllExitsView.swift */,
+				D721796127E5D4AD00F39152 /* SolveView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -140,6 +142,7 @@
 			children = (
 				D7CF6DF627DE8F080010949B /* Tape.swift */,
 				D7CF6DE227DE29180010949B /* TapeContent.swift */,
+				D70C8DFE2816F31B009458A3 /* Exit.swift */,
 				D721795D27E4ED4B00F39152 /* OptionState.swift */,
 			);
 			path = Model;
@@ -227,6 +230,7 @@
 				D7CF6DDF27DE28A20010949B /* TapeContentView.swift in Sources */,
 				D7CF6DE727DE312D0010949B /* TapeView.swift in Sources */,
 				D721795E27E4ED4B00F39152 /* OptionState.swift in Sources */,
+				D70C8DFF2816F31B009458A3 /* Exit.swift in Sources */,
 				D7CF6DFD27DFCD030010949B /* CustomVerticalGrid.swift in Sources */,
 				D7CF6DEF27DE606F0010949B /* Extention + Color.swift in Sources */,
 				D7CF6DE327DE29180010949B /* TapeContent.swift in Sources */,

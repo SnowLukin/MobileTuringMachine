@@ -24,10 +24,10 @@ struct StatesView: View {
                     Text("\(state)")
                         .font(.caption)
                         .fontWeight(.semibold)
-                }.frame(width: 80, height: 30 + CGFloat(viewModel.tapes.count * 30))
+                }.frame(width: 80, height: 30 + CGFloat(viewModel.tapes.count * 27))
                     .background(Color.secondaryBackground)
                     .cornerRadius(9)
-                    .padding(.bottom, 10)
+                    .padding(.bottom, 8)
             }
             
         }

@@ -12,7 +12,7 @@ struct AllTapesNumberView: View {
     @EnvironmentObject private var viewModel: TapeContentViewModel
     
     var body: some View {
-        HStack {
+        VStack {
             ForEach(viewModel.tapes) { tape in
                 TapeNumberView(tapeID: tape.id)
             }.frame(width: 100)

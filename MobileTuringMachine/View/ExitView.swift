@@ -30,7 +30,7 @@ struct ExitView: View {
                 Divider()
                 HStack(spacing: 0) {
                     Text("Q").fontWeight(.semibold)
-                    Text("\(exitID)")
+                    Text("\(stateID)")
                         .font(.caption)
                         .fontWeight(.bold)
                 }
@@ -39,7 +39,6 @@ struct ExitView: View {
             .padding(5)
             .background(Color.secondaryBackground)
             .cornerRadius(10)
-            
         }
     }
 }
