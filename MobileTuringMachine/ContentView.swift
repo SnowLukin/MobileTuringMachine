@@ -57,10 +57,10 @@ extension ContentView {
     private var configStatesNavigationLink: some View {
         VStack {
             Spacer()
-            NavigationLink(destination: SolveView()) {
-                buttonView("Config States")
-                    .padding().padding()
-            }
+//            NavigationLink(destination: SolveView()) {
+//                buttonView("Config States")
+//                    .padding().padding()
+//            }
         }
     }
     

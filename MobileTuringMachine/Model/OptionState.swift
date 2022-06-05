@@ -7,29 +7,39 @@
 
 import Foundation
 
-struct OptionState: Hashable {
+struct StateQ: Identifiable {
+    let id: Int
+    var options: [OptionState]
+}
+
+enum Direction: String {
+    case stay = "arrow.counterclockwise"
+    case left = "arrow.left"
+    case right = "arrow.right"
+}
+
+struct OptionState: Identifiable {
     
-    enum Direction: String {
-        case bottom = "Bottom"
-        case left = "Left"
-        case right = "Right"
-    }
-    
-    let idInRow: Int
-    
-    let combination: String
-    var direction: Direction
-    let stateID: Int
-    
-    var toCombination: String
+    let id: Int
+    var combinations: [String]
+    var toCombination: [String]
     var toStateID: Int
     
-    init(idInRow: Int, combination: String, direction: Direction = .bottom, stateID: Int) {
-        self.idInRow = idInRow
-        self.stateID = stateID
-        self.direction = direction
-        self.combination = combination
-        toCombination = combination
-        toStateID = stateID
+    var combinationsTuple: [(character: String, direction: Direction)]
+    // MARK: Array of combinations as Element of the tape and  its direction
+//    var combinationsTuple: [(character: String, direction: Direction)] {
+//        var combinationsTuple: [(character: String, direction: Direction)] = []
+//        for combination in combinations {
+//            combinationsTuple.append((combination, .stay))
+//        }
+//        return combinationsTuple
+//    }
+    
+    init(id: Int, combinations: [String], toStateID: Int, combinationTuple: [(character: String, direction: Direction)]) {
+        self.id = id
+        self.combinations = combinations
+        toCombination = combinations
+        self.toStateID = toStateID
+        self.combinationsTuple = combinationTuple
     }
 }

@@ -10,8 +10,8 @@ import Foundation
 struct Tape: Identifiable {
     
     var id: Int
-    var alphabet: String = "abs"
-    var input: String = "abs"
+    var alphabet: String = "abc"
+    var input: String = "abc"
     var headIndex = 0
     
     var alphabetArray: [String] {

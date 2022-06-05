@@ -1,5 +1,5 @@
 //
-//  Extention + Color.swift
+//  Extension + Color.swift
 //  MobileTuringMachine
 //
 //  Created by Snow Lukin on 13.03.2022.
