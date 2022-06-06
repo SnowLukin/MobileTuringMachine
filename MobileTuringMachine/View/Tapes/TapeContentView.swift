@@ -35,12 +35,7 @@ struct TapeContentView: View {
                 .cornerRadius(35 / 2)
                 .overlay(
                     Circle()
-//                        .background(Color.secondaryBackground)
                         .stroke(.secondary)
-                    
-//                        .padding(6)
-//                    RoundedRectangle(cornerRadius: 6)
-//                        .stroke(.secondary, lineWidth: 1)
                 )
         }
     }

@@ -65,7 +65,7 @@ struct CombinationSettings: View {
                 }
             }
         }
-        .navigationBarTitle("Tape \(elementID) | Character: \(viewModel.states[stateID].options[optionID].combinations[elementID])")
+        .navigationBarTitle("Tape \(elementID) | Character: \(viewModel.states[stateID].options[optionID].combinationsTuple.map { $0.character }[elementID])")
         .navigationBarTitleDisplayMode(.inline)
     }
 }

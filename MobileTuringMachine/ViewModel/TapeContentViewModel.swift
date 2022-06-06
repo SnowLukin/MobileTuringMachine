@@ -17,9 +17,8 @@ class TapeContentViewModel: ObservableObject {
             options: [
                 OptionState(
                     id: 0,
-                    combinations: ["a", "b", "c"],
                     toStateID: 0,
-                    combinationTuple: [("a", Direction.stay, "a"), ("b", Direction.stay, "b"), ("c", Direction.stay, "c")] )
+                    combinationsTuple: [("a", Direction.stay, "a"), ("b", Direction.stay, "b"), ("c", Direction.stay, "c")] )
             ])
     ]
 }
@@ -35,7 +34,7 @@ extension TapeContentViewModel {
     
     // MARK: Remove
     func removeState(atID: Int) {
-        // Update ID's
+        // Update indexes
         for index in 0..<states.count {
             if index == atID {
                 // Setting to -1 to avoid unexpected errors with matching IDs
@@ -85,7 +84,7 @@ extension TapeContentViewModel {
         
         var optionStates: [OptionState] = []
         for combinationIndex in 0..<combinations.count {
-            optionStates.append(OptionState(id: combinationIndex, combinations: combinations[combinationIndex], toStateID: stateID, combinationTuple: getCombinationsTuple(combinations: combinations[combinationIndex])))
+            optionStates.append(OptionState(id: combinationIndex, toStateID: stateID, combinationsTuple: getCombinationsTuple(combinations: combinations[combinationIndex])))
         }
         return optionStates
     }
@@ -106,8 +105,7 @@ extension TapeContentViewModel {
     func removeTape(id: Int) {
         amountOfTapes -= 1
         tapes.remove(at: id)
-        
-        // Updating IDs
+        // Rewriting IDs
         for index in 0..<amountOfTapes {
             tapes[index].id = index
         }

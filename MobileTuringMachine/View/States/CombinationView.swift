@@ -42,7 +42,7 @@ struct CombinationView: View {
                 }
             }
         }
-        .navigationBarTitle("Combination: \(viewModel.states[stateID].options[optionID].combinations.joined(separator: ""))")
+        .navigationBarTitle("Combination: \(viewModel.states[stateID].options[optionID].combinationsTuple.map { $0.character }.joined(separator: ""))")
         .navigationBarTitleDisplayMode(.inline)
     }
 }

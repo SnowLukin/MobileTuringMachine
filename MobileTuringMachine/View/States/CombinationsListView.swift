@@ -18,7 +18,7 @@ struct CombinationsListView: View {
                 NavigationLink {
                     CombinationView(stateID: stateID, optionID: optionID)
                 } label: {
-                    Text("\(viewModel.states[stateID].options[optionID].combinations.joined(separator: ""))")
+                    Text("\(viewModel.states[stateID].options[optionID].combinationsTuple.map { $0.character }.joined(separator: ""))")
                 }
 
             }

@@ -7,20 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D703EABC2814442B00E1E486 /* TapeNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703EABB2814442B00E1E486 /* TapeNumberView.swift */; };
-		D703EABE28146FD200E1E486 /* AllTapesNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703EABD28146FD200E1E486 /* AllTapesNumberView.swift */; };
-		D703EAC02814793000E1E486 /* ExitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703EABF2814793000E1E486 /* ExitView.swift */; };
-		D703EAC228147EDB00E1E486 /* AllExitsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703EAC128147EDB00E1E486 /* AllExitsView.swift */; };
 		D7057FAF284A8CC70008E7E3 /* Extension + View.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7057FAE284A8CC70008E7E3 /* Extension + View.swift */; };
-		D70C8DFF2816F31B009458A3 /* Exit.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70C8DFE2816F31B009458A3 /* Exit.swift */; };
 		D721795E27E4ED4B00F39152 /* OptionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D721795D27E4ED4B00F39152 /* OptionState.swift */; };
-		D721796227E5D4AD00F39152 /* SolveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D721796127E5D4AD00F39152 /* SolveView.swift */; };
 		D7809891284CE14800C4DDF0 /* StateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7809890284CE14800C4DDF0 /* StateView.swift */; };
 		D780989B284CEA2100C4DDF0 /* CombinationsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780989A284CEA2100C4DDF0 /* CombinationsListView.swift */; };
 		D780989D284CEC4E00C4DDF0 /* CombinationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780989C284CEC4E00C4DDF0 /* CombinationSettings.swift */; };
 		D780989F284CF8F900C4DDF0 /* CombinationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780989E284CF8F900C4DDF0 /* CombinationView.swift */; };
 		D78098A4284DC83900C4DDF0 /* BindingPreviewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78098A3284DC83900C4DDF0 /* BindingPreviewWrapper.swift */; };
 		D78098A6284DD9F100C4DDF0 /* StatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78098A5284DD9F100C4DDF0 /* StatesView.swift */; };
+		D78098A9284DF29100C4DDF0 /* StateQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78098A8284DF29100C4DDF0 /* StateQ.swift */; };
 		D7CF6DD027DE288A0010949B /* MobileTuringMachineApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CF6DCF27DE288A0010949B /* MobileTuringMachineApp.swift */; };
 		D7CF6DD227DE288A0010949B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CF6DD127DE288A0010949B /* ContentView.swift */; };
 		D7CF6DD427DE28910010949B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D7CF6DD327DE28910010949B /* Assets.xcassets */; };
@@ -38,20 +33,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		D703EABB2814442B00E1E486 /* TapeNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapeNumberView.swift; sourceTree = "<group>"; };
-		D703EABD28146FD200E1E486 /* AllTapesNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllTapesNumberView.swift; sourceTree = "<group>"; };
-		D703EABF2814793000E1E486 /* ExitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExitView.swift; sourceTree = "<group>"; };
-		D703EAC128147EDB00E1E486 /* AllExitsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllExitsView.swift; sourceTree = "<group>"; };
 		D7057FAE284A8CC70008E7E3 /* Extension + View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension + View.swift"; sourceTree = "<group>"; };
-		D70C8DFE2816F31B009458A3 /* Exit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exit.swift; sourceTree = "<group>"; };
 		D721795D27E4ED4B00F39152 /* OptionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionState.swift; sourceTree = "<group>"; };
-		D721796127E5D4AD00F39152 /* SolveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolveView.swift; sourceTree = "<group>"; };
 		D7809890284CE14800C4DDF0 /* StateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateView.swift; sourceTree = "<group>"; };
 		D780989A284CEA2100C4DDF0 /* CombinationsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationsListView.swift; sourceTree = "<group>"; };
 		D780989C284CEC4E00C4DDF0 /* CombinationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationSettings.swift; sourceTree = "<group>"; };
 		D780989E284CF8F900C4DDF0 /* CombinationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationView.swift; sourceTree = "<group>"; };
 		D78098A3284DC83900C4DDF0 /* BindingPreviewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingPreviewWrapper.swift; sourceTree = "<group>"; };
 		D78098A5284DD9F100C4DDF0 /* StatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatesView.swift; sourceTree = "<group>"; };
+		D78098A8284DF29100C4DDF0 /* StateQ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateQ.swift; sourceTree = "<group>"; };
 		D7CF6DCC27DE288A0010949B /* MobileTuringMachine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobileTuringMachine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7CF6DCF27DE288A0010949B /* MobileTuringMachineApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileTuringMachineApp.swift; sourceTree = "<group>"; };
 		D7CF6DD127DE288A0010949B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -100,6 +90,18 @@
 			path = PreviewHelper;
 			sourceTree = "<group>";
 		};
+		D78098A7284DF23300C4DDF0 /* Tapes */ = {
+			isa = PBXGroup;
+			children = (
+				D7CF6DDE27DE28A20010949B /* TapeContentView.swift */,
+				D7CF6DE627DE312D0010949B /* TapeView.swift */,
+				D7CF6DEB27DE53B60010949B /* InputView.swift */,
+				D7CF6DF027DE64000010949B /* ConfigTapesView.swift */,
+				D7CF6DF427DE731F0010949B /* TapeView + ConfigTapesView.swift */,
+			);
+			path = Tapes;
+			sourceTree = "<group>";
+		};
 		D7CF6DC327DE288A0010949B = {
 			isa = PBXGroup;
 			children = (
@@ -143,17 +145,8 @@
 		D7CF6DDD27DE28960010949B /* View */ = {
 			isa = PBXGroup;
 			children = (
-				D7CF6DDE27DE28A20010949B /* TapeContentView.swift */,
-				D7CF6DE627DE312D0010949B /* TapeView.swift */,
-				D7CF6DEB27DE53B60010949B /* InputView.swift */,
-				D7CF6DF027DE64000010949B /* ConfigTapesView.swift */,
-				D7CF6DF427DE731F0010949B /* TapeView + ConfigTapesView.swift */,
+				D78098A7284DF23300C4DDF0 /* Tapes */,
 				D7CF6DFC27DFCD030010949B /* CustomVerticalGrid.swift */,
-				D703EABB2814442B00E1E486 /* TapeNumberView.swift */,
-				D703EABD28146FD200E1E486 /* AllTapesNumberView.swift */,
-				D703EABF2814793000E1E486 /* ExitView.swift */,
-				D703EAC128147EDB00E1E486 /* AllExitsView.swift */,
-				D721796127E5D4AD00F39152 /* SolveView.swift */,
 				D7809892284CE47300C4DDF0 /* States */,
 			);
 			path = View;
@@ -172,7 +165,7 @@
 			children = (
 				D7CF6DF627DE8F080010949B /* Tape.swift */,
 				D7CF6DE227DE29180010949B /* TapeContent.swift */,
-				D70C8DFE2816F31B009458A3 /* Exit.swift */,
+				D78098A8284DF29100C4DDF0 /* StateQ.swift */,
 				D721795D27E4ED4B00F39152 /* OptionState.swift */,
 			);
 			path = Model;
@@ -257,30 +250,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D703EABE28146FD200E1E486 /* AllTapesNumberView.swift in Sources */,
+				D78098A9284DF29100C4DDF0 /* StateQ.swift in Sources */,
 				D7CF6DDF27DE28A20010949B /* TapeContentView.swift in Sources */,
 				D7CF6DE727DE312D0010949B /* TapeView.swift in Sources */,
 				D78098A4284DC83900C4DDF0 /* BindingPreviewWrapper.swift in Sources */,
 				D721795E27E4ED4B00F39152 /* OptionState.swift in Sources */,
 				D780989D284CEC4E00C4DDF0 /* CombinationSettings.swift in Sources */,
-				D70C8DFF2816F31B009458A3 /* Exit.swift in Sources */,
 				D7CF6DFD27DFCD030010949B /* CustomVerticalGrid.swift in Sources */,
 				D7CF6DEF27DE606F0010949B /* Extension + Color.swift in Sources */,
 				D7CF6DE327DE29180010949B /* TapeContent.swift in Sources */,
 				D7CF6DF127DE64000010949B /* ConfigTapesView.swift in Sources */,
 				D780989B284CEA2100C4DDF0 /* CombinationsListView.swift in Sources */,
-				D721796227E5D4AD00F39152 /* SolveView.swift in Sources */,
 				D7CF6DE527DE2BA00010949B /* TapeContentViewModel.swift in Sources */,
 				D780989F284CF8F900C4DDF0 /* CombinationView.swift in Sources */,
 				D7CF6DF727DE8F080010949B /* Tape.swift in Sources */,
 				D7CF6DEC27DE53B60010949B /* InputView.swift in Sources */,
 				D7CF6DD227DE288A0010949B /* ContentView.swift in Sources */,
-				D703EAC02814793000E1E486 /* ExitView.swift in Sources */,
 				D78098A6284DD9F100C4DDF0 /* StatesView.swift in Sources */,
-				D703EABC2814442B00E1E486 /* TapeNumberView.swift in Sources */,
 				D7809891284CE14800C4DDF0 /* StateView.swift in Sources */,
 				D7CF6DF527DE731F0010949B /* TapeView + ConfigTapesView.swift in Sources */,
-				D703EAC228147EDB00E1E486 /* AllExitsView.swift in Sources */,
 				D7CF6DD027DE288A0010949B /* MobileTuringMachineApp.swift in Sources */,
 				D7057FAF284A8CC70008E7E3 /* Extension + View.swift in Sources */,
 			);
