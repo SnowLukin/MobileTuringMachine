@@ -11,10 +11,21 @@ class TapeContentViewModel: ObservableObject {
     
     @Published var amountOfTapes = 3
     @Published var tapes: [Tape] = [Tape(id: 0), Tape(id: 1), Tape(id: 2)]
-    @Published var states: [StateQ] = [StateQ(id: 0, options: [OptionState(id: 0, combinations: ["a", "b", "c"], toStateID: 0, combinationTuple: [("a", Direction.stay), ("b", Direction.stay), ("c", Direction.stay),] ) ]) ]
+    @Published var states: [StateQ] = [
+        StateQ(
+            id: 0,
+            options: [
+                OptionState(
+                    id: 0,
+                    combinations: ["a", "b", "c"],
+                    toStateID: 0,
+                    combinationTuple: [("a", Direction.stay, "a"), ("b", Direction.stay, "b"), ("c", Direction.stay, "c")] )
+            ])
+    ]
     
     @Published var firstElementInGrid = true
     
+    @Published var test = 0
 }
 
 
@@ -22,10 +33,10 @@ class TapeContentViewModel: ObservableObject {
 // MARK: Option States
 extension TapeContentViewModel {
     
-    private func getCombinationsTuple(combinations: [String]) -> [(character: String, direction: Direction)] {
-        var combinationsTuple: [(character: String, direction: Direction)] = []
+    private func getCombinationsTuple(combinations: [String]) -> [(character: String, direction: Direction, toCharacter: String)] {
+        var combinationsTuple: [(character: String, direction: Direction, toCharacter: String)] = []
         for combination in combinations {
-            combinationsTuple.append((combination, .stay))
+            combinationsTuple.append((combination, .stay, combination))
         }
         return combinationsTuple
     }

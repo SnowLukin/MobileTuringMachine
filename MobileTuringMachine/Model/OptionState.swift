@@ -25,7 +25,7 @@ struct OptionState: Identifiable {
     var toCombination: [String]
     var toStateID: Int
     
-    var combinationsTuple: [(character: String, direction: Direction)]
+    var combinationsTuple: [(character: String, direction: Direction, toCharacter: String)]
     // MARK: Array of combinations as Element of the tape and  its direction
 //    var combinationsTuple: [(character: String, direction: Direction)] {
 //        var combinationsTuple: [(character: String, direction: Direction)] = []
@@ -35,7 +35,7 @@ struct OptionState: Identifiable {
 //        return combinationsTuple
 //    }
     
-    init(id: Int, combinations: [String], toStateID: Int, combinationTuple: [(character: String, direction: Direction)]) {
+    init(id: Int, combinations: [String], toStateID: Int, combinationTuple: [(character: String, direction: Direction, toCharacter: String)]) {
         self.id = id
         self.combinations = combinations
         toCombination = combinations
