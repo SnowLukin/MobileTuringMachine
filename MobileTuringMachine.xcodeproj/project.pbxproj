@@ -16,6 +16,11 @@
 		D78098A4284DC83900C4DDF0 /* BindingPreviewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78098A3284DC83900C4DDF0 /* BindingPreviewWrapper.swift */; };
 		D78098A6284DD9F100C4DDF0 /* StatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78098A5284DD9F100C4DDF0 /* StatesView.swift */; };
 		D78098A9284DF29100C4DDF0 /* StateQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78098A8284DF29100C4DDF0 /* StateQ.swift */; };
+		D78098AB284DFB4D00C4DDF0 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78098AA284DFB4D00C4DDF0 /* HomeView.swift */; };
+		D78098AD284DFC0600C4DDF0 /* TapeSectionOpening.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78098AC284DFC0600C4DDF0 /* TapeSectionOpening.swift */; };
+		D78098B1284E150200C4DDF0 /* Tapes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78098B0284E150200C4DDF0 /* Tapes.swift */; };
+		D78098B5284E1AA800C4DDF0 /* TapesWorkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78098B4284E1AA800C4DDF0 /* TapesWorkView.swift */; };
+		D78098B7284E1CF200C4DDF0 /* RoundedCornersBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78098B6284E1CF200C4DDF0 /* RoundedCornersBackground.swift */; };
 		D7CF6DD027DE288A0010949B /* MobileTuringMachineApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CF6DCF27DE288A0010949B /* MobileTuringMachineApp.swift */; };
 		D7CF6DD227DE288A0010949B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CF6DD127DE288A0010949B /* ContentView.swift */; };
 		D7CF6DD427DE28910010949B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D7CF6DD327DE28910010949B /* Assets.xcassets */; };
@@ -42,6 +47,11 @@
 		D78098A3284DC83900C4DDF0 /* BindingPreviewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingPreviewWrapper.swift; sourceTree = "<group>"; };
 		D78098A5284DD9F100C4DDF0 /* StatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatesView.swift; sourceTree = "<group>"; };
 		D78098A8284DF29100C4DDF0 /* StateQ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateQ.swift; sourceTree = "<group>"; };
+		D78098AA284DFB4D00C4DDF0 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		D78098AC284DFC0600C4DDF0 /* TapeSectionOpening.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapeSectionOpening.swift; sourceTree = "<group>"; };
+		D78098B0284E150200C4DDF0 /* Tapes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tapes.swift; sourceTree = "<group>"; };
+		D78098B4284E1AA800C4DDF0 /* TapesWorkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapesWorkView.swift; sourceTree = "<group>"; };
+		D78098B6284E1CF200C4DDF0 /* RoundedCornersBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCornersBackground.swift; sourceTree = "<group>"; };
 		D7CF6DCC27DE288A0010949B /* MobileTuringMachine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobileTuringMachine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7CF6DCF27DE288A0010949B /* MobileTuringMachineApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileTuringMachineApp.swift; sourceTree = "<group>"; };
 		D7CF6DD127DE288A0010949B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -82,12 +92,13 @@
 			path = States;
 			sourceTree = "<group>";
 		};
-		D78098A2284DC80D00C4DDF0 /* PreviewHelper */ = {
+		D78098A2284DC80D00C4DDF0 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
 				D78098A3284DC83900C4DDF0 /* BindingPreviewWrapper.swift */,
+				D78098B6284E1CF200C4DDF0 /* RoundedCornersBackground.swift */,
 			);
-			path = PreviewHelper;
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		D78098A7284DF23300C4DDF0 /* Tapes */ = {
@@ -98,8 +109,18 @@
 				D7CF6DEB27DE53B60010949B /* InputView.swift */,
 				D7CF6DF027DE64000010949B /* ConfigTapesView.swift */,
 				D7CF6DF427DE731F0010949B /* TapeView + ConfigTapesView.swift */,
+				D78098AC284DFC0600C4DDF0 /* TapeSectionOpening.swift */,
+				D78098B0284E150200C4DDF0 /* Tapes.swift */,
+				D78098B4284E1AA800C4DDF0 /* TapesWorkView.swift */,
 			);
 			path = Tapes;
+			sourceTree = "<group>";
+		};
+		D78098B8284E211400C4DDF0 /* Work */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Work;
 			sourceTree = "<group>";
 		};
 		D7CF6DC327DE288A0010949B = {
@@ -123,7 +144,7 @@
 			children = (
 				D7CF6DCF27DE288A0010949B /* MobileTuringMachineApp.swift */,
 				D7CF6DD127DE288A0010949B /* ContentView.swift */,
-				D78098A2284DC80D00C4DDF0 /* PreviewHelper */,
+				D78098A2284DC80D00C4DDF0 /* Helpers */,
 				D7CF6DED27DE60580010949B /* Extensions */,
 				D7CF6DE127DE28F30010949B /* Model */,
 				D7CF6DE027DE28E70010949B /* ViewModel */,
@@ -146,6 +167,8 @@
 			isa = PBXGroup;
 			children = (
 				D7CF6DFC27DFCD030010949B /* CustomVerticalGrid.swift */,
+				D78098AA284DFB4D00C4DDF0 /* HomeView.swift */,
+				D78098B8284E211400C4DDF0 /* Work */,
 				D78098A7284DF23300C4DDF0 /* Tapes */,
 				D7809892284CE47300C4DDF0 /* States */,
 			);
@@ -251,10 +274,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				D78098A9284DF29100C4DDF0 /* StateQ.swift in Sources */,
+				D78098AD284DFC0600C4DDF0 /* TapeSectionOpening.swift in Sources */,
 				D7CF6DDF27DE28A20010949B /* TapeContentView.swift in Sources */,
+				D78098B5284E1AA800C4DDF0 /* TapesWorkView.swift in Sources */,
 				D7CF6DE727DE312D0010949B /* TapeView.swift in Sources */,
 				D78098A4284DC83900C4DDF0 /* BindingPreviewWrapper.swift in Sources */,
 				D721795E27E4ED4B00F39152 /* OptionState.swift in Sources */,
+				D78098AB284DFB4D00C4DDF0 /* HomeView.swift in Sources */,
 				D780989D284CEC4E00C4DDF0 /* CombinationSettings.swift in Sources */,
 				D7CF6DFD27DFCD030010949B /* CustomVerticalGrid.swift in Sources */,
 				D7CF6DEF27DE606F0010949B /* Extension + Color.swift in Sources */,
@@ -264,9 +290,11 @@
 				D7CF6DE527DE2BA00010949B /* TapeContentViewModel.swift in Sources */,
 				D780989F284CF8F900C4DDF0 /* CombinationView.swift in Sources */,
 				D7CF6DF727DE8F080010949B /* Tape.swift in Sources */,
+				D78098B7284E1CF200C4DDF0 /* RoundedCornersBackground.swift in Sources */,
 				D7CF6DEC27DE53B60010949B /* InputView.swift in Sources */,
 				D7CF6DD227DE288A0010949B /* ContentView.swift in Sources */,
 				D78098A6284DD9F100C4DDF0 /* StatesView.swift in Sources */,
+				D78098B1284E150200C4DDF0 /* Tapes.swift in Sources */,
 				D7809891284CE14800C4DDF0 /* StateView.swift in Sources */,
 				D7CF6DF527DE731F0010949B /* TapeView + ConfigTapesView.swift in Sources */,
 				D7CF6DD027DE288A0010949B /* MobileTuringMachineApp.swift in Sources */,

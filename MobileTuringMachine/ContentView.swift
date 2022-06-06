@@ -50,7 +50,7 @@ extension ContentView {
     
     private var tapes: some View {
         ForEach(viewModel.tapes) { tape in
-            TapeViewConfigTapesView(tapeID: tape.id)
+            TapeViewConfigTapesView(tapeID: tape.id, color: Color.secondaryBackground)
         }
     }
     

@@ -12,8 +12,9 @@ struct TapeView: View {
     @EnvironmentObject private var viewModel: TapeContentViewModel
     
     var tapeID: Int
+    var color: Color
     
-    private var layout: [GridItem] = [
+    var layout: [GridItem] = [
         GridItem(.flexible(minimum: 25))
     ]
     
@@ -33,18 +34,14 @@ struct TapeView: View {
             }
         }
         .frame(height: 40)
-        .background(Color.secondaryBackground)
+        .background(color)
         .cornerRadius(9)
-    }
-    
-    init(tapeID: Int) {
-        self.tapeID = tapeID
     }
 }
 
 struct TapeView_Previews: PreviewProvider {
     static var previews: some View {
-        TapeView(tapeID: 0)
+        TapeView(tapeID: 0, color: Color.secondaryBackground)
             .preferredColorScheme(.dark)
             .padding()
             .environmentObject(TapeContentViewModel())

@@ -14,6 +14,7 @@ struct TapeViewConfigTapesView: View {
     @State private var isConfigShown = false
     
     let tapeID: Int
+    let color: Color
     
     var body: some View {
         ZStack {
@@ -26,13 +27,14 @@ struct TapeViewConfigTapesView: View {
                         }
                         if isConfigShown {
                             ConfigTapesView(tapeID: tapeID)
+                                .padding(.bottom)
                         }
                         configButton
                             .padding(.trailing, 10)
                             .padding(.bottom, 5)
                     }
                 }
-                TapeView(tapeID: tapeID)
+                TapeView(tapeID: tapeID, color: color)
             }.padding(.horizontal)
             
         }
@@ -42,7 +44,7 @@ struct TapeViewConfigTapesView: View {
 
 struct TapeViewConfigTapesView_Previews: PreviewProvider {
     static var previews: some View {
-        TapeViewConfigTapesView(tapeID: 0)
+        TapeViewConfigTapesView(tapeID: 0, color: Color.secondaryBackground)
             .preferredColorScheme(.dark)
             .environmentObject(TapeContentViewModel())
     }
