@@ -145,8 +145,8 @@
 		D7CF6DDD27DE28960010949B /* View */ = {
 			isa = PBXGroup;
 			children = (
-				D78098A7284DF23300C4DDF0 /* Tapes */,
 				D7CF6DFC27DFCD030010949B /* CustomVerticalGrid.swift */,
+				D78098A7284DF23300C4DDF0 /* Tapes */,
 				D7809892284CE47300C4DDF0 /* States */,
 			);
 			path = View;
