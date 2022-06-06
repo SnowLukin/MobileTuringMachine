@@ -22,16 +22,38 @@ class TapeContentViewModel: ObservableObject {
                     combinationTuple: [("a", Direction.stay, "a"), ("b", Direction.stay, "b"), ("c", Direction.stay, "c")] )
             ])
     ]
-    
-    @Published var firstElementInGrid = true
-    
-    @Published var test = 0
 }
 
-
-
-// MARK: Option States
+// MARK: - States
 extension TapeContentViewModel {
+    
+    // MARK: Add
+    func addState() {
+        let id = states.count
+        states.append(StateQ(id: id, options: getOptionStates(stateID: id)))
+    }
+    
+    // MARK: Remove
+    func removeState(atID: Int) {
+        // Update ID's
+        for index in 0..<states.count {
+            if index == atID {
+                // Setting to -1 to avoid unexpected errors with matching IDs
+                states[index].id = -1
+            } else if index > atID {
+                states[index].id = states[index].id - 1
+            }
+        }
+        
+        states.remove(at: atID)
+    }
+    
+    // MARK: Update
+    func updateStates() {
+        for index in 0..<states.count {
+            states[index].options = getOptionStates(stateID: index)
+        }
+    }
     
     private func getCombinationsTuple(combinations: [String]) -> [(character: String, direction: Direction, toCharacter: String)] {
         var combinationsTuple: [(character: String, direction: Direction, toCharacter: String)] = []
@@ -67,48 +89,38 @@ extension TapeContentViewModel {
         }
         return optionStates
     }
-    
-    func updateOptionStates() {
-        for index in 0..<states.count {
-            states[index].options = getOptionStates(stateID: index)
-        }
-    }
 }
 
+
+// MARK: - Tape
 extension TapeContentViewModel {
     
+    // MARK: Add
     func addTape() {
         amountOfTapes += 1
         tapes.append(Tape(id: amountOfTapes - 1))
-        updateOptionStates()
+        updateStates()
     }
     
+    // MARK: Remove
     func removeTape(id: Int) {
         amountOfTapes -= 1
         tapes.remove(at: id)
         
-        // Rewriting IDs
+        // Updating IDs
         for index in 0..<amountOfTapes {
             tapes[index].id = index
         }
-        
-        updateOptionStates()
+        updateStates()
     }
     
-//    func updateExits() {
-//        exits.removeAll()
-//        let newExits = getArrayOfAllExits()
-//        for exit in newExits {
-//            let index = exits.count - 1
-//            exits.append(Exit(id: index, expectedLetters: exit, toLetters: [exit], moving: [.stay]))
-//        }
-//    }
-    
+    // MARK: Alphabet
     func setNewAlphabet(_ text: String, id: Int) {
         tapes[id].alphabet = text
-        updateOptionStates()
+        updateStates()
     }
     
+    // MARK: Input
     func setNewInput(_ text: String, id: Int) {
         tapes[id].input = text
     }

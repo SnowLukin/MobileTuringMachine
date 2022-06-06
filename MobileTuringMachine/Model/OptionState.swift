@@ -8,7 +8,7 @@
 import Foundation
 
 struct StateQ: Identifiable {
-    let id: Int
+    var id: Int
     var options: [OptionState]
 }
 
