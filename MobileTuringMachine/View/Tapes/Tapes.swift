@@ -16,6 +16,13 @@ struct Tapes: View {
             TapeSectionOpening(tapeID: tapeIndex)
         }
         .navigationTitle("Tapes")
+        .toolbar {
+            Button {
+                viewModel.addTape()
+            } label: {
+                Image(systemName: "plus")
+            }
+        }
     }
 }
 

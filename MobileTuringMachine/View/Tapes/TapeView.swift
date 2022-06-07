@@ -22,8 +22,10 @@ struct TapeView: View {
             ScrollViewReader { value in
                 tapeGrid
                     .onAppear {
-                        viewModel.tapes[tapeID].headIndex = 0
-                        value.scrollTo(0, anchor: .center)
+//                        viewModel.tapes[tapeID].headIndex = 0
+                        withAnimation {
+                            value.scrollTo(viewModel.tapes[tapeID].headIndex, anchor: .center)
+                        }
                     }
                     .onChange(of: viewModel.tapes[tapeID].headIndex) { newValue in
                         withAnimation {
@@ -47,29 +49,21 @@ struct TapeView_Previews: PreviewProvider {
     }
 }
 
+
 extension TapeView {
     
     private var tapeGrid: some View {
         LazyHGrid(rows: layout) {
-            ForEach(-216..<217, id: \.self) { contentID in
-                TapeContentView(tapeContent: TapeContent(id: contentID, value: getValueForTapeContent(contentID)), tapeID: tapeID)
+            ForEach(viewModel.tapes[tapeID].components) { component in
+                TapeContentView(component: component, tapeID: tapeID)
             }
         }
         .padding(.horizontal)
     }
     
-    private func getCharOnIndex(_ id: Int) -> String {
-        let index = viewModel.tapes[tapeID].input.index(
-            viewModel.tapes[tapeID].input.startIndex, offsetBy: id
-        )
-        return String(viewModel.tapes[tapeID].input[index])
-    }
-    
     private func getValueForTapeContent(_ id: Int) -> String {
-        guard tapeID <= viewModel.tapes.count - 1 else { return "_" }
-        return (0..<viewModel.tapes[tapeID].input.count).contains(id)
-        ? getCharOnIndex(id)
+        (0..<viewModel.tapes[tapeID].input.count).contains(id)
+        ? viewModel.tapes[tapeID].input.map { String($0) }[id]
         : "_"
     }
-    
 }

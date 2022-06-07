@@ -11,16 +11,17 @@ struct TapeContentView: View {
 
     @EnvironmentObject private var viewModel: TapeContentViewModel
     
-    let tapeContent: TapeContent
+//    let tapeContent: TapeContent
+    let component: TapeContent
     let tapeID: Int
     
     var body: some View {
         Button {
-            viewModel.tapes[tapeID].headIndex = tapeContent.id
+            viewModel.tapes[tapeID].headIndex = component.id
         } label: {
-            Text(tapeContent.value)
+            Text(component.value)
                 .foregroundColor(
-                    viewModel.tapes[tapeID].headIndex == tapeContent.id
+                    viewModel.tapes[tapeID].headIndex == component.id
                     ? .white
                     : .secondary
                 )
@@ -28,7 +29,7 @@ struct TapeContentView: View {
                 .fontWeight(.semibold)
                 .frame(width: 35, height: 35)
                 .background(
-                    viewModel.tapes[tapeID].headIndex == tapeContent.id
+                    viewModel.tapes[tapeID].headIndex == component.id
                     ? .blue
                     : .secondaryBackground
                 )
@@ -43,7 +44,7 @@ struct TapeContentView: View {
 
 struct TapeContentView_Previews: PreviewProvider {
     static var previews: some View {
-        TapeContentView(tapeContent: TapeContent(id: 1), tapeID: 0)
+        TapeContentView(component: TapeContent(id: 0, value: "a"), tapeID: 0)
             .environmentObject(TapeContentViewModel())
     }
 }

@@ -10,9 +10,10 @@ import Foundation
 struct Tape: Identifiable {
     
     var id: Int
-    var alphabet: String = "abc"
-    var input: String = "abc"
+    var alphabet: String = ""
+    var input: String = ""
     var headIndex = 0
+    var components: [TapeContent]
     
     var alphabetArray: [String] {
         var result = alphabet.map { String($0) }

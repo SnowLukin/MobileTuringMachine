@@ -66,14 +66,14 @@ extension InputView {
     private func setNewInputValue() {
         // if not last
         guard let lastCharacter = text.popLast() else {
-            viewModel.tapes[tapeID].input = text
+            viewModel.setNewInput(text, id: tapeID)
             return
         }
         
         // if new character is "space" change it to "_"
         if lastCharacter == " " {
             text.append("_")
-            viewModel.tapes[tapeID].input = text
+            viewModel.setNewInput(text, id: tapeID)
             return
         }
         // if there is such character in alphabet - save it
@@ -81,7 +81,7 @@ extension InputView {
         if viewModel.tapes[tapeID].alphabet.contains(lastCharacter) {
             text.append(lastCharacter)
         }
-        viewModel.tapes[tapeID].input = text
+        viewModel.setNewInput(text, id: tapeID)
     }
     
     private func setNewAlphabetValue() {
@@ -97,6 +97,6 @@ extension InputView {
                 text.append(String(lastCharacter))
             }
         }
-        viewModel.tapes[tapeID].alphabet = text
+        viewModel.setNewAlphabet(text, id: tapeID)
     }
 }

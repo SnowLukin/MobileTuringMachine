@@ -21,7 +21,7 @@ struct TapeViewConfigTapesView: View {
                 ZStack {
                     HStack {
                         if !isConfigShown {
-                            resetButton
+                            removeButton
                             Spacer()
                         }
                         if isConfigShown {
@@ -51,14 +51,14 @@ struct TapeViewConfigTapesView_Previews: PreviewProvider {
 
 extension TapeViewConfigTapesView {
     
-    private var resetButton: some View {
+    private var removeButton: some View {
         Button {
             viewModel.removeTape(id: tapeID)
         } label: {
             Text("Remove")
                 .animation(.easeInOut, value: !isConfigShown)
         }
-        .disabled(viewModel.amountOfTapes < 2)
+//        .disabled(viewModel.tapes.count < 2)
 
     }
     
