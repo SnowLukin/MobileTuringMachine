@@ -21,6 +21,7 @@ class TapeContentViewModel: ObservableObject {
                     combinationsTuple: [("a", Direction.stay, "a"), ("b", Direction.stay, "b"), ("c", Direction.stay, "c")] )
             ])
     ]
+    @Published var startState = 0
 }
 
 // MARK: - States

@@ -17,7 +17,7 @@ struct TapesWorkView: View {
                 
                 setTapeTag(tapeID: tapeIndex)
                 
-                TapeView(tapeID: tapeIndex, color: Color.secondaryBackground)
+                TapeView(tapeID: tapeIndex)
                     .padding([.leading, .trailing])
             }
         }

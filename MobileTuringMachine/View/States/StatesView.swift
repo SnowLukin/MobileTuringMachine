@@ -13,25 +13,23 @@ struct StatesView: View {
     @State private var isBeingEdited = false
     
     var body: some View {
-        NavigationView {
-            CustomVerticalGrid(
-                columns: 3,
-                items: Array(0...viewModel.states.count)) { itemSize, itemIndex in
-                    StateView(isBeingEdited: $isBeingEdited, stateID: itemIndex)
-                        .frame(width: itemSize)
-                }
-                .padding()
-                .navigationTitle("States")
-                .toolbar {
-                    Button {
-                        withAnimation {
-                            isBeingEdited.toggle()
-                        }
-                    } label: {
-                        Text(isBeingEdited ? "Done" : "Edit")
+        CustomVerticalGrid(
+            columns: 3,
+            items: Array(0...viewModel.states.count)) { itemSize, itemIndex in
+                StateView(isBeingEdited: $isBeingEdited, stateID: itemIndex)
+                    .frame(width: itemSize)
+            }
+            .padding()
+            .toolbar {
+                Button {
+                    withAnimation {
+                        isBeingEdited.toggle()
                     }
+                } label: {
+                    Text(isBeingEdited ? "Done" : "Edit")
                 }
-        }
+            }
+            .navigationTitle("States")
     }
 }
 

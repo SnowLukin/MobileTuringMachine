@@ -37,7 +37,8 @@ struct TapeSectionOpening: View {
                 .padding([.leading, .trailing], 30)
                 
                 if isOpened {
-                    TapeViewConfigTapesView(tapeID: tapeID, color: Color.background)
+                    TapeViewConfigTapesView(tapeID: tapeID)
+                        .shadow(radius: 5)
                         .padding(.bottom)
                 }
             }

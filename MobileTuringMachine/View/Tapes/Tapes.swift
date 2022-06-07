@@ -15,6 +15,7 @@ struct Tapes: View {
         CustomVerticalGrid(columns: 1, items: Array(0..<viewModel.tapes.count)) { itemSize, tapeIndex in
             TapeSectionOpening(tapeID: tapeIndex)
         }
+        .navigationTitle("Tapes")
     }
 }
 

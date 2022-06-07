@@ -21,6 +21,8 @@
 		D78098B1284E150200C4DDF0 /* Tapes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78098B0284E150200C4DDF0 /* Tapes.swift */; };
 		D78098B5284E1AA800C4DDF0 /* TapesWorkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78098B4284E1AA800C4DDF0 /* TapesWorkView.swift */; };
 		D78098B7284E1CF200C4DDF0 /* RoundedCornersBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78098B6284E1CF200C4DDF0 /* RoundedCornersBackground.swift */; };
+		D78098BC284E2A4400C4DDF0 /* ChooseStartStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78098BB284E2A4400C4DDF0 /* ChooseStartStateView.swift */; };
+		D78098C6284F47BE00C4DDF0 /* ConfigurationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78098C5284F47BE00C4DDF0 /* ConfigurationsView.swift */; };
 		D7CF6DD027DE288A0010949B /* MobileTuringMachineApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CF6DCF27DE288A0010949B /* MobileTuringMachineApp.swift */; };
 		D7CF6DD227DE288A0010949B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CF6DD127DE288A0010949B /* ContentView.swift */; };
 		D7CF6DD427DE28910010949B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D7CF6DD327DE28910010949B /* Assets.xcassets */; };
@@ -52,6 +54,8 @@
 		D78098B0284E150200C4DDF0 /* Tapes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tapes.swift; sourceTree = "<group>"; };
 		D78098B4284E1AA800C4DDF0 /* TapesWorkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapesWorkView.swift; sourceTree = "<group>"; };
 		D78098B6284E1CF200C4DDF0 /* RoundedCornersBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCornersBackground.swift; sourceTree = "<group>"; };
+		D78098BB284E2A4400C4DDF0 /* ChooseStartStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseStartStateView.swift; sourceTree = "<group>"; };
+		D78098C5284F47BE00C4DDF0 /* ConfigurationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationsView.swift; sourceTree = "<group>"; };
 		D7CF6DCC27DE288A0010949B /* MobileTuringMachine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobileTuringMachine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7CF6DCF27DE288A0010949B /* MobileTuringMachineApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileTuringMachineApp.swift; sourceTree = "<group>"; };
 		D7CF6DD127DE288A0010949B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -116,11 +120,14 @@
 			path = Tapes;
 			sourceTree = "<group>";
 		};
-		D78098B8284E211400C4DDF0 /* Work */ = {
+		D78098B8284E211400C4DDF0 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				D78098AA284DFB4D00C4DDF0 /* HomeView.swift */,
+				D78098C5284F47BE00C4DDF0 /* ConfigurationsView.swift */,
+				D78098BB284E2A4400C4DDF0 /* ChooseStartStateView.swift */,
 			);
-			path = Work;
+			path = Home;
 			sourceTree = "<group>";
 		};
 		D7CF6DC327DE288A0010949B = {
@@ -167,8 +174,7 @@
 			isa = PBXGroup;
 			children = (
 				D7CF6DFC27DFCD030010949B /* CustomVerticalGrid.swift */,
-				D78098AA284DFB4D00C4DDF0 /* HomeView.swift */,
-				D78098B8284E211400C4DDF0 /* Work */,
+				D78098B8284E211400C4DDF0 /* Home */,
 				D78098A7284DF23300C4DDF0 /* Tapes */,
 				D7809892284CE47300C4DDF0 /* States */,
 			);
@@ -273,6 +279,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D78098BC284E2A4400C4DDF0 /* ChooseStartStateView.swift in Sources */,
 				D78098A9284DF29100C4DDF0 /* StateQ.swift in Sources */,
 				D78098AD284DFC0600C4DDF0 /* TapeSectionOpening.swift in Sources */,
 				D7CF6DDF27DE28A20010949B /* TapeContentView.swift in Sources */,
@@ -284,6 +291,7 @@
 				D780989D284CEC4E00C4DDF0 /* CombinationSettings.swift in Sources */,
 				D7CF6DFD27DFCD030010949B /* CustomVerticalGrid.swift in Sources */,
 				D7CF6DEF27DE606F0010949B /* Extension + Color.swift in Sources */,
+				D78098C6284F47BE00C4DDF0 /* ConfigurationsView.swift in Sources */,
 				D7CF6DE327DE29180010949B /* TapeContent.swift in Sources */,
 				D7CF6DF127DE64000010949B /* ConfigTapesView.swift in Sources */,
 				D780989B284CEA2100C4DDF0 /* CombinationsListView.swift in Sources */,
