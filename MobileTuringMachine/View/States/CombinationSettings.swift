@@ -10,8 +10,6 @@ import SwiftUI
 struct CombinationSettings: View {
     
     @EnvironmentObject private var viewModel: TapeContentViewModel
-    @State private var charIndex = 0
-    @State private var directionIndex = 0
     
     let stateID: Int
     let optionID: Int
@@ -34,54 +32,33 @@ struct CombinationSettings_Previews: PreviewProvider {
     }
 }
 
+
 extension CombinationSettings {
     
     private var characterSection: some View {
         Section(header: Text("Change to following character")) {
-            Picker(selection: $charIndex) {
-                ForEach(0..<viewModel.tapes[elementID].alphabetArray.count, id: \.self) { alphabetElementIndex in
-                    
-                    Text(viewModel.tapes[elementID].alphabetArray[alphabetElementIndex])
-                        .tag(alphabetElementIndex)
-                }
+            NavigationLink {
+                ChooseCharView(tapeID: elementID, stateID: stateID, optionID: optionID)
             } label: {
-                Text("Alphabet")
-            }
-            .onAppear {
-                let currentChar = viewModel.states[stateID].options[optionID].combinationsTuple[elementID].toCharacter
-                let currentCharIndexInTape = Int(viewModel.tapes[elementID].alphabetArray.firstIndex(of: currentChar) ?? 0)
-                charIndex = currentCharIndexInTape
-            }
-            .onChange(of: charIndex) { newValue in
-                let newChar = viewModel.tapes[elementID].alphabetArray[newValue]
-                viewModel.states[stateID].options[optionID].combinationsTuple[elementID].toCharacter = newChar
+                HStack {
+                    Text("Alphabet")
+                    Spacer()
+                    Text(viewModel.states[stateID].options[optionID].combinationsTuple[elementID].toCharacter)
+                }
             }
         }
     }
     
     private var directionSection: some View {
         Section(header: Text("Move tape's head to following direction")) {
-            Picker(selection: $directionIndex) {
-                Image(systemName: "arrow.counterclockwise").tag(0)
-                Image(systemName: "arrow.left").tag(1)
-                Image(systemName: "arrow.right").tag(2)
+            NavigationLink {
+                ChooseCharView(tapeID: elementID, stateID: stateID, optionID: optionID)
             } label: {
-                Text("Direction")
-            }
-            .onAppear {
-                let currentDirection = viewModel.states[stateID].options[optionID].combinationsTuple[elementID].direction
-                switch currentDirection {
-                case .stay:
-                    directionIndex = 0
-                case .left:
-                    directionIndex = 1
-                case .right:
-                    directionIndex = 2
+                HStack {
+                    Text("Direction")
+                    Spacer()
+                    Image(systemName: viewModel.states[stateID].options[optionID].combinationsTuple[elementID].direction.rawValue)
                 }
-            }
-            .onChange(of: directionIndex) { newValue in
-                let newDirection: Direction = newValue == 0 ? .stay : newValue == 1 ? .left : .right
-                viewModel.states[stateID].options[optionID].combinationsTuple[elementID].direction = newDirection
             }
         }
     }

@@ -103,7 +103,9 @@ extension TapeContentViewModel {
     private func getOptionStates(stateID: Int) -> [OptionState] {
         var alphabets: [[String]] = []
         for tape in tapes {
-            alphabets.append(tape.alphabet.map { String($0) })
+            var tapeAlphabet = tape.alphabet.map { String($0) }
+            tapeAlphabet.append("_")
+            alphabets.append(tapeAlphabet)
         }
         var combinations: [[String]] = []
         getCombinations(array: alphabets, word: [], currentArrayIndex: 0, result: &combinations)
@@ -128,11 +130,16 @@ extension TapeContentViewModel {
     
     // MARK: Remove
     func removeTape(id: Int) {
-        tapes.remove(at: id)
-        // Rewriting IDs
+        // Update indexes
         for index in 0..<tapes.count {
-            tapes[index].id = index
+            if index == id {
+                // Setting to -1 to avoid unexpected errors with matching IDs
+                tapes[index].id = -1
+            } else if index > id {
+                tapes[index].id = tapes[index].id - 1
+            }
         }
+        tapes.remove(at: id)
         updateStates()
     }
     
@@ -164,7 +171,6 @@ extension TapeContentViewModel {
             components.append(
                 TapeContent(
                     id: index,
-//                    value: (0..<tapes[tapeID].input.count).contains(index) ? tapes[tapeID].input.map { String($0) }[index] : "_"
                     value: "_"
                 )
             )
@@ -180,7 +186,7 @@ extension TapeContentViewModel {
     func startWork() {
         var combination: [String] = []
         for tape in tapes {
-            combination.append(tape.components[tape.headIndex].value)
+            combination.append(tape.components.first(where: { $0.id == tape.headIndex })!.value)
         }
         
         // MARK: Force unwrapping here cuz its cant happen
@@ -191,8 +197,8 @@ extension TapeContentViewModel {
         
         // TODO: Make it work parallel
         for index in 0..<combination.count {
-            tapes[index].components[tapes[index].headIndex].value = stateCombination.combinationsTuple[index].toCharacter
-            
+            let componentIndex = tapes[index].components.firstIndex(where: { $0.id == tapes[index].headIndex }) ?? 0
+            tapes[index].components[componentIndex].value = stateCombination.combinationsTuple[index].toCharacter
             switch stateCombination.combinationsTuple[index].direction {
                 
             case .stay:

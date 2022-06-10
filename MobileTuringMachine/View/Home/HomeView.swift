@@ -44,7 +44,20 @@ extension HomeView {
     
     private var startButton: some View {
         Button {
-            isPlaying.toggle()
+            withAnimation {
+                isPlaying.toggle()
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now()) {
+                while isPlaying {
+                    viewModel.startWork()
+                }
+            }
+//            DispatchQueue.main.async {
+//                while isPlaying {
+//                    viewModel.startWork()
+//                }
+//            }
         } label: {
             Image(systemName: isPlaying ? "pause.fill" : "play.fill")
                 .font(.title2)
