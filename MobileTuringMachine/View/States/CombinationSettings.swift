@@ -52,7 +52,7 @@ extension CombinationSettings {
     private var directionSection: some View {
         Section(header: Text("Move tape's head to following direction")) {
             NavigationLink {
-                ChooseCharView(tapeID: elementID, stateID: stateID, optionID: optionID)
+                ChooseDirectionView(tapeID: elementID, stateID: stateID, optionID: optionID)
             } label: {
                 HStack {
                     Text("Direction")

@@ -16,7 +16,7 @@ struct ChooseCharView: View {
     let optionID: Int
     
     var body: some View {
-        List {
+        Form {
             ForEach(0..<viewModel.tapes[tapeID].alphabetArray.count, id: \.self) { alphabetElementIndex in
                 
                 Button {

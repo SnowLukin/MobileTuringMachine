@@ -19,7 +19,7 @@ struct ChooseDirectionView: View {
     var body: some View {
         
         // TODO: - Make it less code
-        List {
+        Form {
             Button {
                 viewModel.states[stateID].options[optionID].combinationsTuple[tapeID].direction = .stay
             } label: {

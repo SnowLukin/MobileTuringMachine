@@ -48,16 +48,15 @@ extension HomeView {
                 isPlaying.toggle()
             }
             
-            DispatchQueue.main.asyncAfter(deadline: .now()) {
+            DispatchQueue.global().async {
                 while isPlaying {
-                    viewModel.startWork()
+                    // TODO: - Fix this
+                    DispatchQueue.main.asyncAfter(deadline: .now()) {
+                        viewModel.startWork()
+                    }
                 }
             }
-//            DispatchQueue.main.async {
-//                while isPlaying {
-//                    viewModel.startWork()
-//                }
-//            }
+            
         } label: {
             Image(systemName: isPlaying ? "pause.fill" : "play.fill")
                 .font(.title2)

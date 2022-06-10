@@ -185,12 +185,17 @@ extension TapeContentViewModel {
     
     func startWork() {
         var combination: [String] = []
+        
+        // Gathering the components that are under tapes' head index
         for tape in tapes {
             combination.append(tape.components.first(where: { $0.id == tape.headIndex })!.value)
+            let smth = tape.headIndex
+            print(smth)
         }
         
         // MARK: Force unwrapping here cuz its cant happen
         // MARK: Would rather get a crash than continue with that mistake
+        // Finding the right combination in state
         let stateCombination = states[startState].options.first { option in
             option.combinationsTuple.map { $0.character } == combination
         }!
@@ -208,6 +213,8 @@ extension TapeContentViewModel {
             case .right:
                 tapes[index].headIndex += 1
             }
+            let smth = tapes[index].headIndex
+            print(smth)
         }
     }
     
