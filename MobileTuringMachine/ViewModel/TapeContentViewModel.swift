@@ -183,7 +183,7 @@ extension TapeContentViewModel {
 // MARK: - Magic
 extension TapeContentViewModel {
     
-    func startWork() {
+    func makeStep() {
         var combination: [String] = []
         
         // Gathering the components that are under tapes' head index

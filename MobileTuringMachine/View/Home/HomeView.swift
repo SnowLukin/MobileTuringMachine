@@ -24,7 +24,7 @@ struct HomeView: View {
                     Spacer()
                     HStack {
                         Spacer()
-                        startButton
+                        autoPlayButton
                     }
                 }
             }
@@ -42,21 +42,21 @@ struct HomeView_Previews: PreviewProvider {
 
 extension HomeView {
     
-    private var startButton: some View {
+    private func autoPlay() {
+        DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
+            if isPlaying {
+                viewModel.makeStep()
+                autoPlay()
+            }
+        }
+    }
+    
+    private var autoPlayButton: some View {
         Button {
             withAnimation {
                 isPlaying.toggle()
             }
-            
-            DispatchQueue.global().async {
-                while isPlaying {
-                    // TODO: - Fix this
-                    DispatchQueue.main.asyncAfter(deadline: .now()) {
-                        viewModel.startWork()
-                    }
-                }
-            }
-            
+            autoPlay()
         } label: {
             Image(systemName: isPlaying ? "pause.fill" : "play.fill")
                 .font(.title2)

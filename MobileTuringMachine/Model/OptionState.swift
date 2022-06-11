@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Direction: String {
+enum Direction: String, CaseIterable {
     case stay = "arrow.counterclockwise"
     case left = "arrow.left"
     case right = "arrow.right"

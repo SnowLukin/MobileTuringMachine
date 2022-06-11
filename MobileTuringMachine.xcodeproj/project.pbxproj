@@ -11,6 +11,9 @@
 		D721795E27E4ED4B00F39152 /* OptionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D721795D27E4ED4B00F39152 /* OptionState.swift */; };
 		D744288E285385E60073C9E2 /* ChooseCharView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D744288D285385E50073C9E2 /* ChooseCharView.swift */; };
 		D7442890285389DC0073C9E2 /* ChooseDirectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D744288F285389DC0073C9E2 /* ChooseDirectionView.swift */; };
+		D74428922854AA130073C9E2 /* TapButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74428912854AA130073C9E2 /* TapButtonStyle.swift */; };
+		D74428942854AB520073C9E2 /* ChooseCharButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74428932854AB520073C9E2 /* ChooseCharButtonView.swift */; };
+		D74428962854E2890073C9E2 /* ChooseDirectionButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74428952854E2890073C9E2 /* ChooseDirectionButtonView.swift */; };
 		D7809891284CE14800C4DDF0 /* StateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7809890284CE14800C4DDF0 /* StateView.swift */; };
 		D780989B284CEA2100C4DDF0 /* CombinationsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780989A284CEA2100C4DDF0 /* CombinationsListView.swift */; };
 		D780989D284CEC4E00C4DDF0 /* CombinationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780989C284CEC4E00C4DDF0 /* CombinationSettings.swift */; };
@@ -46,6 +49,9 @@
 		D721795D27E4ED4B00F39152 /* OptionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionState.swift; sourceTree = "<group>"; };
 		D744288D285385E50073C9E2 /* ChooseCharView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseCharView.swift; sourceTree = "<group>"; };
 		D744288F285389DC0073C9E2 /* ChooseDirectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseDirectionView.swift; sourceTree = "<group>"; };
+		D74428912854AA130073C9E2 /* TapButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapButtonStyle.swift; sourceTree = "<group>"; };
+		D74428932854AB520073C9E2 /* ChooseCharButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseCharButtonView.swift; sourceTree = "<group>"; };
+		D74428952854E2890073C9E2 /* ChooseDirectionButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseDirectionButtonView.swift; sourceTree = "<group>"; };
 		D7809890284CE14800C4DDF0 /* StateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateView.swift; sourceTree = "<group>"; };
 		D780989A284CEA2100C4DDF0 /* CombinationsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationsListView.swift; sourceTree = "<group>"; };
 		D780989C284CEC4E00C4DDF0 /* CombinationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationSettings.swift; sourceTree = "<group>"; };
@@ -97,7 +103,9 @@
 				D780989E284CF8F900C4DDF0 /* CombinationView.swift */,
 				D780989C284CEC4E00C4DDF0 /* CombinationSettings.swift */,
 				D744288D285385E50073C9E2 /* ChooseCharView.swift */,
+				D74428932854AB520073C9E2 /* ChooseCharButtonView.swift */,
 				D744288F285389DC0073C9E2 /* ChooseDirectionView.swift */,
+				D74428952854E2890073C9E2 /* ChooseDirectionButtonView.swift */,
 			);
 			path = States;
 			sourceTree = "<group>";
@@ -107,6 +115,7 @@
 			children = (
 				D78098A3284DC83900C4DDF0 /* BindingPreviewWrapper.swift */,
 				D78098B6284E1CF200C4DDF0 /* RoundedCornersBackground.swift */,
+				D74428912854AA130073C9E2 /* TapButtonStyle.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -291,16 +300,19 @@
 				D7CF6DDF27DE28A20010949B /* TapeContentView.swift in Sources */,
 				D78098B5284E1AA800C4DDF0 /* TapesWorkView.swift in Sources */,
 				D744288E285385E60073C9E2 /* ChooseCharView.swift in Sources */,
+				D74428922854AA130073C9E2 /* TapButtonStyle.swift in Sources */,
 				D7CF6DE727DE312D0010949B /* TapeView.swift in Sources */,
 				D78098A4284DC83900C4DDF0 /* BindingPreviewWrapper.swift in Sources */,
 				D721795E27E4ED4B00F39152 /* OptionState.swift in Sources */,
 				D78098AB284DFB4D00C4DDF0 /* HomeView.swift in Sources */,
+				D74428942854AB520073C9E2 /* ChooseCharButtonView.swift in Sources */,
 				D780989D284CEC4E00C4DDF0 /* CombinationSettings.swift in Sources */,
 				D7CF6DFD27DFCD030010949B /* CustomVerticalGrid.swift in Sources */,
 				D7CF6DEF27DE606F0010949B /* Extension + Color.swift in Sources */,
 				D78098C6284F47BE00C4DDF0 /* ConfigurationsView.swift in Sources */,
 				D7CF6DE327DE29180010949B /* TapeContent.swift in Sources */,
 				D7CF6DF127DE64000010949B /* ConfigTapesView.swift in Sources */,
+				D74428962854E2890073C9E2 /* ChooseDirectionButtonView.swift in Sources */,
 				D780989B284CEA2100C4DDF0 /* CombinationsListView.swift in Sources */,
 				D7CF6DE527DE2BA00010949B /* TapeContentViewModel.swift in Sources */,
 				D780989F284CF8F900C4DDF0 /* CombinationView.swift in Sources */,

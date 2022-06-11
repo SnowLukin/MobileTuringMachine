@@ -17,52 +17,14 @@ struct ChooseDirectionView: View {
     let optionID: Int
     
     var body: some View {
-        
-        // TODO: - Make it less code
         Form {
-            Button {
-                viewModel.states[stateID].options[optionID].combinationsTuple[tapeID].direction = .stay
-            } label: {
-                HStack {
-                    Image(systemName: "arrow.counterclockwise")
-                        .foregroundColor(.primary)
-                    Spacer()
-                    Image(systemName: "circle.fill")
-                        .foregroundColor(.blue)
-                        .opacity(
-                            viewModel.states[stateID].options[optionID].combinationsTuple[tapeID].direction == .stay ? 1 : 0
-                        )
-                }
-            }
-            
-            Button {
-                viewModel.states[stateID].options[optionID].combinationsTuple[tapeID].direction = .left
-            } label: {
-                HStack {
-                    Image(systemName: "arrow.left")
-                        .foregroundColor(.primary)
-                    Spacer()
-                    Image(systemName: "circle.fill")
-                        .foregroundColor(.blue)
-                        .opacity(
-                            viewModel.states[stateID].options[optionID].combinationsTuple[tapeID].direction == .left ? 1 : 0
-                        )
-                }
-            }
-            
-            Button {
-                viewModel.states[stateID].options[optionID].combinationsTuple[tapeID].direction = .right
-            } label: {
-                HStack {
-                    Image(systemName: "arrow.right")
-                        .foregroundColor(.primary)
-                    Spacer()
-                    Image(systemName: "circle.fill")
-                        .foregroundColor(.blue)
-                        .opacity(
-                            viewModel.states[stateID].options[optionID].combinationsTuple[tapeID].direction == .right ? 1 : 0
-                        )
-                }
+            ForEach(Direction.allCases, id: \.self) { direction in
+                ChooseDirectionButtonView(
+                    tapeID: tapeID,
+                    stateID: stateID,
+                    optionID: optionID,
+                    direction: direction
+                )
             }
         }
         .navigationTitle("Choose direction")
