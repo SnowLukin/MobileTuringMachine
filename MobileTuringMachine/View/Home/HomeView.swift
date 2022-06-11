@@ -29,7 +29,7 @@ struct HomeView: View {
                 }
             }
             .navigationTitle("Home")
-        }
+        }.navigationViewStyle(.stack)
     }
 }
 
