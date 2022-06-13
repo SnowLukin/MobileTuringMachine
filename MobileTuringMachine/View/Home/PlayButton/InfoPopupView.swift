@@ -10,20 +10,30 @@ import SwiftUI
 struct InfoPopupView: View {
     var body: some View {
         
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Image(systemName: "play.fill")
                     .foregroundColor(.blue)
+                    .font(.title2)
                 Spacer()
                 Text("Auto play")
-            }.font(.title2)
-            
+            }
+            Divider()
             HStack {
                 Image(systemName: "forward.frame.fill")
                     .foregroundColor(.blue)
+                    .font(.title2)
                 Spacer()
                 Text("Make a step")
-            }.font(.title2)
+            }
+            Divider()
+            HStack {
+                Image(systemName: "stop.fill")
+                    .foregroundColor(.red)
+                    .font(.title2)
+                Spacer()
+                Text("Reset tapes to start configurations")
+            }
         }
             .padding()
             .background(Color.secondaryBackground)
