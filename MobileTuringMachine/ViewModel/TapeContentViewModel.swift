@@ -189,22 +189,22 @@ extension TapeContentViewModel {
         // Gathering the components that are under tapes' head index
         for tape in tapes {
             combination.append(tape.components.first(where: { $0.id == tape.headIndex })!.value)
-            let smth = tape.headIndex
-            print(smth)
+            // TODO: Delete
+            print(tape.headIndex)
         }
         
         // MARK: Force unwrapping here cuz its cant happen
         // MARK: Would rather get a crash than continue with that mistake
-        // Finding the right combination in state
-        let stateCombination = states[startState].options.first { option in
+        // Finding needed option in state
+        let optionCombination = states[startState].options.first { option in
             option.combinationsTuple.map { $0.character } == combination
         }!
         
         // TODO: Make it work parallel
         for index in 0..<combination.count {
             let componentIndex = tapes[index].components.firstIndex(where: { $0.id == tapes[index].headIndex }) ?? 0
-            tapes[index].components[componentIndex].value = stateCombination.combinationsTuple[index].toCharacter
-            switch stateCombination.combinationsTuple[index].direction {
+            tapes[index].components[componentIndex].value = optionCombination.combinationsTuple[index].toCharacter
+            switch optionCombination.combinationsTuple[index].direction {
                 
             case .stay:
                 break
@@ -213,9 +213,14 @@ extension TapeContentViewModel {
             case .right:
                 tapes[index].headIndex += 1
             }
-            let smth = tapes[index].headIndex
-            print(smth)
+            // TODO: Delete
+            print(tapes[index].headIndex)
         }
+        
+        // TODO: Publishing changes from background threads is not allowed;
+        // TODO: make sure to publish values from the main thread
+        // TODO: (via operators like receive(on:)) on model updates.
+        startState = optionCombination.toStateID
     }
     
 }

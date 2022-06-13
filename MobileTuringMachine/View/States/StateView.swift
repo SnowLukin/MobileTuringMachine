@@ -19,6 +19,7 @@ struct StateView: View {
     var body: some View {
         if stateID == viewModel.states.count {
             addStateButton
+                .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.3)))
         } else {
             stateNavigationButton
                 .rotationEffect(.degrees(isBeingEdited ? 3.5 : 0))
@@ -33,6 +34,7 @@ struct StateView: View {
                 .overlay(
                     removeCircleButton
                 )
+                .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.3)))
         }
     }
 }

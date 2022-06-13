@@ -20,13 +20,7 @@ struct HomeView: View {
                     TapesWorkView()
                         .shadow(radius: 1)
                 }
-                VStack {
-                    Spacer()
-                    HStack {
-                        Spacer()
-                        autoPlayButton
-                    }
-                }
+                PlayStack()
             }
             .navigationTitle("Home")
         }.navigationViewStyle(.stack)

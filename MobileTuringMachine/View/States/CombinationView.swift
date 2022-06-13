@@ -15,31 +15,19 @@ struct CombinationView: View {
     
     var body: some View {
         List {
-            ForEach(0..<viewModel.states[stateID].options[optionID].combinationsTuple.count, id: \.self) { elementIndex in
+            Section {
                 NavigationLink {
-                    CombinationSettings(stateID: stateID, optionID: optionID, elementID: elementIndex)
+                    ChooseStateView(stateID: stateID, optionID: optionID)
                 } label: {
-                    HStack {
-                        
-                        Text("\(viewModel.states[stateID].options[optionID].combinationsTuple[elementIndex].character)")
-                            .font(.title3)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.primary)
-                        
-                        Image(systemName: "\(viewModel.states[stateID].options[optionID].combinationsTuple[elementIndex].direction.rawValue)")
-                            .font(.title3.bold())
-                            .foregroundColor(.primary)
-                        
-                        Text("\(viewModel.states[stateID].options[optionID].combinationsTuple[elementIndex].toCharacter)")
-                            .font(.title3)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.primary)
-                            
-                        Divider()
-                        Text("Tape \(elementIndex)")
-                            .foregroundColor(Color.gray)
-                    }
+                    Text("Navigate to:")
+                        .foregroundColor(.primary)
+                    Spacer()
+                    Text("State \(viewModel.states[stateID].options[optionID].toStateID)")
+                        .foregroundColor(.gray)
                 }
+            }
+            Section(header: Text("Elements rewriting")) {
+                combinationElements
             }
         }
         .navigationBarTitle("Combination: \(viewModel.states[stateID].options[optionID].combinationsTuple.map { $0.character }.joined(separator: ""))")
@@ -52,4 +40,37 @@ struct CombinationView_Previews: PreviewProvider {
         CombinationView(stateID: 0, optionID: 0)
             .environmentObject(TapeContentViewModel())
     }
+}
+
+extension CombinationView {
+    
+    private var combinationElements: some View {
+        ForEach(0..<viewModel.states[stateID].options[optionID].combinationsTuple.count, id: \.self) { elementIndex in
+            NavigationLink {
+                CombinationSettings(stateID: stateID, optionID: optionID, elementID: elementIndex)
+            } label: {
+                HStack {
+                    
+                    Text("\(viewModel.states[stateID].options[optionID].combinationsTuple[elementIndex].character)")
+                        .font(.title3)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.primary)
+                    
+                    Image(systemName: "\(viewModel.states[stateID].options[optionID].combinationsTuple[elementIndex].direction.rawValue)")
+                        .font(.title3.bold())
+                        .foregroundColor(.primary)
+                    
+                    Text("\(viewModel.states[stateID].options[optionID].combinationsTuple[elementIndex].toCharacter)")
+                        .font(.title3)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.primary)
+                        
+                    Divider()
+                    Text("Tape \(elementIndex)")
+                        .foregroundColor(Color.gray)
+                }
+            }
+        }
+    }
+    
 }
