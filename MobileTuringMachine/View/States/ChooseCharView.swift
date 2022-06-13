@@ -18,7 +18,24 @@ struct ChooseCharView: View {
     var body: some View {
         Form {
             ForEach(0..<viewModel.tapes[tapeID].alphabetArray.count, id: \.self) { alphabetElementIndex in
-                ChooseCharButtonView(tapeID: tapeID, stateID: stateID, optionID: optionID, alphabetElementIndex: alphabetElementIndex)
+                Button {
+                    viewModel.states[stateID].options[optionID].combinationsTuple[tapeID].toCharacter = viewModel.tapes[tapeID].alphabetArray[alphabetElementIndex]
+                } label : {
+                    HStack {
+                        Text(viewModel.tapes[tapeID].alphabetArray[alphabetElementIndex])
+                            .foregroundColor(.primary)
+                        Spacer()
+                        if viewModel.states[stateID].options[optionID].combinationsTuple[tapeID].toCharacter == viewModel.tapes[tapeID].alphabetArray[alphabetElementIndex] {
+                            Image(systemName: "circle.fill")
+                                .foregroundColor(.blue)
+                                .transition(
+                                    AnyTransition.opacity.animation(
+                                        .easeInOut(duration: 0.2)
+                                    )
+                                )
+                        }
+                    }
+                }.buttonStyle(NoTapColorButtonStyle())
             }
         }
         .navigationTitle("Choose character")

@@ -21,13 +21,17 @@ struct ChooseStartStateView: View {
                         Text("State \(stateIndex)")
                             .foregroundColor(.primary)
                         Spacer()
-                        Image(systemName: "checkmark")
-                            .opacity(viewModel.startState == stateIndex ? 1 : 0)
+                        if viewModel.startState == stateIndex {
+                            Image(systemName: "circle.fill")
+                                .foregroundColor(.blue)
+                                .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.2)))
+                        }
                     }
                 }
+                .buttonStyle(NoTapColorButtonStyle())
             }
         }
-        .navigationTitle("Choose Start State")
+        .navigationTitle("Current state")
     }
 }
 

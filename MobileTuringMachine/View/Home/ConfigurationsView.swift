@@ -30,7 +30,7 @@ struct ConfigurationsView: View {
             if showSettings {
                 VStack {
                     customSection(header: "Configurations", content: AnyView(customTwoCells))
-                    customSection(header: "Starting state", content: AnyView(customCell))
+                    customSection(header: "Current state", content: AnyView(customCell))
                 }.padding([.top, .bottom])
             }
         }.background(Color.secondaryBackground)

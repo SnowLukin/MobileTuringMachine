@@ -16,13 +16,24 @@ struct ChooseStateView: View {
     var body: some View {
         List {
             ForEach(0..<viewModel.states.count) { currentStateID in
-                
-                ChooseStateButtonView(
-                    stateID: stateID,
-                    currentStateID: currentStateID,
-                    optionID: optionID
-                )
-                
+                Button {
+                    viewModel.states[stateID].options[optionID].toStateID = currentStateID
+                } label: {
+                    HStack {
+                        Text("State \(currentStateID)")
+                            .foregroundColor(.primary)
+                        Spacer()
+                        if viewModel.states[stateID].options[optionID].toStateID == currentStateID {
+                            Image(systemName: "circle.fill")
+                                .foregroundColor(.blue)
+                                .transition(
+                                    AnyTransition.opacity.animation(
+                                        .easeInOut(duration: 0.2)
+                                    )
+                                )
+                        }
+                    }
+                }.buttonStyle(NoTapColorButtonStyle())
             }
         }
     }

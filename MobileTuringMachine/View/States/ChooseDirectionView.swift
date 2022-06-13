@@ -19,12 +19,25 @@ struct ChooseDirectionView: View {
     var body: some View {
         Form {
             ForEach(Direction.allCases, id: \.self) { direction in
-                ChooseDirectionButtonView(
-                    tapeID: tapeID,
-                    stateID: stateID,
-                    optionID: optionID,
-                    direction: direction
-                )
+                Button {
+                    viewModel.states[stateID].options[optionID].combinationsTuple[tapeID].direction = direction
+                } label: {
+                    HStack {
+                        Image(systemName: direction.rawValue)
+                            .foregroundColor(.primary)
+                        Spacer()
+                        if viewModel.states[stateID].options[optionID].combinationsTuple[tapeID].direction == direction {
+                            Image(systemName: "circle.fill")
+                                .foregroundColor(.blue)
+                                .transition(
+                                    AnyTransition.opacity.animation(
+                                        .easeInOut(duration: 0.2)
+                                    )
+                                )
+                        }
+                    }
+                }
+                .buttonStyle(NoTapColorButtonStyle())
             }
         }
         .navigationTitle("Choose direction")
