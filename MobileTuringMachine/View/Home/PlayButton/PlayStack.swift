@@ -44,7 +44,7 @@ struct PlayStack_Previews: PreviewProvider {
 extension PlayStack {
     
     private func autoPlay() {
-        DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             if isPlaying {
                 viewModel.makeStep()
                 autoPlay()
@@ -53,7 +53,7 @@ extension PlayStack {
     }
     
     private func makeStep() {
-        DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             viewModel.makeStep()
         }
     }
@@ -114,7 +114,7 @@ extension PlayStack {
             Image(systemName: "stop.fill")
                 .font(.title2)
                 .frame(width: 50, height: 50)
-                .foregroundColor(.blue)
+                .foregroundColor(.red)
                 .background(Color.secondaryBackground)
                 .clipShape(Circle())
                 .shadow(radius: 10)
