@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 class TapeContentViewModel: ObservableObject {
     
     @Published var tapes: [Tape] = [
@@ -189,8 +190,6 @@ extension TapeContentViewModel {
         // Gathering the components that are under tapes' head index
         for tape in tapes {
             combination.append(tape.components.first(where: { $0.id == tape.headIndex })!.value)
-            // TODO: Delete
-            print(tape.headIndex)
         }
         
         // MARK: Force unwrapping here cuz its cant happen
@@ -200,27 +199,28 @@ extension TapeContentViewModel {
             option.combinationsTuple.map { $0.character } == combination
         }!
         
-        // TODO: Make it work parallel
         for index in 0..<combination.count {
             let componentIndex = tapes[index].components.firstIndex(where: { $0.id == tapes[index].headIndex }) ?? 0
-            tapes[index].components[componentIndex].value = optionCombination.combinationsTuple[index].toCharacter
+            DispatchQueue.main.async {
+                self.tapes[index].components[componentIndex].value = optionCombination.combinationsTuple[index].toCharacter
+            }
             switch optionCombination.combinationsTuple[index].direction {
                 
             case .stay:
                 break
             case .left:
-                tapes[index].headIndex -= 1
+                DispatchQueue.main.async {
+                    self.tapes[index].headIndex -= 1
+                }
             case .right:
-                tapes[index].headIndex += 1
+                DispatchQueue.main.async {
+                    self.tapes[index].headIndex += 1
+                }
             }
-            // TODO: Delete
-            print(tapes[index].headIndex)
         }
-        
-        // TODO: Publishing changes from background threads is not allowed;
-        // TODO: make sure to publish values from the main thread
-        // TODO: (via operators like receive(on:)) on model updates.
-        startState = optionCombination.toStateID
+        DispatchQueue.main.async {
+            self.startState = optionCombination.toStateID
+        }
     }
     
 }

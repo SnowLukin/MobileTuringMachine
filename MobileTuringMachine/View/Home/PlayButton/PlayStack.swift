@@ -12,32 +12,23 @@ struct PlayStack: View {
     @EnvironmentObject private var viewModel: TapeContentViewModel
     @State private var isPlaying: Bool = false
     @State private var isPlayOptionOn: Bool = false
-    @State private var showInfo: Bool = false
     
     var body: some View {
-        ZStack {
-            VStack {
+        VStack {
+            Spacer()
+            HStack {
                 Spacer()
-                HStack {
-                    Spacer()
-                    VStack(spacing: 20) {
-                        if isPlayOptionOn {
-                            playButton
-                                .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.2)))
-                            makeStepButton
-                                .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.2)))
-                            infoButton
-                                .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.2)))
-                        }
-                        playOptionButton
-                    }.zIndex(1)
-                        .padding(30)
-                }
-            }
-            if showInfo {
-                infoPopup.zIndex(2)
-                    // Wtf Tim Cook? Why i have to write so many letters?
-                    .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.3)))
+                VStack(spacing: 20) {
+                    if isPlayOptionOn {
+                        playButton
+                            .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.2)))
+                        makeStepButton
+                            .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.2)))
+                        resetButton
+                            .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.2)))
+                    }
+                    playOptionButton
+                }.padding(30)
             }
         }
     }
@@ -76,7 +67,7 @@ extension PlayStack {
         } label: {
             Image(systemName: isPlaying ? "pause.fill" : "play.fill")
                 .font(.title2)
-                .frame(width: 60, height: 60)
+                .frame(width: 50, height: 50)
                 .foregroundColor(.blue)
                 .background(Color.secondaryBackground)
                 .clipShape(Circle())
@@ -90,13 +81,14 @@ extension PlayStack {
                 isPlayOptionOn.toggle()
             }
         } label: {
-            Image(systemName: isPlayOptionOn ? "chevron.down" : "chevron.up")
+            Image(systemName: "chevron.up")
                 .font(.title2.bold())
-                .frame(width: 60, height: 60)
+                .frame(width: 50, height: 50)
                 .foregroundColor(.blue)
                 .background(Color.secondaryBackground)
                 .clipShape(Circle())
                 .shadow(radius: 10)
+                .rotationEffect(.degrees(isPlayOptionOn ? -180 : 0))
         }
     }
     
@@ -106,7 +98,7 @@ extension PlayStack {
         } label: {
             Image(systemName: "forward.frame.fill")
                 .font(.title2)
-                .frame(width: 60, height: 60)
+                .frame(width: 50, height: 50)
                 .foregroundColor(.blue)
                 .background(Color.secondaryBackground)
                 .clipShape(Circle())
@@ -114,36 +106,18 @@ extension PlayStack {
         }
     }
     
-    private var infoButton: some View {
+    private var resetButton: some View {
+        // TODO: Add reset action
         Button {
-            withAnimation {
-                showInfo.toggle()
-            }
+            
         } label: {
-            Image(systemName: "info")
-                .font(.title2.bold())
-                .frame(width: 60, height: 60)
+            Image(systemName: "stop.fill")
+                .font(.title2)
+                .frame(width: 50, height: 50)
                 .foregroundColor(.blue)
                 .background(Color.secondaryBackground)
                 .clipShape(Circle())
                 .shadow(radius: 10)
         }
-    }
-    
-    private var infoPopup: some View {
-        VStack {
-            InfoPopupView()
-                .padding()
-        }
-        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-        .background(
-            Color.black.opacity(0.5)
-                .edgesIgnoringSafeArea(.all)
-                .onTapGesture {
-                    withAnimation {
-                        showInfo.toggle()
-                    }
-                }
-        )
     }
 }

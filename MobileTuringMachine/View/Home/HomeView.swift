@@ -11,6 +11,7 @@ struct HomeView: View {
     
     @EnvironmentObject private var viewModel: TapeContentViewModel
     @State private var isPlaying = false
+    @State private var showInfo = false
     
     var body: some View {
         NavigationView {
@@ -19,10 +20,20 @@ struct HomeView: View {
                     ConfigurationsView()
                     TapesWorkView()
                         .shadow(radius: 1)
+                }.zIndex(1)
+                PlayStack().zIndex(2)
+                
+                if showInfo {
+                    infoPopup.zIndex(3)
+                        .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.3)))
                 }
-                PlayStack()
             }
             .navigationTitle("Home")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    infoButton
+                }
+            }
         }.navigationViewStyle(.stack)
     }
 }
@@ -37,7 +48,7 @@ struct HomeView_Previews: PreviewProvider {
 extension HomeView {
     
     private func autoPlay() {
-        DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             if isPlaying {
                 viewModel.makeStep()
                 autoPlay()
@@ -61,6 +72,33 @@ extension HomeView {
                 .shadow(radius: 10)
                 .padding(30)
         }
+    }
+    
+    private var infoButton: some View {
+        Button {
+            withAnimation {
+                showInfo.toggle()
+            }
+        } label: {
+            Image(systemName: "info.circle")
+        }
+    }
+    
+    private var infoPopup: some View {
+        VStack {
+            InfoPopupView()
+                .padding()
+        }
+        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+        .background(
+            Color.black.opacity(0.5)
+                .edgesIgnoringSafeArea(.all)
+                .onTapGesture {
+                    withAnimation {
+                        showInfo.toggle()
+                    }
+                }
+        )
     }
     
 }
