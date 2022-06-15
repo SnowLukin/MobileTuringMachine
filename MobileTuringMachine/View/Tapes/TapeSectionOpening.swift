@@ -13,13 +13,13 @@ struct TapeSectionOpening: View {
     
     @State private var isOpened = false
     
-    let tapeID: Int
+    let tape: Tape
     
     var body: some View {
         ZStack {
             VStack {
                 HStack {
-                    Text("Tape \(tapeID)")
+                    Text("Tape \(tape.nameID)")
                         .font(.system(size: 35).bold())
                         .foregroundColor(.gray)
                     Spacer()
@@ -37,7 +37,7 @@ struct TapeSectionOpening: View {
                 .padding([.leading, .trailing], 30)
                 
                 if isOpened {
-                    TapeViewConfigTapesView(tapeID: tapeID)
+                    TapeViewConfigTapesView(tape: tape)
                         .shadow(radius: 5)
                         .padding(.bottom)
                 }
@@ -51,7 +51,7 @@ struct TapeSectionOpening: View {
 
 struct TapeSectionOpening_Previews: PreviewProvider {
     static var previews: some View {
-        TapeSectionOpening(tapeID: 0)
+        TapeSectionOpening(tape: Tape(nameID: 0, components: [TapeContent(id: 0)]))
             .environmentObject(TapeContentViewModel())
     }
 }

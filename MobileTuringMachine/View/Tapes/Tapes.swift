@@ -12,15 +12,20 @@ struct Tapes: View {
     @EnvironmentObject private var viewModel: TapeContentViewModel
     
     var body: some View {
-        CustomVerticalGrid(columns: 1, items: Array(0..<viewModel.tapes.count)) { itemSize, tapeIndex in
-            TapeSectionOpening(tapeID: tapeIndex)
+        ScrollView {
+            ForEach(viewModel.tapes) { tape in
+                TapeSectionOpening(tape: tape)
+                    .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.3)))
+            }
         }
         .navigationTitle("Tapes")
         .toolbar {
-            Button {
-                viewModel.addTape()
-            } label: {
-                Image(systemName: "plus")
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    viewModel.addTape()
+                } label: {
+                    Image(systemName: "plus")
+                }
             }
         }
     }

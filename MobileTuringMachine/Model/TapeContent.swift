@@ -8,6 +8,8 @@
 import Foundation
 
 struct TapeContent: Identifiable, Hashable {
+//    let id = UUID()
+//    let nameID: Int
     let id: Int
     var value = "_"
 }

@@ -7,12 +7,11 @@
 
 import Foundation
 
-@MainActor
 class TapeContentViewModel: ObservableObject {
     
     @Published var tapes: [Tape] = [
         Tape(
-            id: 0,
+            nameID: 0,
             components: [
                 TapeContent(id: -10, value: "_"),
                 TapeContent(id: -9, value: "_"),
@@ -125,22 +124,22 @@ extension TapeContentViewModel {
     
     // MARK: Add
     func addTape() {
-        tapes.append(Tape(id: tapes.count, components: getComponents()))
+        tapes.append(Tape(nameID: tapes.count, components: getComponents()))
         updateStates()
     }
     
     // MARK: Remove
-    func removeTape(id: Int) {
-        // Update indexes
-        for index in 0..<tapes.count {
-            if index == id {
-                // Setting to -1 to avoid unexpected errors with matching IDs
-                tapes[index].id = -1
-            } else if index > id {
-                tapes[index].id = tapes[index].id - 1
-            }
+    func removeTape(tape: Tape) {
+        if let index = tapes.firstIndex(where: { $0.id == tape.id }) {
+            tapes.remove(at: index)
         }
-        tapes.remove(at: id)
+        
+        // Update indexes
+        for index in tape.nameID..<tapes.count {
+            tapes[index].nameID -= 1
+        }
+        
+        print("Result array: \(tapes.map { $0.id })")
         updateStates()
     }
     
@@ -158,7 +157,7 @@ extension TapeContentViewModel {
         for index in 0..<tapes[id].components.count {
             tapes[id].components[index].value = "_"
         }
-        
+
         for characterID in 0..<text.count {
             let componentIndex = tapes[id].components.firstIndex { $0.id == characterID }!
             tapes[id].components[componentIndex].value = text.map { String($0) }[characterID]

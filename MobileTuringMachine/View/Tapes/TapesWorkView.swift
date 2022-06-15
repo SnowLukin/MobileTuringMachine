@@ -12,13 +12,13 @@ struct TapesWorkView: View {
     @EnvironmentObject private var viewModel: TapeContentViewModel
     
     var body: some View {
-        CustomVerticalGrid(columns: 1, items: Array(0..<viewModel.tapes.count)) { itemSize, tapeIndex in
-            VStack(spacing: 0) {
-                
-                setTapeTag(tapeID: tapeIndex)
-                
-                TapeView(tapeID: tapeIndex)
-                    .padding([.leading, .trailing])
+        ScrollView {
+            ForEach(viewModel.tapes) { tape in
+                VStack(spacing: 0) {
+                    setTapeTag(tapeID: tape.nameID)
+                    TapeView(tape: tape)
+                        .padding([.leading, .trailing])
+                }
             }
         }
     }

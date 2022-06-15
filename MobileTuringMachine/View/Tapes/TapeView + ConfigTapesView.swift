@@ -13,7 +13,7 @@ struct TapeViewConfigTapesView: View {
     
     @State private var isConfigShown = false
     
-    let tapeID: Int
+    let tape: Tape
     
     var body: some View {
         ZStack {
@@ -25,7 +25,7 @@ struct TapeViewConfigTapesView: View {
                             Spacer()
                         }
                         if isConfigShown {
-                            ConfigTapesView(tapeID: tapeID)
+                            ConfigTapesView(tape: tape)
                                 .padding(.bottom)
                         }
                         configButton
@@ -33,9 +33,8 @@ struct TapeViewConfigTapesView: View {
                             .padding(.bottom, 5)
                     }
                 }
-                TapeView(tapeID: tapeID)
+                TapeView(tape: tape)
             }.padding(.horizontal)
-            
         }
     }
     
@@ -43,7 +42,7 @@ struct TapeViewConfigTapesView: View {
 
 struct TapeViewConfigTapesView_Previews: PreviewProvider {
     static var previews: some View {
-        TapeViewConfigTapesView(tapeID: 0)
+        TapeViewConfigTapesView(tape: Tape(nameID: 0, components: [TapeContent(id: 0)]))
             .preferredColorScheme(.dark)
             .environmentObject(TapeContentViewModel())
     }
@@ -53,13 +52,12 @@ extension TapeViewConfigTapesView {
     
     private var removeButton: some View {
         Button {
-            viewModel.removeTape(id: tapeID)
+            viewModel.removeTape(tape: tape)
         } label: {
             Text("Remove")
                 .animation(.easeInOut, value: !isConfigShown)
         }
-//        .disabled(viewModel.tapes.count < 2)
-
+        .disabled(viewModel.tapes.count < 2)
     }
     
     private var configButton: some View {
@@ -76,7 +74,6 @@ extension TapeViewConfigTapesView {
             .frame(width: 30, height: 30)
             .clipShape(Circle())
         }
-
     }
     
 }

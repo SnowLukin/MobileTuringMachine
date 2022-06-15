@@ -11,25 +11,24 @@ struct ConfigTapesView: View {
     
     @EnvironmentObject private var viewModel: TapeContentViewModel
     
-    let tapeID: Int
+    let tape: Tape
     
     var body: some View {
         VStack {
             VStack {
-                InputView(tapeID: tapeID, purpose: .alphabet)
-                InputView(tapeID: tapeID, purpose: .input)
+                InputView(tape: tape, purpose: .alphabet)
+                InputView(tape: tape, purpose: .input)
             }
             .padding()
             .background(Color.background)
             .cornerRadius(20)
         }
-        
     }
 }
 
 struct ConfigTapesView_Previews: PreviewProvider {
     static var previews: some View {
-        ConfigTapesView(tapeID: 0)
+        ConfigTapesView(tape: Tape(nameID: 0, components: [TapeContent(id: 0)]))
             .preferredColorScheme(.dark)
             .environmentObject(TapeContentViewModel())
     }

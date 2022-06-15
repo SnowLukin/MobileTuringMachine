@@ -18,7 +18,7 @@ struct InputView: View {
     
     @State private var text = ""
     
-    let tapeID: Int
+    let tape: Tape
     
     let purpose: Purpose
     
@@ -28,14 +28,14 @@ struct InputView: View {
             textfield
         }
         .onAppear {
-            text = purpose == .alphabet ? viewModel.tapes[tapeID].alphabet : viewModel.tapes[tapeID].input
+            text = purpose == .alphabet ? viewModel.tapes[tape.nameID].alphabet : viewModel.tapes[tape.nameID].input
         }
     }
 }
 
 struct InputView_Previews: PreviewProvider {
     static var previews: some View {
-        InputView(tapeID: 0, purpose: .alphabet)
+        InputView(tape: Tape(nameID: 0, components: [TapeContent(id: 0)]), purpose: .alphabet)
             .environmentObject(TapeContentViewModel())
             .padding()
             .preferredColorScheme(.dark)
@@ -66,22 +66,22 @@ extension InputView {
     private func setNewInputValue() {
         // if not last
         guard let lastCharacter = text.popLast() else {
-            viewModel.setNewInput(text, id: tapeID)
+            viewModel.setNewInput(text, id: tape.nameID)
             return
         }
         
         // if new character is "space" change it to "_"
         if lastCharacter == " " {
             text.append("_")
-            viewModel.setNewInput(text, id: tapeID)
+            viewModel.setNewInput(text, id: tape.nameID)
             return
         }
         // if there is such character in alphabet - save it
         // otherwise delete it
-        if viewModel.tapes[tapeID].alphabet.contains(lastCharacter) {
+        if viewModel.tapes[tape.nameID].alphabet.contains(lastCharacter) {
             text.append(lastCharacter)
         }
-        viewModel.setNewInput(text, id: tapeID)
+        viewModel.setNewInput(text, id: tape.nameID)
     }
     
     private func setNewAlphabetValue() {
@@ -97,6 +97,6 @@ extension InputView {
                 text.append(String(lastCharacter))
             }
         }
-        viewModel.setNewAlphabet(text, id: tapeID)
+        viewModel.setNewAlphabet(text, id: tape.nameID)
     }
 }

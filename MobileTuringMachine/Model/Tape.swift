@@ -9,11 +9,13 @@ import Foundation
 
 struct Tape: Identifiable {
     
-    var id: Int
+    let id = UUID()
+    var nameID: Int
     var alphabet: String = ""
     var input: String = ""
     var headIndex = 0
     var components: [TapeContent]
+//    var components: [(id: Int, value: String)]
     
     var alphabetArray: [String] {
         var result = alphabet.map { String($0) }

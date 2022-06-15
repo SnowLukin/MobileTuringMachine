@@ -11,7 +11,7 @@ struct TapeView: View {
     
     @EnvironmentObject private var viewModel: TapeContentViewModel
     
-    var tapeID: Int
+    let tape: Tape
     
     var layout: [GridItem] = [
         GridItem(.flexible(minimum: 25))
@@ -22,12 +22,11 @@ struct TapeView: View {
             ScrollViewReader { value in
                 tapeGrid
                     .onAppear {
-//                        viewModel.tapes[tapeID].headIndex = 0
                         withAnimation {
-                            value.scrollTo(viewModel.tapes[tapeID].headIndex, anchor: .center)
+                            value.scrollTo(tape.headIndex, anchor: .center)
                         }
                     }
-                    .onChange(of: viewModel.tapes[tapeID].headIndex) { newValue in
+                    .onChange(of: tape.headIndex) { newValue in
                         withAnimation {
                             value.scrollTo(newValue, anchor: .center)
                         }
@@ -42,10 +41,10 @@ struct TapeView: View {
 
 struct TapeView_Previews: PreviewProvider {
     static var previews: some View {
-        TapeView(tapeID: 0)
+        TapeView(tape: Tape(nameID: 0, components: [TapeContent(id: 0)]))
+            .environmentObject(TapeContentViewModel())
             .preferredColorScheme(.dark)
             .padding()
-            .environmentObject(TapeContentViewModel())
     }
 }
 
@@ -54,16 +53,10 @@ extension TapeView {
     
     private var tapeGrid: some View {
         LazyHGrid(rows: layout) {
-            ForEach(viewModel.tapes[tapeID].components) { component in
-                TapeContentView(component: component, tapeID: tapeID)
+            ForEach(tape.components) { component in
+                TapeContentView(component: component, tape: tape)
             }
         }
         .padding(.horizontal)
-    }
-    
-    private func getValueForTapeContent(_ id: Int) -> String {
-        (0..<viewModel.tapes[tapeID].input.count).contains(id)
-        ? viewModel.tapes[tapeID].input.map { String($0) }[id]
-        : "_"
     }
 }
