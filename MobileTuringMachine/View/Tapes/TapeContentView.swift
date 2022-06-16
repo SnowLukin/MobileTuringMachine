@@ -16,9 +16,7 @@ struct TapeContentView: View {
     
     var body: some View {
         Button {
-            if let tapeIndex = viewModel.tapes.firstIndex(where: { $0.id == tape.id }) {
-                viewModel.tapes[tapeIndex].headIndex = component.id
-            }
+            viewModel.changeHeadIndex(of: tape, to: component)
         } label: {
             Text(component.value)
                 .foregroundColor(

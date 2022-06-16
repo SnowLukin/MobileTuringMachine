@@ -12,21 +12,33 @@ struct ChooseDirectionView: View {
     @EnvironmentObject private var viewModel: TapeContentViewModel
     
     
-    let tapeID: Int
-    let stateID: Int
-    let optionID: Int
+    let tape: Tape
+    let state: StateQ
+    let option: OptionState
+    let combination: Combination
     
     var body: some View {
         Form {
             ForEach(Direction.allCases, id: \.self) { direction in
                 Button {
-                    viewModel.states[stateID].options[optionID].combinationsTuple[tapeID].direction = direction
+                    viewModel.updateCombinationDirection(
+                        state: state,
+                        option: option,
+                        combination: combination,
+                        direction: direction
+                    )
                 } label: {
                     HStack {
                         Image(systemName: direction.rawValue)
                             .foregroundColor(.primary)
                         Spacer()
-                        if viewModel.states[stateID].options[optionID].combinationsTuple[tapeID].direction == direction {
+                        if viewModel.isChosenDirection(
+                            state: state,
+                            option: option,
+                            tape: tape,
+                            combination: combination,
+                            direction: direction
+                        ) {
                             Image(systemName: "circle.fill")
                                 .foregroundColor(.blue)
                                 .transition(
@@ -47,7 +59,7 @@ struct ChooseDirectionView: View {
 
 struct ChooseDirectionView_Previews: PreviewProvider {
     static var previews: some View {
-        ChooseDirectionView(tapeID: 0, stateID: 0, optionID: 0)
+        ChooseDirectionView(tape: Tape(nameID: 0, components: []), state: StateQ(nameID: 0, options: []), option: OptionState(toState: StateQ(nameID: 0, options: []), combinations: []), combination: Combination(character: "_", direction: .stay, toCharacter: "_"))
             .environmentObject(TapeContentViewModel())
     }
 }

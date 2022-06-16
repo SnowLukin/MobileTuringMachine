@@ -11,21 +11,33 @@ struct ChooseCharView: View {
     
     @EnvironmentObject private var viewModel: TapeContentViewModel
     
-    let tapeID: Int
-    let stateID: Int
-    let optionID: Int
+    let tape: Tape
+    let state: StateQ
+    let option: OptionState
+    let combination: Combination
     
     var body: some View {
         Form {
-            ForEach(0..<viewModel.tapes[tapeID].alphabetArray.count, id: \.self) { alphabetElementIndex in
+            ForEach(tape.alphabetArray, id: \.self) { alphabetElement in
                 Button {
-                    viewModel.states[stateID].options[optionID].combinationsTuple[tapeID].toCharacter = viewModel.tapes[tapeID].alphabetArray[alphabetElementIndex]
+                    viewModel.updateCombinationToChar(
+                        state: state,
+                        option: option,
+                        combination: combination,
+                        alphabetElement: alphabetElement
+                    )
                 } label : {
                     HStack {
-                        Text(viewModel.tapes[tapeID].alphabetArray[alphabetElementIndex])
+                        Text(alphabetElement)
                             .foregroundColor(.primary)
                         Spacer()
-                        if viewModel.states[stateID].options[optionID].combinationsTuple[tapeID].toCharacter == viewModel.tapes[tapeID].alphabetArray[alphabetElementIndex] {
+                        if viewModel.isChosenChar(
+                            state: state,
+                            option: option,
+                            tape: tape,
+                            combination: combination,
+                            alphabetElement: alphabetElement
+                        ) {
                             Image(systemName: "circle.fill")
                                 .foregroundColor(.blue)
                                 .transition(
@@ -45,7 +57,7 @@ struct ChooseCharView: View {
 
 struct ChooseCharView_Previews: PreviewProvider {
     static var previews: some View {
-        ChooseCharView(tapeID: 0, stateID: 0, optionID: 0)
+        ChooseCharView(tape: Tape(nameID: 0, components: []), state: StateQ(nameID: 0, options: []), option: OptionState(toState: StateQ(nameID: 0, options: []), combinations: []), combination: Combination(character: "_", direction: .stay, toCharacter: "_"))
             .environmentObject(TapeContentViewModel())
     }
 }

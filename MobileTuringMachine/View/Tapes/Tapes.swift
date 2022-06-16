@@ -15,7 +15,8 @@ struct Tapes: View {
         ScrollView {
             ForEach(viewModel.tapes) { tape in
                 TapeSectionOpening(tape: tape)
-                    .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.3)))
+//                    .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.3)))
+                    .transition(AnyTransition.scale.animation(.easeInOut))
             }
         }
         .navigationTitle("Tapes")

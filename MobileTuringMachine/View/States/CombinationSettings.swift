@@ -11,23 +11,25 @@ struct CombinationSettings: View {
     
     @EnvironmentObject private var viewModel: TapeContentViewModel
     
-    let stateID: Int
-    let optionID: Int
-    let elementID: Int
+    let tape: Tape
+    let state: StateQ
+    let option: OptionState
+    let combination: Combination
     
     var body: some View {
         Form {
             characterSection
             directionSection
         }
-        .navigationBarTitle("Tape \(elementID) | Character: \(viewModel.states[stateID].options[optionID].combinationsTuple.map { $0.character }[elementID])")
+
+        .navigationBarTitle("Tape \(tape.nameID) | Character: \(combination.character)")
         .navigationBarTitleDisplayMode(.inline)
     }
 }
 
 struct CombinationSettings_Previews: PreviewProvider {
     static var previews: some View {
-        CombinationSettings(stateID: 0, optionID: 0, elementID: 0)
+        CombinationSettings(tape: Tape(nameID: 0, components: []), state: StateQ(nameID: 0, options: []), option: OptionState(toState: StateQ(nameID: 0, options: []), combinations: []), combination: Combination(character: "_", direction: .stay, toCharacter: "_"))
             .environmentObject(TapeContentViewModel())
     }
 }
@@ -38,12 +40,12 @@ extension CombinationSettings {
     private var characterSection: some View {
         Section(header: Text("Change to following character")) {
             NavigationLink {
-                ChooseCharView(tapeID: elementID, stateID: stateID, optionID: optionID)
+                ChooseCharView(tape: tape, state: state, option: option, combination: combination)
             } label: {
                 HStack {
                     Text("Alphabet")
                     Spacer()
-                    Text(viewModel.states[stateID].options[optionID].combinationsTuple[elementID].toCharacter)
+                    Text(viewModel.getCombination(state: state, option: option, combination: combination)?.toCharacter ?? "Error")
                 }
             }
         }
@@ -52,12 +54,20 @@ extension CombinationSettings {
     private var directionSection: some View {
         Section(header: Text("Move tape's head to following direction")) {
             NavigationLink {
-                ChooseDirectionView(tapeID: elementID, stateID: stateID, optionID: optionID)
+                ChooseDirectionView(tape: tape, state: state, option: option, combination: combination)
             } label: {
                 HStack {
                     Text("Direction")
                     Spacer()
-                    Image(systemName: viewModel.states[stateID].options[optionID].combinationsTuple[elementID].direction.rawValue)
+                    Image(
+                        systemName:
+                            viewModel.getCombination(
+                                state: state,
+                                option: option,
+                                combination: combination
+                            )?.direction.rawValue
+                        ?? Direction.stay.rawValue
+                    )
                 }
             }
         }

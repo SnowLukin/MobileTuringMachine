@@ -14,7 +14,14 @@ enum Direction: String, CaseIterable {
 }
 
 struct OptionState: Identifiable {
-    let id: Int
-    var toStateID: Int
-    var combinationsTuple: [(character: String, direction: Direction, toCharacter: String)]
+    let id = UUID()
+    var toState: StateQ
+    var combinations: [Combination]
+}
+
+struct Combination: Identifiable {
+    let id = UUID()
+    var character: String
+    var direction: Direction
+    var toCharacter: String
 }

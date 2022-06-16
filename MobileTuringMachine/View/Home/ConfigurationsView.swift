@@ -56,7 +56,7 @@ extension ConfigurationsView {
     
     private var customCell: some View {
         VStack {
-            customCellButtonView("State \(viewModel.startState)", destination: AnyView(ChooseStartStateView()))
+            customCellButtonView("State \(viewModel.startState.nameID)", destination: AnyView(ChooseStartStateView()))
         }.padding()
             .frame(minWidth: 0, maxWidth: .infinity)
             .background(Color.background)
@@ -71,7 +71,7 @@ extension ConfigurationsView {
                 .padding(.bottom, 5)
             Divider()
                 .padding(.leading)
-            customCellButtonView("States", destination: AnyView(StatesView()))
+            customCellButtonView("States", destination: AnyView(StatesHoneyGrid()))
                 .padding(.top, 5)
         }
         .padding()

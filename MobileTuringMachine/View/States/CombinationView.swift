@@ -10,19 +10,19 @@ import SwiftUI
 struct CombinationView: View {
     
     @EnvironmentObject private var viewModel: TapeContentViewModel
-    let stateID: Int
-    let optionID: Int
+    let state: StateQ
+    let option: OptionState
     
     var body: some View {
         List {
             Section {
                 NavigationLink {
-                    ChooseStateView(stateID: stateID, optionID: optionID)
+                    ChooseStateView(state: state, option: option)
                 } label: {
                     Text("Navigate to:")
                         .foregroundColor(.primary)
                     Spacer()
-                    Text("State \(viewModel.states[stateID].options[optionID].toStateID)")
+                    Text("State \(viewModel.getOptionToState(state: state, option: option))")
                         .foregroundColor(.gray)
                 }
             }
@@ -30,14 +30,14 @@ struct CombinationView: View {
                 combinationElements
             }
         }
-        .navigationBarTitle("Combination: \(viewModel.states[stateID].options[optionID].combinationsTuple.map { $0.character }.joined(separator: ""))")
+        .navigationBarTitle("Combination: \(option.combinations.map { $0.character }.joined(separator: ""))")
         .navigationBarTitleDisplayMode(.inline)
     }
 }
 
 struct CombinationView_Previews: PreviewProvider {
     static var previews: some View {
-        CombinationView(stateID: 0, optionID: 0)
+        CombinationView(state: StateQ(nameID: 0, options: []), option: OptionState(toState: StateQ(nameID: 0, options: []), combinations: []))
             .environmentObject(TapeContentViewModel())
     }
 }
@@ -45,28 +45,33 @@ struct CombinationView_Previews: PreviewProvider {
 extension CombinationView {
     
     private var combinationElements: some View {
-        ForEach(0..<viewModel.states[stateID].options[optionID].combinationsTuple.count, id: \.self) { elementIndex in
+        ForEach(option.combinations) { combination in
             NavigationLink {
-                CombinationSettings(stateID: stateID, optionID: optionID, elementID: elementIndex)
+                CombinationSettings(
+                    tape: viewModel.getMatchingTape(state: state, option: option, combination: combination),
+                    state: state,
+                    option: option,
+                    combination: combination
+                )
             } label: {
                 HStack {
                     
-                    Text("\(viewModel.states[stateID].options[optionID].combinationsTuple[elementIndex].character)")
+                    Text(viewModel.getCombination(state: state, option: option, combination: combination)?.character ?? "Error")
                         .font(.title3)
                         .fontWeight(.semibold)
                         .foregroundColor(.primary)
                     
-                    Image(systemName: "\(viewModel.states[stateID].options[optionID].combinationsTuple[elementIndex].direction.rawValue)")
+                    Image(systemName: viewModel.getCombination(state: state, option: option, combination: combination)?.direction.rawValue ?? Direction.stay.rawValue)
                         .font(.title3.bold())
                         .foregroundColor(.primary)
                     
-                    Text("\(viewModel.states[stateID].options[optionID].combinationsTuple[elementIndex].toCharacter)")
+                    Text(viewModel.getCombination(state: state, option: option, combination: combination)?.toCharacter ?? "Error")
                         .font(.title3)
                         .fontWeight(.semibold)
                         .foregroundColor(.primary)
                         
                     Divider()
-                    Text("Tape \(elementIndex)")
+                    Text("Tape \(viewModel.getMatchingTape(state: state, option: option, combination: combination).nameID)")
                         .foregroundColor(Color.gray)
                 }
             }

@@ -10,20 +10,28 @@ import SwiftUI
 struct ChooseStateView: View {
     
     @EnvironmentObject private var viewModel: TapeContentViewModel
-    let stateID: Int
-    let optionID: Int
+    let state: StateQ
+    let option: OptionState
     
     var body: some View {
         List {
-            ForEach(0..<viewModel.states.count) { currentStateID in
+            ForEach(viewModel.states) { currentState in
                 Button {
-                    viewModel.states[stateID].options[optionID].toStateID = currentStateID
+                    viewModel.updateOptionToState(
+                        state: state,
+                        option: option,
+                        currentState: currentState
+                    )
                 } label: {
                     HStack {
-                        Text("State \(currentStateID)")
+                        Text("State \(currentState.nameID)")
                             .foregroundColor(.primary)
                         Spacer()
-                        if viewModel.states[stateID].options[optionID].toStateID == currentStateID {
+                        if viewModel.isChosenToState(
+                            state: state,
+                            option: option,
+                            currentState: currentState
+                        ) {
                             Image(systemName: "circle.fill")
                                 .foregroundColor(.blue)
                                 .transition(
@@ -41,53 +49,7 @@ struct ChooseStateView: View {
 
 struct ChooseStateView_Previews: PreviewProvider {
     static var previews: some View {
-        ChooseStateView(stateID: 0, optionID: 0)
+        ChooseStateView(state: StateQ(nameID: 0, options: []), option: OptionState(toState: StateQ(nameID: 0, options: []), combinations: []))
             .environmentObject(TapeContentViewModel())
     }
-}
-
-struct ChooseStateButtonView: View {
-    
-    @EnvironmentObject private var viewModel: TapeContentViewModel
-    @State private var isChosen: Bool = false
-    
-    let stateID: Int
-    let currentStateID: Int
-    let optionID: Int
-    
-    var body: some View {
-        Button {
-            viewModel.states[stateID].options[optionID].toStateID = currentStateID
-        } label: {
-            HStack {
-                Text("State \(currentStateID)")
-                    .foregroundColor(.primary)
-                Spacer()
-                Image(systemName: "circle.fill")
-                    .foregroundColor(.blue)
-                    .opacity(isChosen ? 1 : 0)
-            }
-        }
-        .buttonStyle(NoTapColorButtonStyle())
-        .onAppear {
-            withAnimation(.easeInOut(duration: 0.2)) {
-                if viewModel.states[stateID].options[optionID].toStateID == currentStateID {
-                    isChosen = true
-                } else {
-                    isChosen = false
-                }
-            }
-        }
-        .onChange(of: viewModel.states[stateID].options[optionID].toStateID) { newValue in
-            withAnimation(.easeInOut(duration: 0.2)) {
-                if newValue == currentStateID {
-                    isChosen = true
-                } else {
-                    isChosen = false
-                }
-            }
-        }
-        
-    }
-    
 }

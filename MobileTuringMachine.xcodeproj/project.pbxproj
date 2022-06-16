@@ -15,12 +15,10 @@
 		D74428982854EBC40073C9E2 /* ChooseStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74428972854EBC40073C9E2 /* ChooseStateView.swift */; };
 		D744289B285754FE0073C9E2 /* PlayStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = D744289A285754FD0073C9E2 /* PlayStack.swift */; };
 		D744289D285759B10073C9E2 /* InfoPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D744289C285759B10073C9E2 /* InfoPopupView.swift */; };
-		D7809891284CE14800C4DDF0 /* StateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7809890284CE14800C4DDF0 /* StateView.swift */; };
 		D780989B284CEA2100C4DDF0 /* CombinationsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780989A284CEA2100C4DDF0 /* CombinationsListView.swift */; };
 		D780989D284CEC4E00C4DDF0 /* CombinationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780989C284CEC4E00C4DDF0 /* CombinationSettings.swift */; };
 		D780989F284CF8F900C4DDF0 /* CombinationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780989E284CF8F900C4DDF0 /* CombinationView.swift */; };
 		D78098A4284DC83900C4DDF0 /* BindingPreviewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78098A3284DC83900C4DDF0 /* BindingPreviewWrapper.swift */; };
-		D78098A6284DD9F100C4DDF0 /* StatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78098A5284DD9F100C4DDF0 /* StatesView.swift */; };
 		D78098A9284DF29100C4DDF0 /* StateQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78098A8284DF29100C4DDF0 /* StateQ.swift */; };
 		D78098AB284DFB4D00C4DDF0 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78098AA284DFB4D00C4DDF0 /* HomeView.swift */; };
 		D78098AD284DFC0600C4DDF0 /* TapeSectionOpening.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78098AC284DFC0600C4DDF0 /* TapeSectionOpening.swift */; };
@@ -29,6 +27,10 @@
 		D78098B7284E1CF200C4DDF0 /* RoundedCornersBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78098B6284E1CF200C4DDF0 /* RoundedCornersBackground.swift */; };
 		D78098BC284E2A4400C4DDF0 /* ChooseStartStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78098BB284E2A4400C4DDF0 /* ChooseStartStateView.swift */; };
 		D78098C6284F47BE00C4DDF0 /* ConfigurationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78098C5284F47BE00C4DDF0 /* ConfigurationsView.swift */; };
+		D7C1E0EE285B4695005662A9 /* HexagonShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C1E0ED285B4695005662A9 /* HexagonShape.swift */; };
+		D7C1E0F2285B61B7005662A9 /* StatesHoneyGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C1E0F1285B61B6005662A9 /* StatesHoneyGrid.swift */; };
+		D7C1E0F4285B6FC3005662A9 /* StateHoneyGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C1E0F3285B6FC3005662A9 /* StateHoneyGridCell.swift */; };
+		D7C1E0F7285BBFBA005662A9 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C1E0F6285BBFBA005662A9 /* Data.swift */; };
 		D7CF6DD027DE288A0010949B /* MobileTuringMachineApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CF6DCF27DE288A0010949B /* MobileTuringMachineApp.swift */; };
 		D7CF6DD227DE288A0010949B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CF6DD127DE288A0010949B /* ContentView.swift */; };
 		D7CF6DD427DE28910010949B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D7CF6DD327DE28910010949B /* Assets.xcassets */; };
@@ -42,7 +44,6 @@
 		D7CF6DF127DE64000010949B /* ConfigTapesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CF6DF027DE64000010949B /* ConfigTapesView.swift */; };
 		D7CF6DF527DE731F0010949B /* TapeView + ConfigTapesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CF6DF427DE731F0010949B /* TapeView + ConfigTapesView.swift */; };
 		D7CF6DF727DE8F080010949B /* Tape.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CF6DF627DE8F080010949B /* Tape.swift */; };
-		D7CF6DFD27DFCD030010949B /* CustomVerticalGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CF6DFC27DFCD030010949B /* CustomVerticalGrid.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,12 +55,10 @@
 		D74428972854EBC40073C9E2 /* ChooseStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseStateView.swift; sourceTree = "<group>"; };
 		D744289A285754FD0073C9E2 /* PlayStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayStack.swift; sourceTree = "<group>"; };
 		D744289C285759B10073C9E2 /* InfoPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoPopupView.swift; sourceTree = "<group>"; };
-		D7809890284CE14800C4DDF0 /* StateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateView.swift; sourceTree = "<group>"; };
 		D780989A284CEA2100C4DDF0 /* CombinationsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationsListView.swift; sourceTree = "<group>"; };
 		D780989C284CEC4E00C4DDF0 /* CombinationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationSettings.swift; sourceTree = "<group>"; };
 		D780989E284CF8F900C4DDF0 /* CombinationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationView.swift; sourceTree = "<group>"; };
 		D78098A3284DC83900C4DDF0 /* BindingPreviewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingPreviewWrapper.swift; sourceTree = "<group>"; };
-		D78098A5284DD9F100C4DDF0 /* StatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatesView.swift; sourceTree = "<group>"; };
 		D78098A8284DF29100C4DDF0 /* StateQ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateQ.swift; sourceTree = "<group>"; };
 		D78098AA284DFB4D00C4DDF0 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		D78098AC284DFC0600C4DDF0 /* TapeSectionOpening.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapeSectionOpening.swift; sourceTree = "<group>"; };
@@ -68,6 +67,10 @@
 		D78098B6284E1CF200C4DDF0 /* RoundedCornersBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCornersBackground.swift; sourceTree = "<group>"; };
 		D78098BB284E2A4400C4DDF0 /* ChooseStartStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseStartStateView.swift; sourceTree = "<group>"; };
 		D78098C5284F47BE00C4DDF0 /* ConfigurationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationsView.swift; sourceTree = "<group>"; };
+		D7C1E0ED285B4695005662A9 /* HexagonShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexagonShape.swift; sourceTree = "<group>"; };
+		D7C1E0F1285B61B6005662A9 /* StatesHoneyGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatesHoneyGrid.swift; sourceTree = "<group>"; };
+		D7C1E0F3285B6FC3005662A9 /* StateHoneyGridCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateHoneyGridCell.swift; sourceTree = "<group>"; };
+		D7C1E0F6285BBFBA005662A9 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		D7CF6DCC27DE288A0010949B /* MobileTuringMachine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobileTuringMachine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7CF6DCF27DE288A0010949B /* MobileTuringMachineApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileTuringMachineApp.swift; sourceTree = "<group>"; };
 		D7CF6DD127DE288A0010949B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -82,7 +85,6 @@
 		D7CF6DF027DE64000010949B /* ConfigTapesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigTapesView.swift; sourceTree = "<group>"; };
 		D7CF6DF427DE731F0010949B /* TapeView + ConfigTapesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TapeView + ConfigTapesView.swift"; sourceTree = "<group>"; };
 		D7CF6DF627DE8F080010949B /* Tape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tape.swift; sourceTree = "<group>"; };
-		D7CF6DFC27DFCD030010949B /* CustomVerticalGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomVerticalGrid.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,8 +110,7 @@
 		D7809892284CE47300C4DDF0 /* States */ = {
 			isa = PBXGroup;
 			children = (
-				D7809890284CE14800C4DDF0 /* StateView.swift */,
-				D78098A5284DD9F100C4DDF0 /* StatesView.swift */,
+				D7C1E0EC285B4664005662A9 /* HoneyGrid */,
 				D780989A284CEA2100C4DDF0 /* CombinationsListView.swift */,
 				D780989E284CF8F900C4DDF0 /* CombinationView.swift */,
 				D74428972854EBC40073C9E2 /* ChooseStateView.swift */,
@@ -156,6 +157,24 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
+		D7C1E0EC285B4664005662A9 /* HoneyGrid */ = {
+			isa = PBXGroup;
+			children = (
+				D7C1E0ED285B4695005662A9 /* HexagonShape.swift */,
+				D7C1E0F3285B6FC3005662A9 /* StateHoneyGridCell.swift */,
+				D7C1E0F1285B61B6005662A9 /* StatesHoneyGrid.swift */,
+			);
+			path = HoneyGrid;
+			sourceTree = "<group>";
+		};
+		D7C1E0F5285BBFA9005662A9 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				D7C1E0F6285BBFBA005662A9 /* Data.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
 		D7CF6DC327DE288A0010949B = {
 			isa = PBXGroup;
 			children = (
@@ -199,7 +218,6 @@
 		D7CF6DDD27DE28960010949B /* View */ = {
 			isa = PBXGroup;
 			children = (
-				D7CF6DFC27DFCD030010949B /* CustomVerticalGrid.swift */,
 				D78098B8284E211400C4DDF0 /* Home */,
 				D78098A7284DF23300C4DDF0 /* Tapes */,
 				D7809892284CE47300C4DDF0 /* States */,
@@ -211,6 +229,7 @@
 			isa = PBXGroup;
 			children = (
 				D7CF6DE427DE2BA00010949B /* TapeContentViewModel.swift */,
+				D7C1E0F5285BBFA9005662A9 /* Data */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -305,6 +324,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D7C1E0EE285B4695005662A9 /* HexagonShape.swift in Sources */,
 				D78098BC284E2A4400C4DDF0 /* ChooseStartStateView.swift in Sources */,
 				D78098A9284DF29100C4DDF0 /* StateQ.swift in Sources */,
 				D78098AD284DFC0600C4DDF0 /* TapeSectionOpening.swift in Sources */,
@@ -315,11 +335,12 @@
 				D7CF6DE727DE312D0010949B /* TapeView.swift in Sources */,
 				D78098A4284DC83900C4DDF0 /* BindingPreviewWrapper.swift in Sources */,
 				D721795E27E4ED4B00F39152 /* OptionState.swift in Sources */,
+				D7C1E0F2285B61B7005662A9 /* StatesHoneyGrid.swift in Sources */,
 				D78098AB284DFB4D00C4DDF0 /* HomeView.swift in Sources */,
 				D744289B285754FE0073C9E2 /* PlayStack.swift in Sources */,
 				D780989D284CEC4E00C4DDF0 /* CombinationSettings.swift in Sources */,
-				D7CF6DFD27DFCD030010949B /* CustomVerticalGrid.swift in Sources */,
 				D7CF6DEF27DE606F0010949B /* Extension + Color.swift in Sources */,
+				D7C1E0F4285B6FC3005662A9 /* StateHoneyGridCell.swift in Sources */,
 				D74428982854EBC40073C9E2 /* ChooseStateView.swift in Sources */,
 				D78098C6284F47BE00C4DDF0 /* ConfigurationsView.swift in Sources */,
 				D7CF6DE327DE29180010949B /* TapeContent.swift in Sources */,
@@ -333,9 +354,8 @@
 				D7CF6DEC27DE53B60010949B /* InputView.swift in Sources */,
 				D7CF6DD227DE288A0010949B /* ContentView.swift in Sources */,
 				D744289D285759B10073C9E2 /* InfoPopupView.swift in Sources */,
-				D78098A6284DD9F100C4DDF0 /* StatesView.swift in Sources */,
 				D78098B1284E150200C4DDF0 /* Tapes.swift in Sources */,
-				D7809891284CE14800C4DDF0 /* StateView.swift in Sources */,
+				D7C1E0F7285BBFBA005662A9 /* Data.swift in Sources */,
 				D7CF6DF527DE731F0010949B /* TapeView + ConfigTapesView.swift in Sources */,
 				D7CF6DD027DE288A0010949B /* MobileTuringMachineApp.swift in Sources */,
 				D7057FAF284A8CC70008E7E3 /* Extension + View.swift in Sources */,

@@ -10,27 +10,27 @@ import SwiftUI
 struct CombinationsListView: View {
     
     @EnvironmentObject private var viewModel: TapeContentViewModel
-    let stateID: Int
+    let state: StateQ
     
     var body: some View {
         List {
-            ForEach(0..<viewModel.states[stateID].options.count, id: \.self) { optionID in
+            ForEach(state.options) { option in
                 NavigationLink {
-                    CombinationView(stateID: stateID, optionID: optionID)
+                    CombinationView(state: state, option: option)
                 } label: {
-                    Text("\(viewModel.states[stateID].options[optionID].combinationsTuple.map { $0.character }.joined(separator: ""))")
+                    Text("\(option.combinations.map { $0.character }.joined(separator: ""))")
                 }
 
             }
         }
-            .navigationTitle("State \(stateID)")
+        .navigationTitle("State \(state.nameID)")
             .navigationBarTitleDisplayMode(.inline)
     }
 }
 
 struct CombinationsListView_Previews: PreviewProvider {
     static var previews: some View {
-        CombinationsListView(stateID: 0)
+        CombinationsListView(state: StateQ(nameID: 0, options: []))
             .environmentObject(TapeContentViewModel())
     }
 }

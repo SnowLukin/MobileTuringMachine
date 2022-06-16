@@ -7,7 +7,12 @@
 
 import Foundation
 
-struct StateQ: Identifiable {
-    var id: Int
+struct StateQ: Identifiable, Equatable {
+    static func == (lhs: StateQ, rhs: StateQ) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    var id = UUID()
+    var nameID: Int
     var options: [OptionState]
 }
