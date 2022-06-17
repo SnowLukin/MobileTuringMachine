@@ -15,7 +15,7 @@ struct TapesWorkView: View {
         ScrollView {
             ForEach(viewModel.tapes) { tape in
                 VStack(spacing: 0) {
-                    setTapeTag(tapeID: tape.nameID)
+                    setTapeNameText(tapeID: tape.nameID)
                     TapeView(tape: tape)
                         .padding([.leading, .trailing])
                 }
@@ -32,7 +32,7 @@ struct TapesWorkView_Previews: PreviewProvider {
 }
 
 extension TapesWorkView {
-    private func setTapeTag(tapeID: Int) -> some View {
+    private func setTapeNameText(tapeID: Int) -> some View {
         HStack {
             Text("Tape \(tapeID)")
                 .padding([.leading, .trailing])

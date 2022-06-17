@@ -78,7 +78,7 @@ extension InputView {
         }
         // if there is such character in alphabet - save it
         // otherwise delete it
-        if tape.alphabet.contains(lastCharacter) {
+        if viewModel.getTape(tape: tape).alphabet.contains(lastCharacter) {
             text.append(lastCharacter)
         }
         viewModel.setNewInput(text, tape: tape)

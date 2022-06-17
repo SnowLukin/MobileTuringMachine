@@ -16,7 +16,7 @@ class Data {
     }
     
     var startState: StateQ {
-        var newState = StateQ(nameID: 0, options: [])
+        var newState = StateQ(nameID: 0, options: [], isStarting: true)
         newState.options = getOptionStates(state: newState)
         return newState
     }

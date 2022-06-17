@@ -15,15 +15,13 @@ struct ChooseStartStateView: View {
         List {
             ForEach(viewModel.states) { state in
                 Button {
-                    print("first \(viewModel.startState.id)")
-                    print("second \(state.id)")
-                    viewModel.startState = state
+                    viewModel.changeStartState(to: state)
                 } label: {
                     HStack {
                         Text("State \(state.nameID)")
                             .foregroundColor(.primary)
                         Spacer()
-                        if viewModel.startState == state {
+                        if viewModel.getStartState() == state {
                             Image(systemName: "circle.fill")
                                 .foregroundColor(.blue)
                                 .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.2)))

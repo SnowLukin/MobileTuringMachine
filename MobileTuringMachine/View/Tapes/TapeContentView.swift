@@ -18,9 +18,9 @@ struct TapeContentView: View {
         Button {
             viewModel.changeHeadIndex(of: tape, to: component)
         } label: {
-            Text(component.value)
+            Text(viewModel.getTapeComponent(tape: tape, component: component).value)
                 .foregroundColor(
-                    tape.headIndex == component.id
+                    viewModel.getTape(tape: tape).headIndex == viewModel.getTapeComponent(tape: tape, component: component).id
                     ? .white
                     : .secondary
                 )
@@ -28,7 +28,7 @@ struct TapeContentView: View {
                 .fontWeight(.semibold)
                 .frame(width: 35, height: 35)
                 .background(
-                    tape.headIndex == component.id
+                    viewModel.getTape(tape: tape).headIndex == viewModel.getTapeComponent(tape: tape, component: component).id
                     ? .blue
                     : .secondaryBackground
                 )

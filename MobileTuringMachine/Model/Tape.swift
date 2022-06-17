@@ -7,7 +7,11 @@
 
 import Foundation
 
-struct Tape: Identifiable {
+struct Tape: Identifiable, Equatable, Hashable {
+    
+    static func == (lhs: Tape, rhs: Tape) -> Bool {
+        lhs.id == rhs.id
+    }
     
     let id = UUID()
     var nameID: Int

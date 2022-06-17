@@ -12,6 +12,7 @@ struct PlayStack: View {
     @EnvironmentObject private var viewModel: TapeContentViewModel
     @State private var isPlaying: Bool = false
     @State private var isPlayOptionOn: Bool = false
+    @Binding var isChanged: Bool
     
     var body: some View {
         VStack {
@@ -36,8 +37,10 @@ struct PlayStack: View {
 
 struct PlayStack_Previews: PreviewProvider {
     static var previews: some View {
-        PlayStack()
-            .environmentObject(TapeContentViewModel())
+        StatefulPreviewWrapper(true) {
+            PlayStack(isChanged: $0)
+                .environmentObject(TapeContentViewModel())
+        }
     }
 }
 
@@ -53,13 +56,14 @@ extension PlayStack {
     }
     
     private func makeStep() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
             viewModel.makeStep()
         }
     }
     
     private var playButton: some View {
         Button {
+            isChanged = true
             withAnimation {
                 isPlaying.toggle()
             }
@@ -94,6 +98,7 @@ extension PlayStack {
     
     private var makeStepButton: some View {
         Button {
+            isChanged = true
             makeStep()
         } label: {
             Image(systemName: "forward.frame.fill")
@@ -107,9 +112,9 @@ extension PlayStack {
     }
     
     private var resetButton: some View {
-        // TODO: Add reset action
         Button {
-            
+            isChanged = false
+            viewModel.updateAllTapesComponents()
         } label: {
             Image(systemName: "stop.fill")
                 .font(.title2)
@@ -119,5 +124,7 @@ extension PlayStack {
                 .clipShape(Circle())
                 .shadow(radius: 10)
         }
+        .disabled(isPlaying)
+        .opacity(isPlaying ? 0.6 : 1)
     }
 }

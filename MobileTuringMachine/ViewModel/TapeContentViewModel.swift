@@ -10,7 +10,7 @@ import Foundation
 class TapeContentViewModel: ObservableObject {
     @Published var tapes: [Tape] = Data().tapes
     @Published var states: [StateQ] = [Data.shared]
-    @Published var startState: StateQ = Data.shared
+//    @Published var startState: StateQ = Data.shared
 }
 
 // MARK: - States
@@ -149,7 +149,10 @@ extension TapeContentViewModel {
     
     // MARK: Alphabet
     func setNewAlphabet(_ text: String, tape: Tape) {
-        guard let tapeIndex = tapes.firstIndex(where: { $0.id == tape.id }) else { return }
+        guard let tapeIndex = tapes.firstIndex(where: { $0.id == tape.id }) else {
+            print("viewModel couldnt find tape index for setNewAlphabet function")
+            return
+        }
         // Update alphabet
         tapes[tapeIndex].alphabet = text
         updateStates()
@@ -157,10 +160,22 @@ extension TapeContentViewModel {
     
     // MARK: Input
     func setNewInput(_ text: String, tape: Tape) {
-        guard let tapeIndex = tapes.firstIndex(where: { $0.id == tape.id }) else { return }
+        guard let tapeIndex = tapes.firstIndex(where: { $0.id == tape.id }) else {
+            print("viewModel couldnt find tape index for setNewInput function")
+            return
+        }
         
         // Update input
         tapes[tapeIndex].input = text
+        
+        updateComponents(tape: tape)
+    }
+    
+    func updateComponents(tape: Tape) {
+        guard let tapeIndex = tapes.firstIndex(where: { $0.id == tape.id }) else {
+            print("viewModel couldnt find tape index for setNewInput function")
+            return
+        }
         
         // Reset values
         for componentIndex in 0..<tapes[tapeIndex].components.count {
@@ -168,10 +183,16 @@ extension TapeContentViewModel {
         }
         
         // Update values according to input
-        for characterID in 0..<text.count {
+        for characterID in 0..<tapes[tapeIndex].input.count {
             if let componentIndex = tapes[tapeIndex].components.firstIndex(where: { $0.id == characterID }) {
-                tapes[tapeIndex].components[componentIndex].value = text.map { String($0) }[characterID]
+                tapes[tapeIndex].components[componentIndex].value = tapes[tapeIndex].input.map { String($0) }[characterID]
             }
+        }
+    }
+    
+    func updateAllTapesComponents() {
+        for tapeIndex in 0..<tapes.count {
+            updateComponents(tape: tapes[tapeIndex])
         }
     }
     
@@ -289,6 +310,43 @@ extension TapeContentViewModel {
     }
 }
 
+// MARK: - Tape View
+extension TapeContentViewModel {
+    
+    func getTape(tape: Tape) -> Tape {
+        guard let tapeIndex = tapes.firstIndex(where: { $0.id == tape.id }) else {
+            return tapes[0]
+        }
+        return tapes[tapeIndex]
+    }
+    
+    func getTapeComponent(tape: Tape, component: TapeContent) -> TapeContent {
+        let currentTape = getTape(tape: tape)
+        guard let componentIndex = currentTape.components.firstIndex(where: { $0.id == component.id }) else {
+            return currentTape.components[0]
+        }
+        return currentTape.components[componentIndex]
+    }
+    
+    func getStartState() -> StateQ {
+        guard let startStateIndex = states.firstIndex(where: { $0.isStarting }) else {
+            print("Couldnt find start state")
+            return states[0]
+        }
+        return states[startStateIndex]
+    }
+    
+    func changeStartState(to state: StateQ) {
+        guard let startStateIndex = states.firstIndex(where: { $0.isStarting }) else {
+            print("Error. Couldnt find start state")
+            return
+        }
+        states[startStateIndex].isStarting.toggle()
+        guard let newStartStateIndex = states.firstIndex(where: { $0.id == state.id }) else { return }
+        states[newStartStateIndex].isStarting.toggle()
+    }
+}
+
 
 // MARK: - Magic
 extension TapeContentViewModel {
@@ -302,16 +360,27 @@ extension TapeContentViewModel {
                 combination.append(tape.components[componentIndex].value)
             }
         }
+        print("combination: \(combination)")
         
-        // Finding needed option in state
-        guard let optionCombination = startState.options.first(where: { $0.combinations.map { $0.character } == combination }) else {
+        // Finding index of starting state
+        guard let startStateIndex = states.firstIndex(where: { $0.isStarting }) else {
+            print("Error. Couldnt find start state")
             return
         }
         
+        // Finding needed option in state
+        guard let optionCombination = states[startStateIndex].options.first(where: { $0.combinations.map { $0.character } == combination }) else {
+            print("Error. Couldnt find optionCombination")
+            return
+        }
+        print("optionCombination: \(optionCombination)")
+        
         for index in 0..<combination.count {
             guard let componentIndex = tapes[index].components.firstIndex(where: { $0.id == tapes[index].headIndex }) else { return }
+            print("before: \(tapes[index].components[componentIndex].value)")
             DispatchQueue.main.async {
                 self.tapes[index].components[componentIndex].value = optionCombination.combinations[index].toCharacter
+                print("After: \(self.tapes[index].components[componentIndex].value)")
             }
             switch optionCombination.combinations[index].direction {
                 
@@ -327,8 +396,9 @@ extension TapeContentViewModel {
                 }
             }
         }
+        
         DispatchQueue.main.async {
-            self.startState = optionCombination.toState
+            self.states[startStateIndex] = optionCombination.toState
         }
     }
     

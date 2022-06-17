@@ -10,18 +10,25 @@ import SwiftUI
 struct HomeView: View {
     
     @EnvironmentObject private var viewModel: TapeContentViewModel
-    @State private var isPlaying = false
+    @State private var isChanged = false
+    @State private var showSettings = false
     @State private var showInfo = false
     
     var body: some View {
         NavigationView {
             ZStack {
                 VStack {
-                    ConfigurationsView()
+                    ConfigurationsView(showSettings: $showSettings)
+                        .disabled(isChanged)
+                    if isChanged {
+                        Text("Reset to enable configurations")
+                            .font(.body)
+                            .foregroundColor(.red)
+                    }
                     TapesWorkView()
                         .shadow(radius: 1)
                 }.zIndex(1)
-                PlayStack().zIndex(2)
+                PlayStack(isChanged: $isChanged).zIndex(2)
                 
                 if showInfo {
                     infoPopup.zIndex(3)
@@ -32,6 +39,11 @@ struct HomeView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     infoButton
+                }
+            }
+            .onChange(of: isChanged) { _ in
+                if isChanged {
+                    showSettings = false
                 }
             }
         }.navigationViewStyle(.stack)
@@ -46,33 +58,6 @@ struct HomeView_Previews: PreviewProvider {
 }
 
 extension HomeView {
-    
-    private func autoPlay() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            if isPlaying {
-                viewModel.makeStep()
-                autoPlay()
-            }
-        }
-    }
-    
-    private var autoPlayButton: some View {
-        Button {
-            withAnimation {
-                isPlaying.toggle()
-            }
-            autoPlay()
-        } label: {
-            Image(systemName: isPlaying ? "pause.fill" : "play.fill")
-                .font(.title2)
-                .frame(width: 60, height: 60)
-                .foregroundColor(.blue)
-                .background(Color.secondaryBackground)
-                .clipShape(Circle())
-                .shadow(radius: 10)
-                .padding(30)
-        }
-    }
     
     private var infoButton: some View {
         Button {

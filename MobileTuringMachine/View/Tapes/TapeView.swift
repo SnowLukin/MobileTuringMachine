@@ -23,10 +23,10 @@ struct TapeView: View {
                 tapeGrid
                     .onAppear {
                         withAnimation {
-                            value.scrollTo(tape.headIndex, anchor: .center)
+                            value.scrollTo(viewModel.getTape(tape: tape).headIndex, anchor: .center)
                         }
                     }
-                    .onChange(of: tape.headIndex) { newValue in
+                    .onChange(of: viewModel.getTape(tape: tape).headIndex) { newValue in
                         withAnimation {
                             value.scrollTo(newValue, anchor: .center)
                         }

@@ -9,8 +9,7 @@ import SwiftUI
 
 struct ConfigurationsView: View {
     @EnvironmentObject private var viewModel: TapeContentViewModel
-    @State private var showSettings = false
-    
+    @Binding var showSettings: Bool
     
     var body: some View {
         VStack {
@@ -39,8 +38,10 @@ struct ConfigurationsView: View {
 
 struct ConfigurationsView_Previews: PreviewProvider {
     static var previews: some View {
-        ConfigurationsView()
-            .environmentObject(TapeContentViewModel())
+        StatefulPreviewWrapper(true) {
+            ConfigurationsView(showSettings: $0)
+                .environmentObject(TapeContentViewModel())
+        }
     }
 }
 
@@ -56,7 +57,7 @@ extension ConfigurationsView {
     
     private var customCell: some View {
         VStack {
-            customCellButtonView("State \(viewModel.startState.nameID)", destination: AnyView(ChooseStartStateView()))
+            customCellButtonView("State \(viewModel.getStartState().nameID)", destination: AnyView(ChooseStartStateView()))
         }.padding()
             .frame(minWidth: 0, maxWidth: .infinity)
             .background(Color.background)
