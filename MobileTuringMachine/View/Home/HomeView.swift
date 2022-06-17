@@ -43,7 +43,9 @@ struct HomeView: View {
             }
             .onChange(of: isChanged) { _ in
                 if isChanged {
-                    showSettings = false
+                    withAnimation {
+                        showSettings = false
+                    }
                 }
             }
         }.navigationViewStyle(.stack)

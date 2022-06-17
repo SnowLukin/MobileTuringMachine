@@ -63,8 +63,8 @@ extension PlayStack {
     
     private var playButton: some View {
         Button {
-            isChanged = true
             withAnimation {
+                isChanged = true
                 isPlaying.toggle()
             }
             autoPlay()
@@ -98,8 +98,10 @@ extension PlayStack {
     
     private var makeStepButton: some View {
         Button {
-            isChanged = true
-            makeStep()
+            withAnimation {
+                isChanged = true
+                makeStep()
+            }
         } label: {
             Image(systemName: "forward.frame.fill")
                 .font(.title2)
@@ -113,8 +115,10 @@ extension PlayStack {
     
     private var resetButton: some View {
         Button {
-            isChanged = false
-            viewModel.updateAllTapesComponents()
+            withAnimation {
+                isChanged = false
+                viewModel.updateAllTapesComponents()
+            }
         } label: {
             Image(systemName: "stop.fill")
                 .font(.title2)

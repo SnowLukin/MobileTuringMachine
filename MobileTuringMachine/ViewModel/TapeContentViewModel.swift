@@ -193,6 +193,7 @@ extension TapeContentViewModel {
     func updateAllTapesComponents() {
         for tapeIndex in 0..<tapes.count {
             updateComponents(tape: tapes[tapeIndex])
+            tapes[tapeIndex].headIndex = 0
         }
     }
     
@@ -397,8 +398,14 @@ extension TapeContentViewModel {
             }
         }
         
+        // Setting new start state
         DispatchQueue.main.async {
-            self.states[startStateIndex] = optionCombination.toState
+            self.states[startStateIndex].isStarting = false
+            guard let toStateIndex = self.states.firstIndex(where: { $0.id == optionCombination.toState.id }) else {
+                print("Error. Couldnt find index of toState.")
+                return
+            }
+            self.states[toStateIndex].isStarting = true
         }
     }
     
