@@ -117,7 +117,7 @@ extension PlayStack {
         Button {
             withAnimation {
                 isChanged = false
-                viewModel.updateAllTapesComponents()
+                viewModel.reset()
             }
         } label: {
             Image(systemName: "stop.fill")

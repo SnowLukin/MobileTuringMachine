@@ -10,7 +10,7 @@ import Foundation
 class TapeContentViewModel: ObservableObject {
     @Published var tapes: [Tape] = Data().tapes
     @Published var states: [StateQ] = [Data.shared]
-//    @Published var startState: StateQ = Data.shared
+    @Published var stateForReset: StateQ = Data.shared
 }
 
 // MARK: - States
@@ -47,6 +47,15 @@ extension TapeContentViewModel {
     // MARK: Remove
     func removeState(state: StateQ) {
         if let stateIndex = states.firstIndex(where: { $0.id == state.id }) {
+            // if state that is being deleted is a starting state
+            // before deleting we need to set different statring state
+            if states[stateIndex].isStarting {
+                if stateIndex == 0 {
+                    changeStartState(to: states[1])
+                } else {
+                    changeStartState(to: states[0])
+                }
+            }
             states.remove(at: stateIndex)
         }
     }
@@ -331,7 +340,7 @@ extension TapeContentViewModel {
     
     func getStartState() -> StateQ {
         guard let startStateIndex = states.firstIndex(where: { $0.isStarting }) else {
-            print("Couldnt find start state")
+            print("Error. Couldnt find start state: TapeContentViewModel, line 337")
             return states[0]
         }
         return states[startStateIndex]
@@ -345,12 +354,25 @@ extension TapeContentViewModel {
         states[startStateIndex].isStarting.toggle()
         guard let newStartStateIndex = states.firstIndex(where: { $0.id == state.id }) else { return }
         states[newStartStateIndex].isStarting.toggle()
+        stateForReset = states[newStartStateIndex]
     }
 }
 
 
 // MARK: - Magic
 extension TapeContentViewModel {
+    
+    func reset() {
+        updateAllTapesComponents()
+        for stateIndex in 0..<states.count {
+            states[stateIndex].isStarting = false
+        }
+        guard let startStateIndex = states.firstIndex(where: { $0.id == stateForReset.id }) else {
+            print("Error. Couldnt find startStateIndex for reset. TapeContentViewModel, line 365")
+            return
+        }
+        states[startStateIndex].isStarting.toggle()
+    }
     
     func makeStep() {
         var combination: [String] = []
@@ -361,11 +383,10 @@ extension TapeContentViewModel {
                 combination.append(tape.components[componentIndex].value)
             }
         }
-        print("combination: \(combination)")
         
         // Finding index of starting state
         guard let startStateIndex = states.firstIndex(where: { $0.isStarting }) else {
-            print("Error. Couldnt find start state")
+            print("Error. Couldnt find start state index: TapeContentViewModel, line 383")
             return
         }
         
@@ -374,14 +395,11 @@ extension TapeContentViewModel {
             print("Error. Couldnt find optionCombination")
             return
         }
-        print("optionCombination: \(optionCombination)")
         
         for index in 0..<combination.count {
             guard let componentIndex = tapes[index].components.firstIndex(where: { $0.id == tapes[index].headIndex }) else { return }
-            print("before: \(tapes[index].components[componentIndex].value)")
             DispatchQueue.main.async {
                 self.tapes[index].components[componentIndex].value = optionCombination.combinations[index].toCharacter
-                print("After: \(self.tapes[index].components[componentIndex].value)")
             }
             switch optionCombination.combinations[index].direction {
                 
@@ -400,12 +418,12 @@ extension TapeContentViewModel {
         
         // Setting new start state
         DispatchQueue.main.async {
-            self.states[startStateIndex].isStarting = false
+            self.states[startStateIndex].isStarting.toggle()
             guard let toStateIndex = self.states.firstIndex(where: { $0.id == optionCombination.toState.id }) else {
                 print("Error. Couldnt find index of toState.")
                 return
             }
-            self.states[toStateIndex].isStarting = true
+            self.states[toStateIndex].isStarting.toggle()
         }
     }
     
