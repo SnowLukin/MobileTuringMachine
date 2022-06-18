@@ -28,7 +28,8 @@ struct InputView: View {
             textfield
         }
         .onAppear {
-            text = purpose == .alphabet ? tape.alphabet : tape.input
+            let tapeVM = viewModel.getTape(tape: tape)
+            text = purpose == .alphabet ? tapeVM.alphabet : tapeVM.input
         }
     }
 }
