@@ -24,22 +24,17 @@ struct CombinationSettings: View {
 
         .navigationBarTitle("Tape \(tape.nameID) | Character: \(combination.character)")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button {
-                    // TODO: Pop to HomeView
-                } label: {
-                    Text("Done")
-                }
-            }
-        }
     }
 }
 
 struct CombinationSettings_Previews: PreviewProvider {
     static var previews: some View {
-        CombinationSettings(tape: Tape(nameID: 0, components: []), state: StateQ(nameID: 0, options: []), option: Option(toState: StateQ(nameID: 0, options: []), combinations: []), combination: Combination(character: "_", direction: .stay, toCharacter: "_"))
-            .environmentObject(TapeContentViewModel())
+        CombinationSettings(
+            tape: Tape(nameID: 0, components: []),
+            state: StateQ(nameID: 0, options: []),
+            option: Option(toState: StateQ(nameID: 0, options: []), combinations: []),
+            combination: Combination(character: "_", direction: .stay, toCharacter: "_")
+        ).environmentObject(TapeContentViewModel())
     }
 }
 

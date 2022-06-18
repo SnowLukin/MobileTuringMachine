@@ -10,6 +10,7 @@ import SwiftUI
 struct CombinationsListView: View {
     
     @EnvironmentObject private var viewModel: TapeContentViewModel
+    
     let state: StateQ
     
     var body: some View {
@@ -47,6 +48,6 @@ struct CombinationsListView_Previews: PreviewProvider {
                 ]
             )
         )
-            .environmentObject(TapeContentViewModel())
+        .environmentObject(TapeContentViewModel())
     }
 }

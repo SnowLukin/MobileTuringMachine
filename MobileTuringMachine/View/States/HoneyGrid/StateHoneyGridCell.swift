@@ -11,6 +11,7 @@ struct StateHoneyGridCell: View {
     
     @EnvironmentObject private var viewModel: TapeContentViewModel
     @Binding var isBeingEdited: Bool
+    
     let state: StateQ
     
     var body: some View {

@@ -12,6 +12,7 @@ struct StatesHoneyGrid: View {
     @EnvironmentObject private var viewModel: TapeContentViewModel
     @State var isBeingEdited: Bool = false
     @State private var rows: [[StateQ]] = []
+    
     let width = UIScreen.main.bounds.width - 30
     
     var body: some View {

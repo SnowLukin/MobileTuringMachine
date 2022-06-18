@@ -35,15 +35,6 @@ struct CombinationView: View {
             "Combination: \(option.combinations.map { $0.character }.joined(separator: ""))"
         )
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button {
-                    // TODO: Pop to HomeView
-                } label: {
-                    Text("Done")
-                }
-            }
-        }
     }
 }
 
@@ -52,13 +43,14 @@ struct CombinationView_Previews: PreviewProvider {
         CombinationView(
             state: StateQ(
                 nameID: 0,
-                options: []),
+                options: []
+            ),
             option: Option(
                 toState: StateQ(nameID: 0, options: []),
                 combinations: [Combination(character: "a", direction: .stay, toCharacter: "a")]
             )
         )
-            .environmentObject(TapeContentViewModel())
+        .environmentObject(TapeContentViewModel())
     }
 }
 
@@ -67,7 +59,11 @@ extension CombinationView {
         ForEach(option.combinations) { combination in
             NavigationLink {
                 CombinationSettings(
-                    tape: viewModel.getMatchingTape(state: state, option: option, combination: combination),
+                    tape: viewModel.getMatchingTape(
+                        state: state,
+                        option: option,
+                        combination: combination
+                    ),
                     state: state,
                     option: option,
                     combination: combination

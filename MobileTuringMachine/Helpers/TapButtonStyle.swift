@@ -11,6 +11,6 @@ import SwiftUI
 struct NoTapColorButtonStyle: ButtonStyle {
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
-            .background(configuration.isPressed ? Color.background : Color.background)
+            .background(configuration.isPressed ? Color.secondaryBackground : Color.secondaryBackground)
     }
 }
