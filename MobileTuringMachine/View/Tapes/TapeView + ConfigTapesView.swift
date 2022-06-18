@@ -52,7 +52,9 @@ extension TapeViewConfigTapesView {
     
     private var removeButton: some View {
         Button {
-            viewModel.removeTape(tape: tape)
+            withAnimation {
+                viewModel.removeTape(tape: tape)
+            }
         } label: {
             Text("Remove")
                 .animation(.easeInOut, value: !isConfigShown)

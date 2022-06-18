@@ -15,14 +15,15 @@ struct Tapes: View {
         ScrollView {
             ForEach(viewModel.tapes) { tape in
                 TapeSectionOpening(tape: tape)
-                    .transition(AnyTransition.scale.animation(.easeInOut))
             }
         }
         .navigationTitle("Tapes")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    viewModel.addTape()
+                    withAnimation {
+                        viewModel.addTape()
+                    }
                 } label: {
                     Image(systemName: "plus")
                 }

@@ -57,7 +57,9 @@ struct StateHoneyGridCell_Previews: PreviewProvider {
 extension StateHoneyGridCell {
     private var removeCircleButton: some View {
         Button {
-            viewModel.removeState(state: state)
+            withAnimation {
+                viewModel.removeState(state: state)
+            }
         } label: {
             Image(systemName: "minus.circle.fill")
                 .symbolRenderingMode(.multicolor)
