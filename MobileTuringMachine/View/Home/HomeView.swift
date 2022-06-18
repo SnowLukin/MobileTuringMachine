@@ -35,7 +35,7 @@ struct HomeView: View {
                         .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.3)))
                 }
             }
-            .navigationTitle("Home")
+            .navigationTitle("Turing Machine")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     infoButton
