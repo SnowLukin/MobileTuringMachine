@@ -10,8 +10,9 @@ import SwiftUI
 struct CombinationView: View {
     
     @EnvironmentObject private var viewModel: TapeContentViewModel
+    
     let state: StateQ
-    let option: OptionState
+    let option: Option
     
     var body: some View {
         List {
@@ -30,20 +31,38 @@ struct CombinationView: View {
                 combinationElements
             }
         }
-        .navigationBarTitle("Combination: \(option.combinations.map { $0.character }.joined(separator: ""))")
+        .navigationBarTitle(
+            "Combination: \(option.combinations.map { $0.character }.joined(separator: ""))"
+        )
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    // TODO: Pop to HomeView
+                } label: {
+                    Text("Done")
+                }
+            }
+        }
     }
 }
 
 struct CombinationView_Previews: PreviewProvider {
     static var previews: some View {
-        CombinationView(state: StateQ(nameID: 0, options: []), option: OptionState(toState: StateQ(nameID: 0, options: []), combinations: []))
+        CombinationView(
+            state: StateQ(
+                nameID: 0,
+                options: []),
+            option: Option(
+                toState: StateQ(nameID: 0, options: []),
+                combinations: [Combination(character: "a", direction: .stay, toCharacter: "a")]
+            )
+        )
             .environmentObject(TapeContentViewModel())
     }
 }
 
 extension CombinationView {
-    
     private var combinationElements: some View {
         ForEach(option.combinations) { combination in
             NavigationLink {

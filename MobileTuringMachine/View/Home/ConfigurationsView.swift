@@ -94,6 +94,7 @@ extension ConfigurationsView {
     
     // TODO: Get rid of AnyView
     private func customCellButtonView(_ text: String, destination: AnyView) -> some View {
+        
         NavigationLink {
             destination
         } label: {

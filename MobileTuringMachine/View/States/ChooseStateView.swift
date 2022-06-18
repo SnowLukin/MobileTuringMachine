@@ -11,7 +11,7 @@ struct ChooseStateView: View {
     
     @EnvironmentObject private var viewModel: TapeContentViewModel
     let state: StateQ
-    let option: OptionState
+    let option: Option
     
     var body: some View {
         List {
@@ -49,7 +49,7 @@ struct ChooseStateView: View {
 
 struct ChooseStateView_Previews: PreviewProvider {
     static var previews: some View {
-        ChooseStateView(state: StateQ(nameID: 0, options: []), option: OptionState(toState: StateQ(nameID: 0, options: []), combinations: []))
+        ChooseStateView(state: StateQ(nameID: 0, options: []), option: Option(toState: StateQ(nameID: 0, options: []), combinations: []))
             .environmentObject(TapeContentViewModel())
     }
 }

@@ -14,10 +14,10 @@ struct StateQ: Identifiable, Equatable {
     
     var id = UUID()
     var nameID: Int
-    var options: [OptionState]
+    var options: [Option]
     var isStarting: Bool
     
-    init(nameID: Int, options: [OptionState], isStarting: Bool = false) {
+    init(nameID: Int, options: [Option], isStarting: Bool = false) {
         self.nameID = nameID
         self.options = options
         self.isStarting = isStarting

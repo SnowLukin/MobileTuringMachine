@@ -23,14 +23,30 @@ struct CombinationsListView: View {
 
             }
         }
-        .navigationTitle("State \(state.nameID)")
-            .navigationBarTitleDisplayMode(.inline)
+        .navigationTitle("State \(state.nameID)'s combinations")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
 struct CombinationsListView_Previews: PreviewProvider {
     static var previews: some View {
-        CombinationsListView(state: StateQ(nameID: 0, options: []))
+        CombinationsListView(
+            state: StateQ(
+                nameID: 0,
+                options: [
+                    Option(
+                        toState: StateQ(nameID: 0, options: []),
+                        combinations: [
+                            Combination(
+                                character: "a",
+                                direction: .stay,
+                                toCharacter: "a"
+                            )
+                        ]
+                    )
+                ]
+            )
+        )
             .environmentObject(TapeContentViewModel())
     }
 }

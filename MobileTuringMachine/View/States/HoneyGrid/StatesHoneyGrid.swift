@@ -24,7 +24,6 @@ struct StatesHoneyGrid: View {
                                 .frame(width: (width - 20) / 3.2, height: 110)
                                 .shadow(radius: 5)
                                 .offset(x: getOffset(index: rowIndex))
-//                                .transition(.asymmetric(insertion: .scale, removal: .opacity))
                         }
                     }
                 }

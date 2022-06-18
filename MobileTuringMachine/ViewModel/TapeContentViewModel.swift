@@ -9,8 +9,8 @@ import Foundation
 
 class TapeContentViewModel: ObservableObject {
     @Published var tapes: [Tape] = Data().tapes
-    @Published var states: [StateQ] = [Data.shared]
-    @Published var stateForReset: StateQ = Data.shared
+    @Published var states: [StateQ] = [Data.startState]
+    @Published var stateForReset: StateQ = Data.startState
 }
 
 // MARK: - States
@@ -28,7 +28,7 @@ extension TapeContentViewModel {
         if let firstElement = arrayOfDifferentElements.first {
             // In case there ARE gaps between name ids
             var newState = StateQ(nameID: firstElement, options: [])
-            newState.options = getOptionStates(state: newState)
+            newState.options = getOptions(for: newState)
             if let indexToInsert = nameIDArray.firstIndex(where: { firstElement < $0 }) {
                 states.insert(newState, at: indexToInsert)
             } else {
@@ -39,7 +39,7 @@ extension TapeContentViewModel {
             // In case there ARE NO gaps between name ids
             guard let endElement = states.last else { return }
             var newState = StateQ(nameID: endElement.nameID + 1, options: [])
-            newState.options = getOptionStates(state: newState)
+            newState.options = getOptions(for: newState)
             states.append(newState)
         }
     }
@@ -63,7 +63,7 @@ extension TapeContentViewModel {
     // MARK: Update
     func updateStates() {
         for index in 0..<states.count {
-            states[index].options = getOptionStates(state: states[index])
+            states[index].options = getOptions(for: states[index])
         }
     }
     
@@ -87,7 +87,7 @@ extension TapeContentViewModel {
         }
     }
     
-    func getOptionStates(state: StateQ) -> [OptionState] {
+    func getOptions(for state: StateQ) -> [Option] {
         var alphabets: [[String]] = []
         for tape in tapes {
             var tapeAlphabet = tape.alphabet.map { String($0) }
@@ -97,10 +97,10 @@ extension TapeContentViewModel {
         var combinations: [[String]] = []
         getCombinations(array: alphabets, word: [], currentArrayIndex: 0, result: &combinations)
         
-        var optionStates: [OptionState] = []
+        var optionStates: [Option] = []
         for combinationIndex in 0..<combinations.count {
             optionStates.append(
-                OptionState(
+                Option(
                     toState: state,
                     combinations: getCombinationsTuple(combinations: combinations[combinationIndex])
                 )
@@ -223,13 +223,13 @@ extension TapeContentViewModel {
 
 // MARK: - ChooseStateView
 extension TapeContentViewModel {
-    func updateOptionToState(state: StateQ, option: OptionState, currentState: StateQ) {
+    func updateOptionToState(state: StateQ, option: Option, currentState: StateQ) {
         guard let stateIndex = states.firstIndex(where: { $0.id == state.id }) else { return }
         guard let optionIndex = states[stateIndex].options.firstIndex(where: { $0.id == option.id }) else { return }
         states[stateIndex].options[optionIndex].toState = currentState
     }
     
-    func isChosenToState(state: StateQ, option: OptionState, currentState: StateQ) -> Bool {
+    func isChosenToState(state: StateQ, option: Option, currentState: StateQ) -> Bool {
         guard let stateIndex = states.firstIndex(where: { $0.id == state.id }) else { return false }
         guard let optionIndex = states[stateIndex].options.firstIndex(where: { $0.id == option.id }) else { return false }
         return states[stateIndex].options[optionIndex].toState.id == currentState.id
@@ -238,7 +238,7 @@ extension TapeContentViewModel {
 
 // MARK: - CombinationView
 extension TapeContentViewModel {
-    func getMatchingTape(state: StateQ, option: OptionState, combination: Combination) -> Tape {
+    func getMatchingTape(state: StateQ, option: Option, combination: Combination) -> Tape {
         guard let stateIndex = states.firstIndex(where: { $0.id == state.id }) else { return tapes[0] }
         guard let optionIndex = states[stateIndex].options.firstIndex(where: { $0.id == option.id }) else { return tapes[0] }
         guard let combinationIndex = states[stateIndex].options[optionIndex].combinations.firstIndex(
@@ -247,7 +247,7 @@ extension TapeContentViewModel {
         return tapes[combinationIndex]
     }
     
-    func getOptionToState(state: StateQ, option: OptionState) -> Int {
+    func getOptionToState(state: StateQ, option: Option) -> Int {
         guard let stateIndex = states.firstIndex(where: { $0.id == state.id }) else { return 0 }
         guard let optionIndex = states[stateIndex].options.firstIndex(where: { $0.id == option.id }) else { return 0 }
         return states[stateIndex].options[optionIndex].toState.nameID
@@ -256,7 +256,7 @@ extension TapeContentViewModel {
 
 extension TapeContentViewModel {
     
-    func getCombination(state: StateQ, option: OptionState, combination: Combination) -> Combination? {
+    func getCombination(state: StateQ, option: Option, combination: Combination) -> Combination? {
         guard let stateIndex = states.firstIndex(where: { $0.id == state.id }) else { return nil }
         guard let optionIndex = states[stateIndex].options.firstIndex(
             where: { $0.id == option.id }
@@ -268,7 +268,7 @@ extension TapeContentViewModel {
         return states[stateIndex].options[optionIndex].combinations[combinationIndex]
     }
     
-    func updateCombinationToChar(state: StateQ, option: OptionState, combination: Combination, alphabetElement: String) {
+    func updateCombinationToChar(state: StateQ, option: Option, combination: Combination, alphabetElement: String) {
         guard let stateIndex = states.firstIndex(where: { $0.id == state.id }) else { return }
         guard let optionIndex = states[stateIndex].options.firstIndex(
             where: { $0.id == option.id }
@@ -280,7 +280,7 @@ extension TapeContentViewModel {
         states[stateIndex].options[optionIndex].combinations[combinationIndex].toCharacter = alphabetElement
     }
     
-    func updateCombinationDirection(state: StateQ, option: OptionState, combination: Combination, direction: Direction) {
+    func updateCombinationDirection(state: StateQ, option: Option, combination: Combination, direction: Direction) {
         guard let stateIndex = states.firstIndex(where: { $0.id == state.id }) else { return }
         guard let optionIndex = states[stateIndex].options.firstIndex(
             where: { $0.id == option.id }
@@ -292,7 +292,7 @@ extension TapeContentViewModel {
         states[stateIndex].options[optionIndex].combinations[combinationIndex].direction = direction
     }
     
-    func isChosenChar(state: StateQ, option: OptionState, tape: Tape, combination: Combination, alphabetElement: String) -> Bool {
+    func isChosenChar(state: StateQ, option: Option, tape: Tape, combination: Combination, alphabetElement: String) -> Bool {
         guard let stateIndex = states.firstIndex(where: { $0.id == state.id }) else { return false }
         guard let optionIndex = states[stateIndex].options.firstIndex(
             where: { $0.id == option.id }
@@ -307,7 +307,7 @@ extension TapeContentViewModel {
         return states[stateIndex].options[optionIndex].combinations[combinationIndex].toCharacter == tapes[tapeIndex].alphabetArray[alphabetElementIndex]
     }
     
-    func isChosenDirection(state: StateQ, option: OptionState, tape: Tape, combination: Combination, direction: Direction) -> Bool {
+    func isChosenDirection(state: StateQ, option: Option, tape: Tape, combination: Combination, direction: Direction) -> Bool {
         guard let stateIndex = states.firstIndex(where: { $0.id == state.id }) else { return false }
         guard let optionIndex = states[stateIndex].options.firstIndex(
             where: { $0.id == option.id }

@@ -9,13 +9,13 @@ import Foundation
 
 class Data {
     
-    static let shared = Data().startState
+    static let startState = Data().state
     
     var tapes: [Tape] {
         [Tape(nameID: 0, components: getComponents())]
     }
     
-    var startState: StateQ {
+    var state: StateQ {
         var newState = StateQ(nameID: 0, options: [], isStarting: true)
         newState.options = getOptionStates(state: newState)
         return newState
@@ -55,7 +55,7 @@ class Data {
         }
     }
     
-    func getOptionStates(state: StateQ) -> [OptionState] {
+    func getOptionStates(state: StateQ) -> [Option] {
         var alphabets: [[String]] = []
         for tape in tapes {
             var tapeAlphabet = tape.alphabet.map { String($0) }
@@ -65,10 +65,10 @@ class Data {
         var combinations: [[String]] = []
         getCombinations(array: alphabets, word: [], currentArrayIndex: 0, result: &combinations)
         
-        var optionStates: [OptionState] = []
+        var optionStates: [Option] = []
         for combinationIndex in 0..<combinations.count {
             optionStates.append(
-                OptionState(
+                Option(
                     toState: state,
                     combinations: getCombinationsTuple(combinations: combinations[combinationIndex])
                 )

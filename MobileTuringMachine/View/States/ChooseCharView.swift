@@ -13,7 +13,7 @@ struct ChooseCharView: View {
     
     let tape: Tape
     let state: StateQ
-    let option: OptionState
+    let option: Option
     let combination: Combination
     
     var body: some View {
@@ -57,7 +57,7 @@ struct ChooseCharView: View {
 
 struct ChooseCharView_Previews: PreviewProvider {
     static var previews: some View {
-        ChooseCharView(tape: Tape(nameID: 0, components: []), state: StateQ(nameID: 0, options: []), option: OptionState(toState: StateQ(nameID: 0, options: []), combinations: []), combination: Combination(character: "_", direction: .stay, toCharacter: "_"))
+        ChooseCharView(tape: Tape(nameID: 0, components: []), state: StateQ(nameID: 0, options: []), option: Option(toState: StateQ(nameID: 0, options: []), combinations: []), combination: Combination(character: "_", direction: .stay, toCharacter: "_"))
             .environmentObject(TapeContentViewModel())
     }
 }

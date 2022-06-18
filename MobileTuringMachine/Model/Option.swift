@@ -13,7 +13,7 @@ enum Direction: String, CaseIterable {
     case right = "arrow.right"
 }
 
-struct OptionState: Identifiable {
+struct Option: Identifiable {
     let id = UUID()
     var toState: StateQ
     var combinations: [Combination]

@@ -14,7 +14,7 @@ struct ChooseDirectionView: View {
     
     let tape: Tape
     let state: StateQ
-    let option: OptionState
+    let option: Option
     let combination: Combination
     
     var body: some View {
@@ -59,7 +59,7 @@ struct ChooseDirectionView: View {
 
 struct ChooseDirectionView_Previews: PreviewProvider {
     static var previews: some View {
-        ChooseDirectionView(tape: Tape(nameID: 0, components: []), state: StateQ(nameID: 0, options: []), option: OptionState(toState: StateQ(nameID: 0, options: []), combinations: []), combination: Combination(character: "_", direction: .stay, toCharacter: "_"))
+        ChooseDirectionView(tape: Tape(nameID: 0, components: []), state: StateQ(nameID: 0, options: []), option: Option(toState: StateQ(nameID: 0, options: []), combinations: []), combination: Combination(character: "_", direction: .stay, toCharacter: "_"))
             .environmentObject(TapeContentViewModel())
     }
 }
