@@ -11,6 +11,16 @@ class TapeContentViewModel: ObservableObject {
     @Published var tapes: [Tape] = Data().tapes
     @Published var states: [StateQ] = [Data.startState]
     @Published var stateForReset: StateQ = Data.startState
+    
+    let tapesKey: String = "tapes_data_key"
+    
+    required init() {
+        if let storedTapes = DataManager.shared.getStorage(for: tapesKey) {
+            tapes = storedTapes
+        } else {
+            
+        }
+    }
 }
 
 // MARK: - States
