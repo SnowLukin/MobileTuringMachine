@@ -7,20 +7,20 @@
 
 import Foundation
 
-enum Direction: String, CaseIterable {
+enum Direction: String, CaseIterable, Codable {
     case stay = "arrow.counterclockwise"
     case left = "arrow.left"
     case right = "arrow.right"
 }
 
-struct Option: Identifiable {
-    let id = UUID()
+struct Option: Identifiable, Codable {
+    var id = UUID()
     var toState: StateQ
     var combinations: [Combination]
 }
 
-struct Combination: Identifiable {
-    let id = UUID()
+struct Combination: Identifiable, Codable {
+    var id = UUID()
     var character: String
     var direction: Direction
     var toCharacter: String

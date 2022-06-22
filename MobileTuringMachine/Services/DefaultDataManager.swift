@@ -1,5 +1,5 @@
 //
-//  Data.swift
+//  DefaultData.swift
 //  MobileTuringMachine
 //
 //  Created by Snow Lukin on 16.06.2022.
@@ -7,19 +7,22 @@
 
 import Foundation
 
-class Data {
+class DefaultData {
     
-    static let startState = Data().state
+    static let shared = DefaultData()
     
-    var tapes: [Tape] {
+    lazy var tapes: [Tape] = {
         [Tape(nameID: 0, components: getComponents())]
-    }
-    
-    var state: StateQ {
+    }()
+    lazy var state: StateQ = {
         var newState = StateQ(nameID: 0, options: [], isStarting: true)
         newState.options = getOptionStates(state: newState)
         return newState
-    }
+    }()
+    
+    lazy var algorithm: Algorithm = {
+        Algorithm(name: "New Algorithm", tapes: tapes, states: [state], stateForReset: state)
+    }()
     
     // MARK: Components
     func getComponents() -> [TapeContent] {

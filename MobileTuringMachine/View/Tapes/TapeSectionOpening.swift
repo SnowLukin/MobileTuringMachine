@@ -9,11 +9,11 @@ import SwiftUI
 
 struct TapeSectionOpening: View {
     
-    @EnvironmentObject private var viewModel: TapeContentViewModel
-    
+    @EnvironmentObject private var viewModel: AlgorithmViewModel
     @State private var isOpened = false
     
     let tape: Tape
+    let algorithm: Algorithm
     
     var body: some View {
         ZStack {
@@ -37,7 +37,7 @@ struct TapeSectionOpening: View {
                 .padding([.leading, .trailing], 30)
                 
                 if isOpened {
-                    TapeViewConfigTapesView(tape: tape)
+                    TapeViewConfigTapesView(tape: tape, algorithm: algorithm)
                         .shadow(radius: 5)
                         .padding(.bottom)
                 }
@@ -51,7 +51,7 @@ struct TapeSectionOpening: View {
 
 struct TapeSectionOpening_Previews: PreviewProvider {
     static var previews: some View {
-        TapeSectionOpening(tape: Tape(nameID: 0, components: [TapeContent(id: 0)]))
-            .environmentObject(TapeContentViewModel())
+        TapeSectionOpening(tape: Tape(nameID: 0, components: [TapeContent(id: 0)]), algorithm: Algorithm(name: "New Algorithm", tapes: [], states: [], stateForReset: StateQ(nameID: 0, options: [])))
+            .environmentObject(AlgorithmViewModel())
     }
 }

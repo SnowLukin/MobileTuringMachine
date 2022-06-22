@@ -9,14 +9,16 @@ import SwiftUI
 
 struct TapesWorkView: View {
     
-    @EnvironmentObject private var viewModel: TapeContentViewModel
+    @EnvironmentObject private var viewModel: AlgorithmViewModel
+    
+    let algorithm: Algorithm
     
     var body: some View {
         ScrollView {
-            ForEach(viewModel.tapes) { tape in
+            ForEach(viewModel.getAlgorithm(algorithm).tapes) { tape in
                 VStack(spacing: 0) {
                     setTapeNameText(tapeID: tape.nameID)
-                    TapeView(tape: tape)
+                    TapeView(tape: tape, algorithm: algorithm)
                         .padding([.leading, .trailing])
                 }
             }
@@ -26,8 +28,8 @@ struct TapesWorkView: View {
 
 struct TapesWorkView_Previews: PreviewProvider {
     static var previews: some View {
-        TapesWorkView()
-            .environmentObject(TapeContentViewModel())
+        TapesWorkView(algorithm: Algorithm(name: "New Algorithm", tapes: [], states: [], stateForReset: StateQ(nameID: 0, options: [])))
+            .environmentObject(AlgorithmViewModel())
     }
 }
 

@@ -9,10 +9,11 @@ import SwiftUI
 
 struct StatesHoneyGrid: View {
     
-    @EnvironmentObject private var viewModel: TapeContentViewModel
+    @EnvironmentObject private var viewModel: AlgorithmViewModel
     @State var isBeingEdited: Bool = false
     @State private var rows: [[StateQ]] = []
     
+    let algorithm: Algorithm
     let width = UIScreen.main.bounds.width - 30
     
     var body: some View {
@@ -21,7 +22,7 @@ struct StatesHoneyGrid: View {
                 ForEach(rows.indices, id: \.self) { rowIndex in
                     HStack(spacing: 10) {
                         ForEach(rows[rowIndex]) { state in
-                            StateHoneyGridCell(isBeingEdited: $isBeingEdited, state: state)
+                            StateHoneyGridCell(isBeingEdited: $isBeingEdited, state: state, algorithm: algorithm)
                                 .frame(width: (width - 20) / 3.2, height: 110)
                                 .shadow(radius: 5)
                                 .offset(x: getOffset(index: rowIndex))
@@ -37,7 +38,7 @@ struct StatesHoneyGrid: View {
                 generateHoney()
             }
         }
-        .onChange(of: viewModel.states, perform: { newValue in
+        .onChange(of: viewModel.getAlgorithm(algorithm).states, perform: { newValue in
             withAnimation {
                 generateHoney()
             }
@@ -47,7 +48,7 @@ struct StatesHoneyGrid: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
                     withAnimation {
-                        viewModel.addState()
+                        viewModel.addState(for: algorithm)
                     }
                 } label: {
                     Image(systemName: "plus")
@@ -69,8 +70,8 @@ struct StatesHoneyGrid: View {
 
 struct StatesHoneyGrid_Previews: PreviewProvider {
     static var previews: some View {
-        StatesHoneyGrid()
-            .environmentObject(TapeContentViewModel())
+        StatesHoneyGrid(algorithm: Algorithm(name: "New Algorithm", tapes: [], states: [], stateForReset: StateQ(nameID: 0, options: [])))
+            .environmentObject(AlgorithmViewModel())
     }
 }
 
@@ -99,7 +100,7 @@ extension StatesHoneyGrid {
         var count = 0
         
         var generated: [StateQ] = []
-        for state in viewModel.states {
+        for state in viewModel.getAlgorithm(algorithm).states {
             generated.append(state)
             
             if generated.count == 2 {
@@ -126,7 +127,7 @@ extension StatesHoneyGrid {
             
             count += 1
             // for exhaust data or single data
-            if count == viewModel.states.count && !generated.isEmpty {
+            if count == viewModel.getAlgorithm(algorithm).states.count && !generated.isEmpty {
                 rows.append(generated)
             }
         }

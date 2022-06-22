@@ -1,34 +1,35 @@
 //
-//  HomeView.swift
+//  AlgorithmView.swift
 //  MobileTuringMachine
 //
-//  Created by Snow Lukin on 06.06.2022.
+//  Created by Snow Lukin on 22.06.2022.
 //
 
 import SwiftUI
 
-struct HomeView: View {
-    
-    @EnvironmentObject private var viewModel: TapeContentViewModel
+struct AlgorithmView: View {
+    @EnvironmentObject private var viewModel: AlgorithmViewModel
     @State private var isChanged = false
     @State private var showSettings = false
     @State private var showInfo = false
+    
+    let algorithm: Algorithm
     
     var body: some View {
         NavigationView {
             ZStack {
                 VStack {
-                    ConfigurationsView(showSettings: $showSettings)
+                    ConfigurationsView(showSettings: $showSettings, algorithm: algorithm)
                         .disabled(isChanged)
                     if isChanged {
                         Text("Reset to enable configurations")
                             .font(.body)
                             .foregroundColor(.red)
                     }
-                    TapesWorkView()
+                    TapesWorkView(algorithm: algorithm)
                         .shadow(radius: 1)
                 }.zIndex(1)
-                PlayStack(isChanged: $isChanged).zIndex(2)
+                PlayStack(isChanged: $isChanged, algorithm: algorithm).zIndex(2)
                 
                 if showInfo {
                     infoPopup.zIndex(3)
@@ -53,14 +54,24 @@ struct HomeView: View {
     }
 }
 
-struct HomeView_Previews: PreviewProvider {
+struct AlgorithmView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView()
-            .environmentObject(TapeContentViewModel())
+        AlgorithmView(algorithm:
+                        Algorithm(
+                            name: "New Algorithm",
+                            tapes: [],
+                            states: [],
+                            stateForReset:
+                                StateQ(
+                                    nameID: 0,
+                                    options: []
+                                )
+                        )
+        )
     }
 }
 
-extension HomeView {
+extension AlgorithmView {
     
     private var infoButton: some View {
         Button {

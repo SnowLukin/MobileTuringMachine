@@ -9,8 +9,9 @@ import SwiftUI
 
 struct ChooseCharView: View {
     
-    @EnvironmentObject private var viewModel: TapeContentViewModel
+    @EnvironmentObject private var viewModel: AlgorithmViewModel
     
+    let algorithm: Algorithm
     let tape: Tape
     let state: StateQ
     let option: Option
@@ -21,6 +22,7 @@ struct ChooseCharView: View {
             ForEach(tape.alphabetArray, id: \.self) { alphabetElement in
                 Button {
                     viewModel.updateCombinationToChar(
+                        algorithm: algorithm,
                         state: state,
                         option: option,
                         combination: combination,
@@ -32,6 +34,7 @@ struct ChooseCharView: View {
                             .foregroundColor(.primary)
                         Spacer()
                         if viewModel.isChosenChar(
+                            algorithm: algorithm,
                             state: state,
                             option: option,
                             tape: tape,
@@ -57,7 +60,19 @@ struct ChooseCharView: View {
 
 struct ChooseCharView_Previews: PreviewProvider {
     static var previews: some View {
-        ChooseCharView(tape: Tape(nameID: 0, components: []), state: StateQ(nameID: 0, options: []), option: Option(toState: StateQ(nameID: 0, options: []), combinations: []), combination: Combination(character: "_", direction: .stay, toCharacter: "_"))
-            .environmentObject(TapeContentViewModel())
+        ChooseCharView(
+            algorithm:
+                Algorithm(
+                    name: "New Algorithm",
+                    tapes: [],
+                    states: [],
+                    stateForReset: StateQ(nameID: 0, options: [])
+                ),
+            tape: Tape(nameID: 0, components: []),
+            state: StateQ(nameID: 0, options: []),
+            option: Option(toState: StateQ(nameID: 0, options: []), combinations: []),
+            combination: Combination(character: "_", direction: .stay, toCharacter: "_")
+        )
+        .environmentObject(AlgorithmViewModel())
     }
 }

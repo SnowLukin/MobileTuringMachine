@@ -9,19 +9,19 @@ import SwiftUI
 
 struct CombinationsListView: View {
     
-    @EnvironmentObject private var viewModel: TapeContentViewModel
+    @EnvironmentObject private var viewModel: AlgorithmViewModel
     
+    let algorithm: Algorithm
     let state: StateQ
     
     var body: some View {
         List {
             ForEach(state.options) { option in
                 NavigationLink {
-                    CombinationView(state: state, option: option)
+                    CombinationView(algorithm: algorithm, state: state, option: option)
                 } label: {
                     Text("\(option.combinations.map { $0.character }.joined(separator: ""))")
                 }
-
             }
         }
         .navigationTitle("State \(state.nameID)'s combinations")
@@ -32,6 +32,13 @@ struct CombinationsListView: View {
 struct CombinationsListView_Previews: PreviewProvider {
     static var previews: some View {
         CombinationsListView(
+            algorithm:
+                Algorithm(
+                    name: "New Algorithm",
+                    tapes: [],
+                    states: [],
+                    stateForReset: StateQ(nameID: 0, options: [])
+                ),
             state: StateQ(
                 nameID: 0,
                 options: [
@@ -48,6 +55,6 @@ struct CombinationsListView_Previews: PreviewProvider {
                 ]
             )
         )
-        .environmentObject(TapeContentViewModel())
+        .environmentObject(AlgorithmViewModel())
     }
 }

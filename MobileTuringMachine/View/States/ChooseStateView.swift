@@ -9,15 +9,18 @@ import SwiftUI
 
 struct ChooseStateView: View {
     
-    @EnvironmentObject private var viewModel: TapeContentViewModel
+    @EnvironmentObject private var viewModel: AlgorithmViewModel
+    
+    let algorithm: Algorithm
     let state: StateQ
     let option: Option
     
     var body: some View {
         List {
-            ForEach(viewModel.states) { currentState in
+            ForEach(viewModel.getAlgorithm(algorithm).states) { currentState in
                 Button {
                     viewModel.updateOptionToState(
+                        algorithm: algorithm,
                         state: state,
                         option: option,
                         currentState: currentState
@@ -28,6 +31,7 @@ struct ChooseStateView: View {
                             .foregroundColor(.primary)
                         Spacer()
                         if viewModel.isChosenToState(
+                            algorithm: algorithm,
                             state: state,
                             option: option,
                             currentState: currentState
@@ -49,7 +53,7 @@ struct ChooseStateView: View {
 
 struct ChooseStateView_Previews: PreviewProvider {
     static var previews: some View {
-        ChooseStateView(state: StateQ(nameID: 0, options: []), option: Option(toState: StateQ(nameID: 0, options: []), combinations: []))
-            .environmentObject(TapeContentViewModel())
+        ChooseStateView(algorithm: Algorithm(name: "New Algorithm", tapes: [], states: [], stateForReset: StateQ(nameID: 0, options: [])), state: StateQ(nameID: 0, options: []), option: Option(toState: StateQ(nameID: 0, options: []), combinations: []))
+            .environmentObject(AlgorithmViewModel())
     }
 }

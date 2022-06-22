@@ -9,12 +9,13 @@ import SwiftUI
 
 struct Tapes: View {
     
-    @EnvironmentObject private var viewModel: TapeContentViewModel
+    @EnvironmentObject private var viewModel: AlgorithmViewModel
+    let algorithm: Algorithm
     
     var body: some View {
         ScrollView {
-            ForEach(viewModel.tapes) { tape in
-                TapeSectionOpening(tape: tape)
+            ForEach(viewModel.getAlgorithm(algorithm).tapes) { tape in
+                TapeSectionOpening(tape: tape, algorithm: algorithm)
             }
         }
         .navigationTitle("Tapes")
@@ -22,7 +23,7 @@ struct Tapes: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
                     withAnimation {
-                        viewModel.addTape()
+                        viewModel.addTape(to: algorithm)
                     }
                 } label: {
                     Image(systemName: "plus")
@@ -34,7 +35,7 @@ struct Tapes: View {
 
 struct Tapes_Previews: PreviewProvider {
     static var previews: some View {
-        Tapes()
-            .environmentObject(TapeContentViewModel())
+        Tapes(algorithm: Algorithm(name: "New Algorithm", tapes: [], states: [], stateForReset: StateQ(nameID: 0, options: [])))
+            .environmentObject(AlgorithmViewModel())
     }
 }

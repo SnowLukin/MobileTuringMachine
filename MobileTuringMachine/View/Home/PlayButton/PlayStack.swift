@@ -9,10 +9,12 @@ import SwiftUI
 
 struct PlayStack: View {
     
-    @EnvironmentObject private var viewModel: TapeContentViewModel
+    @EnvironmentObject private var viewModel: AlgorithmViewModel
     @State private var isPlaying: Bool = false
     @State private var isPlayOptionOn: Bool = false
     @Binding var isChanged: Bool
+    
+    let algorithm: Algorithm
     
     var body: some View {
         VStack {
@@ -38,8 +40,8 @@ struct PlayStack: View {
 struct PlayStack_Previews: PreviewProvider {
     static var previews: some View {
         StatefulPreviewWrapper(true) {
-            PlayStack(isChanged: $0)
-                .environmentObject(TapeContentViewModel())
+            PlayStack(isChanged: $0, algorithm: Algorithm(name: "New Algorithm", tapes: [], states: [], stateForReset: StateQ(nameID: 0, options: [])))
+                .environmentObject(AlgorithmViewModel())
         }
     }
 }
@@ -49,7 +51,7 @@ extension PlayStack {
     private func autoPlay() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             if isPlaying {
-                viewModel.makeStep()
+                viewModel.makeStep(algorithm: algorithm)
                 autoPlay()
             }
         }
@@ -57,7 +59,7 @@ extension PlayStack {
     
     private func makeStep() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-            viewModel.makeStep()
+            viewModel.makeStep(algorithm: algorithm)
         }
     }
     
@@ -117,7 +119,7 @@ extension PlayStack {
         Button {
             withAnimation {
                 isChanged = false
-                viewModel.reset()
+                viewModel.reset(algorithm: algorithm)
             }
         } label: {
             Image(systemName: "stop.fill")

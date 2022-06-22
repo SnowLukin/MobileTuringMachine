@@ -9,11 +9,11 @@ import SwiftUI
 
 struct TapeViewConfigTapesView: View {
     
-    @EnvironmentObject private var viewModel: TapeContentViewModel
-    
+    @EnvironmentObject private var viewModel: AlgorithmViewModel
     @State private var isConfigShown = false
     
     let tape: Tape
+    let algorithm: Algorithm
     
     var body: some View {
         ZStack {
@@ -25,7 +25,7 @@ struct TapeViewConfigTapesView: View {
                             Spacer()
                         }
                         if isConfigShown {
-                            ConfigTapesView(tape: tape)
+                            ConfigTapesView(tape: tape, algorithm: algorithm)
                                 .padding(.bottom)
                         }
                         configButton
@@ -33,7 +33,7 @@ struct TapeViewConfigTapesView: View {
                             .padding(.bottom, 5)
                     }
                 }
-                TapeView(tape: tape)
+                TapeView(tape: tape, algorithm: algorithm)
             }.padding(.horizontal)
         }
     }
@@ -42,9 +42,9 @@ struct TapeViewConfigTapesView: View {
 
 struct TapeViewConfigTapesView_Previews: PreviewProvider {
     static var previews: some View {
-        TapeViewConfigTapesView(tape: Tape(nameID: 0, components: [TapeContent(id: 0)]))
+        TapeViewConfigTapesView(tape: Tape(nameID: 0, components: [TapeContent(id: 0)]), algorithm: Algorithm(name: "New Algorithm", tapes: [], states: [], stateForReset: StateQ(nameID: 0, options: [])))
             .preferredColorScheme(.dark)
-            .environmentObject(TapeContentViewModel())
+            .environmentObject(AlgorithmViewModel())
     }
 }
 
@@ -53,13 +53,13 @@ extension TapeViewConfigTapesView {
     private var removeButton: some View {
         Button {
             withAnimation {
-                viewModel.removeTape(tape: tape)
+                viewModel.removeTape(tape: tape, from: algorithm)
             }
         } label: {
             Text("Remove")
                 .animation(.easeInOut, value: !isConfigShown)
         }
-        .disabled(viewModel.tapes.count < 2)
+        .disabled(viewModel.getAlgorithm(algorithm).tapes.count < 2)
     }
     
     private var configButton: some View {

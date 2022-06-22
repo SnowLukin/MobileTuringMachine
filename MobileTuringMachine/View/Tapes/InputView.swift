@@ -14,12 +14,11 @@ struct InputView: View {
         case input
     }
     
-    @EnvironmentObject private var viewModel: TapeContentViewModel
-    
+    @EnvironmentObject private var viewModel: AlgorithmViewModel
     @State private var text = ""
     
     let tape: Tape
-    
+    let algorithm: Algorithm
     let purpose: Purpose
     
     var body: some View {
@@ -28,7 +27,7 @@ struct InputView: View {
             textfield
         }
         .onAppear {
-            let tapeVM = viewModel.getTape(tape: tape)
+            let tapeVM = viewModel.getTape(tape: tape, of: algorithm)
             text = purpose == .alphabet ? tapeVM.alphabet : tapeVM.input
         }
     }
@@ -36,8 +35,8 @@ struct InputView: View {
 
 struct InputView_Previews: PreviewProvider {
     static var previews: some View {
-        InputView(tape: Tape(nameID: 0, components: [TapeContent(id: 0)]), purpose: .alphabet)
-            .environmentObject(TapeContentViewModel())
+        InputView(tape: Tape(nameID: 0, components: [TapeContent(id: 0)]), algorithm: Algorithm(name: "New Algorithm", tapes: [], states: [], stateForReset: StateQ(nameID: 0, options: [])), purpose: .alphabet)
+            .environmentObject(AlgorithmViewModel())
             .padding()
             .preferredColorScheme(.dark)
     }
@@ -67,22 +66,22 @@ extension InputView {
     private func setNewInputValue() {
         // if not last
         guard let lastCharacter = text.popLast() else {
-            viewModel.setNewInput(text, tape: tape)
+            viewModel.setNewInput(text, tape: tape, algorithm: algorithm)
             return
         }
         
         // if new character is "space" change it to "_"
         if lastCharacter == " " {
             text.append("_")
-            viewModel.setNewInput(text, tape: tape)
+            viewModel.setNewInput(text, tape: tape, algorithm: algorithm)
             return
         }
         // if there is such character in alphabet - save it
         // otherwise delete it
-        if viewModel.getTape(tape: tape).alphabet.contains(lastCharacter) {
+        if viewModel.getTape(tape: tape, of: algorithm).alphabet.contains(lastCharacter) {
             text.append(lastCharacter)
         }
-        viewModel.setNewInput(text, tape: tape)
+        viewModel.setNewInput(text, tape: tape, algorithm: algorithm)
     }
     
     private func setNewAlphabetValue() {
@@ -98,6 +97,6 @@ extension InputView {
                 text.append(String(lastCharacter))
             }
         }
-        viewModel.setNewAlphabet(text, tape: tape)
+        viewModel.setNewAlphabet(text, tape: tape, algorithm: algorithm)
     }
 }

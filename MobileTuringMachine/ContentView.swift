@@ -9,10 +9,10 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @EnvironmentObject private var viewModel: TapeContentViewModel
+    @EnvironmentObject private var viewModel: AlgorithmViewModel
     
     var body: some View {
-        HomeView()
+        ListOfAlgorithms()
     }
 }
 
@@ -20,7 +20,7 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
             .preferredColorScheme(.dark)
-            .environmentObject(TapeContentViewModel())
+            .environmentObject(AlgorithmViewModel())
             
     }
 }

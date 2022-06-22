@@ -9,8 +9,9 @@ import SwiftUI
 
 struct CombinationSettings: View {
     
-    @EnvironmentObject private var viewModel: TapeContentViewModel
+    @EnvironmentObject private var viewModel: AlgorithmViewModel
     
+    let algorithm: Algorithm
     let tape: Tape
     let state: StateQ
     let option: Option
@@ -30,11 +31,19 @@ struct CombinationSettings: View {
 struct CombinationSettings_Previews: PreviewProvider {
     static var previews: some View {
         CombinationSettings(
+            algorithm:
+                Algorithm(
+                    name: "New Algorithm",
+                    tapes: [],
+                    states: [],
+                    stateForReset: StateQ(nameID: 0, options: [])
+                ),
             tape: Tape(nameID: 0, components: []),
             state: StateQ(nameID: 0, options: []),
             option: Option(toState: StateQ(nameID: 0, options: []), combinations: []),
             combination: Combination(character: "_", direction: .stay, toCharacter: "_")
-        ).environmentObject(TapeContentViewModel())
+        )
+        .environmentObject(AlgorithmViewModel())
     }
 }
 
@@ -44,12 +53,12 @@ extension CombinationSettings {
     private var characterSection: some View {
         Section(header: Text("Change to following character")) {
             NavigationLink {
-                ChooseCharView(tape: tape, state: state, option: option, combination: combination)
+                ChooseCharView(algorithm: algorithm, tape: tape, state: state, option: option, combination: combination)
             } label: {
                 HStack {
                     Text("Alphabet")
                     Spacer()
-                    Text(viewModel.getCombination(state: state, option: option, combination: combination)?.toCharacter ?? "Error")
+                    Text(viewModel.getCombination(algorithm: algorithm, state: state, option: option, combination: combination)?.toCharacter ?? "Error")
                 }
             }
         }
@@ -58,7 +67,7 @@ extension CombinationSettings {
     private var directionSection: some View {
         Section(header: Text("Move tape's head to following direction")) {
             NavigationLink {
-                ChooseDirectionView(tape: tape, state: state, option: option, combination: combination)
+                ChooseDirectionView(algorithm: algorithm, tape: tape, state: state, option: option, combination: combination)
             } label: {
                 HStack {
                     Text("Direction")
@@ -66,6 +75,7 @@ extension CombinationSettings {
                     Image(
                         systemName:
                             viewModel.getCombination(
+                                algorithm: algorithm,
                                 state: state,
                                 option: option,
                                 combination: combination

@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct ConfigurationsView: View {
-    @EnvironmentObject private var viewModel: TapeContentViewModel
+    @EnvironmentObject private var viewModel: AlgorithmViewModel
     @Binding var showSettings: Bool
+    
+    let algorithm: Algorithm
     
     var body: some View {
         VStack {
@@ -39,8 +41,8 @@ struct ConfigurationsView: View {
 struct ConfigurationsView_Previews: PreviewProvider {
     static var previews: some View {
         StatefulPreviewWrapper(true) {
-            ConfigurationsView(showSettings: $0)
-                .environmentObject(TapeContentViewModel())
+            ConfigurationsView(showSettings: $0, algorithm: Algorithm(name: "New Algorithm", tapes: [], states: [], stateForReset: StateQ(nameID: 0, options: [])))
+                .environmentObject(AlgorithmViewModel())
         }
     }
 }
@@ -57,7 +59,7 @@ extension ConfigurationsView {
     
     private var customCell: some View {
         VStack {
-            customCellButtonView("State \(viewModel.getStartState().nameID)", destination: AnyView(ChooseStartStateView()))
+            customCellButtonView("State \(viewModel.getStartState(of: algorithm).nameID)", destination: AnyView(ChooseStartStateView(algorithm: algorithm)))
         }.padding()
             .frame(minWidth: 0, maxWidth: .infinity)
             .background(Color.background)
@@ -67,12 +69,12 @@ extension ConfigurationsView {
     
     private var customTwoCells: some View {
         VStack(alignment: .leading, spacing: 7) {
-            customCellButtonView("Tapes", destination: AnyView(Tapes()))
+            customCellButtonView("Tapes", destination: AnyView(Tapes(algorithm: algorithm)))
                 .frame(minWidth: 0, maxWidth: .infinity)
                 .padding(.bottom, 5)
             Divider()
                 .padding(.leading)
-            customCellButtonView("States", destination: AnyView(StatesHoneyGrid()))
+            customCellButtonView("States", destination: AnyView(StatesHoneyGrid(algorithm: algorithm)))
                 .padding(.top, 5)
         }
         .padding()

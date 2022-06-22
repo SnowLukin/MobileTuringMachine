@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct MobileTuringMachineApp: App {
     
-    @StateObject private var viewModel = TapeContentViewModel()
+    @StateObject private var viewModel = AlgorithmViewModel()
     
     var body: some Scene {
         WindowGroup {

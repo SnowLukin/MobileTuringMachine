@@ -9,15 +9,16 @@ import SwiftUI
 
 struct ConfigTapesView: View {
     
-    @EnvironmentObject private var viewModel: TapeContentViewModel
+    @EnvironmentObject private var viewModel: AlgorithmViewModel
     
     let tape: Tape
+    let algorithm: Algorithm
     
     var body: some View {
         VStack {
             VStack {
-                InputView(tape: tape, purpose: .alphabet)
-                InputView(tape: tape, purpose: .input)
+                InputView(tape: tape, algorithm: algorithm, purpose: .alphabet)
+                InputView(tape: tape, algorithm: algorithm, purpose: .input)
             }
             .padding()
             .background(Color.background)
@@ -28,8 +29,8 @@ struct ConfigTapesView: View {
 
 struct ConfigTapesView_Previews: PreviewProvider {
     static var previews: some View {
-        ConfigTapesView(tape: Tape(nameID: 0, components: [TapeContent(id: 0)]))
+        ConfigTapesView(tape: Tape(nameID: 0, components: [TapeContent(id: 0)]), algorithm: Algorithm(name: "New Algorithm", tapes: [], states: [], stateForReset: StateQ(nameID: 0, options: [])))
             .preferredColorScheme(.dark)
-            .environmentObject(TapeContentViewModel())
+            .environmentObject(AlgorithmViewModel())
     }
 }

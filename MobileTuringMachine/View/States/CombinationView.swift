@@ -9,8 +9,9 @@ import SwiftUI
 
 struct CombinationView: View {
     
-    @EnvironmentObject private var viewModel: TapeContentViewModel
+    @EnvironmentObject private var viewModel: AlgorithmViewModel
     
+    let algorithm: Algorithm
     let state: StateQ
     let option: Option
     
@@ -18,12 +19,12 @@ struct CombinationView: View {
         List {
             Section {
                 NavigationLink {
-                    ChooseStateView(state: state, option: option)
+                    ChooseStateView(algorithm: algorithm, state: state, option: option)
                 } label: {
                     Text("Navigate to:")
                         .foregroundColor(.primary)
                     Spacer()
-                    Text("State \(viewModel.getOptionToState(state: state, option: option))")
+                    Text("State \(viewModel.getOptionToState(algorithm: algorithm, state: state, option: option))")
                         .foregroundColor(.gray)
                 }
             }
@@ -41,16 +42,20 @@ struct CombinationView: View {
 struct CombinationView_Previews: PreviewProvider {
     static var previews: some View {
         CombinationView(
-            state: StateQ(
-                nameID: 0,
-                options: []
-            ),
+            algorithm:
+                Algorithm(
+                    name: "New Algorithm",
+                    tapes: [],
+                    states: [],
+                    stateForReset: StateQ(nameID: 0, options: [])
+                ),
+            state: StateQ(nameID: 0, options: []),
             option: Option(
                 toState: StateQ(nameID: 0, options: []),
                 combinations: [Combination(character: "a", direction: .stay, toCharacter: "a")]
             )
         )
-        .environmentObject(TapeContentViewModel())
+        .environmentObject(AlgorithmViewModel())
     }
 }
 
@@ -59,7 +64,9 @@ extension CombinationView {
         ForEach(option.combinations) { combination in
             NavigationLink {
                 CombinationSettings(
+                    algorithm: algorithm,
                     tape: viewModel.getMatchingTape(
+                        algorithm: algorithm,
                         state: state,
                         option: option,
                         combination: combination
@@ -71,22 +78,22 @@ extension CombinationView {
             } label: {
                 HStack {
                     
-                    Text(viewModel.getCombination(state: state, option: option, combination: combination)?.character ?? "Error")
+                    Text(viewModel.getCombination(algorithm: algorithm, state: state, option: option, combination: combination)?.character ?? "Error")
                         .font(.title3)
                         .fontWeight(.semibold)
                         .foregroundColor(.primary)
                     
-                    Image(systemName: viewModel.getCombination(state: state, option: option, combination: combination)?.direction.rawValue ?? Direction.stay.rawValue)
+                    Image(systemName: viewModel.getCombination(algorithm: algorithm, state: state, option: option, combination: combination)?.direction.rawValue ?? Direction.stay.rawValue)
                         .font(.title3.bold())
                         .foregroundColor(.primary)
                     
-                    Text(viewModel.getCombination(state: state, option: option, combination: combination)?.toCharacter ?? "Error")
+                    Text(viewModel.getCombination(algorithm: algorithm, state: state, option: option, combination: combination)?.toCharacter ?? "Error")
                         .font(.title3)
                         .fontWeight(.semibold)
                         .foregroundColor(.primary)
                         
                     Divider()
-                    Text("Tape \(viewModel.getMatchingTape(state: state, option: option, combination: combination).nameID)")
+                    Text("Tape \(viewModel.getMatchingTape(algorithm: algorithm, state: state, option: option, combination: combination).nameID)")
                         .foregroundColor(Color.gray)
                 }
             }
