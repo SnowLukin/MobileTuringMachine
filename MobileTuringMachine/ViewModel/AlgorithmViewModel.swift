@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 class AlgorithmViewModel: ObservableObject {
     
@@ -14,6 +15,13 @@ class AlgorithmViewModel: ObservableObject {
             DataManager.shared.updateStorage(with: algorithms)
         }
     }
+    
+    static let fileExtension = "mtm"
+    
+    let tasksDocURL = URL(
+      fileURLWithPath: "PrioritizedTasks",
+      relativeTo: FileManager.documentsDirectoryURL
+    ).appendingPathExtension(fileExtension)
     
     required init() {
         if let savedAlgorithms = DataManager.shared.getStorage() {

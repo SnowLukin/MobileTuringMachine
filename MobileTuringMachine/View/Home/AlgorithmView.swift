@@ -14,6 +14,7 @@ struct AlgorithmView: View {
     @State private var showEditAlgorithmNameAlert = false
     @State private var algorithmNameText = ""
     @State private var showInfo = false
+    @State private var showExport = false
     
     let algorithm: Algorithm
     
@@ -47,7 +48,9 @@ struct AlgorithmView: View {
             
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    
+                    withAnimation {
+                        showExport.toggle()
+                    }
                 } label: {
                     Image(systemName: "square.and.arrow.up")
                 }
@@ -64,6 +67,18 @@ struct AlgorithmView: View {
                 withAnimation {
                     showSettings = false
                 }
+            }
+        }
+        .fileExporter(
+            isPresented: $showExport,
+            document: DocumentManager(algorithm: viewModel.getAlgorithm(algorithm)),
+            contentType: .data
+        ) { result in
+            switch result {
+            case .success:
+                print("Saccessed")
+            case .failure:
+                print("Error")
             }
         }
     }

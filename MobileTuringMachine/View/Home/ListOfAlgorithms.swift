@@ -11,6 +11,7 @@ struct ListOfAlgorithms: View {
     
     @EnvironmentObject private var viewModel: AlgorithmViewModel
     @State private var showInfo = false
+    @State private var openFile = false
     
     var body: some View {
         NavigationView {
@@ -62,6 +63,17 @@ struct ListOfAlgorithms: View {
             }
         }
         .navigationViewStyle(.stack)
+//        .fileImporter(isPresented: $openFile, allowedContentTypes: [.data], allowsMultipleSelection: false) { result in
+//            do {
+//                guard let selectedFile: URL = try result.get().first else { return }
+//                guard let data = try? JSONDecoder().decode(Algorithm.self, from: selectedFile) else { return }
+//                guard let message = String(data: try Data(contentsOf: selectedFile), encoding: .utf8) else { return }
+//                
+//                document.message = message
+//            } catch {
+//                
+//            }
+//        }
     }
 }
 
