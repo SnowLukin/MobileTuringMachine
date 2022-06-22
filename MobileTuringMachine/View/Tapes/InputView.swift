@@ -35,7 +35,7 @@ struct InputView: View {
 
 struct InputView_Previews: PreviewProvider {
     static var previews: some View {
-        InputView(tape: Tape(nameID: 0, components: [TapeContent(id: 0)]), algorithm: Algorithm(name: "New Algorithm", tapes: [], states: [], stateForReset: StateQ(nameID: 0, options: [])), purpose: .alphabet)
+        InputView(tape: Tape(nameID: 0, components: [TapeComponent(id: 0)]), algorithm: Algorithm(name: "New Algorithm", tapes: [], states: [], stateForReset: StateQ(nameID: 0, options: [])), purpose: .alphabet)
             .environmentObject(AlgorithmViewModel())
             .padding()
             .preferredColorScheme(.dark)

@@ -18,7 +18,7 @@ struct Tape: Identifiable, Equatable, Hashable, Codable {
     var alphabet: String = ""
     var input: String = ""
     var headIndex = 0
-    var components: [TapeContent]
+    var components: [TapeComponent]
     
     var alphabetArray: [String] {
         var result = alphabet.map { String($0) }

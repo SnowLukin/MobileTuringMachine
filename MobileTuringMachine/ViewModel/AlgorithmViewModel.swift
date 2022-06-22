@@ -195,7 +195,7 @@ extension AlgorithmViewModel {
 extension AlgorithmViewModel {
     
     // MARK: Change head index
-    func changeHeadIndex(of tape: Tape, to component: TapeContent, algorithm: Algorithm) {
+    func changeHeadIndex(of tape: Tape, to component: TapeComponent, algorithm: Algorithm) {
         guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else {
             print("Error. Couldnt find algorithm index AlgorithmViewModel line 150.")
             return
@@ -320,11 +320,11 @@ extension AlgorithmViewModel {
     }
     
     // MARK: Components
-    func getComponents() -> [TapeContent] {
-        var components: [TapeContent] = []
+    func getComponents() -> [TapeComponent] {
+        var components: [TapeComponent] = []
         for index in -10...10 {
             components.append(
-                TapeContent(
+                TapeComponent(
                     id: index,
                     value: "_"
                 )
@@ -453,7 +453,7 @@ extension AlgorithmViewModel {
         return algorithms[algorithmIndex].tapes[tapeIndex]
     }
     
-    func getTapeComponent(algorithm: Algorithm, tape: Tape, component: TapeContent) -> TapeContent {
+    func getTapeComponent(algorithm: Algorithm, tape: Tape, component: TapeComponent) -> TapeComponent {
         let currentTape = getTape(tape: tape, of: algorithm)
         guard let componentIndex = currentTape.components.firstIndex(where: { $0.id == component.id }) else {
             return currentTape.components[0]

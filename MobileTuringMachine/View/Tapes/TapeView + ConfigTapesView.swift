@@ -42,7 +42,7 @@ struct TapeViewConfigTapesView: View {
 
 struct TapeViewConfigTapesView_Previews: PreviewProvider {
     static var previews: some View {
-        TapeViewConfigTapesView(tape: Tape(nameID: 0, components: [TapeContent(id: 0)]), algorithm: Algorithm(name: "New Algorithm", tapes: [], states: [], stateForReset: StateQ(nameID: 0, options: [])))
+        TapeViewConfigTapesView(tape: Tape(nameID: 0, components: [TapeComponent(id: 0)]), algorithm: Algorithm(name: "New Algorithm", tapes: [], states: [], stateForReset: StateQ(nameID: 0, options: [])))
             .preferredColorScheme(.dark)
             .environmentObject(AlgorithmViewModel())
     }

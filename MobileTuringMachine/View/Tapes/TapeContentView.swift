@@ -11,7 +11,7 @@ struct TapeContentView: View {
 
     @EnvironmentObject private var viewModel: AlgorithmViewModel
     
-    let component: TapeContent
+    let component: TapeComponent
     let tape: Tape
     let algorithm: Algorithm
     
@@ -44,7 +44,7 @@ struct TapeContentView: View {
 
 struct TapeContentView_Previews: PreviewProvider {
     static var previews: some View {
-        TapeContentView(component: TapeContent(id: 0, value: "a"), tape: Tape(nameID: 0, components: [TapeContent(id: 0)]), algorithm: Algorithm(name: "New Algorithm", tapes: [], states: [], stateForReset: StateQ(nameID: 0, options: [])))
+        TapeContentView(component: TapeComponent(id: 0, value: "a"), tape: Tape(nameID: 0, components: [TapeComponent(id: 0)]), algorithm: Algorithm(name: "New Algorithm", tapes: [], states: [], stateForReset: StateQ(nameID: 0, options: [])))
             .environmentObject(AlgorithmViewModel())
     }
 }

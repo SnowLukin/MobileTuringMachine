@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TapeContent: Identifiable, Hashable, Codable {
+struct TapeComponent: Identifiable, Hashable, Codable {
     let id: Int
     var value = "_"
 }

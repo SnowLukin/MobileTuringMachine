@@ -51,7 +51,7 @@ struct TapeSectionOpening: View {
 
 struct TapeSectionOpening_Previews: PreviewProvider {
     static var previews: some View {
-        TapeSectionOpening(tape: Tape(nameID: 0, components: [TapeContent(id: 0)]), algorithm: Algorithm(name: "New Algorithm", tapes: [], states: [], stateForReset: StateQ(nameID: 0, options: [])))
+        TapeSectionOpening(tape: Tape(nameID: 0, components: [TapeComponent(id: 0)]), algorithm: Algorithm(name: "New Algorithm", tapes: [], states: [], stateForReset: StateQ(nameID: 0, options: [])))
             .environmentObject(AlgorithmViewModel())
     }
 }
