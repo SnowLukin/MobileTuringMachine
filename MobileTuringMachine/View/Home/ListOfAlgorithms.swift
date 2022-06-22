@@ -67,27 +67,32 @@ struct ListOfAlgorithms: View {
         .navigationViewStyle(.stack)
         .fileImporter(isPresented: $openFile, allowedContentTypes: [.mtm], allowsMultipleSelection: false) { result in
             do {
-                guard let selectedFile: URL = try result.get().first else {
-                    print("1")
-                    return
-                }
-                guard let data = try? Data(contentsOf: selectedFile) else {
-                    print("2")
-                    return
-                }
-                guard let algorithm = try? JSONDecoder().decode(Algorithm.self, from: data) else {
-                    print("3")
+                guard let selectedFileURL: URL = try result.get().first else {
+                    print("Failed getting url.")
                     return
                 }
                 
-                withAnimation {
-                    viewModel.addImportedAlgorithm(algorithm: algorithm)
+                if selectedFileURL.startAccessingSecurityScopedResource() {
+                    guard let data = try? Data(contentsOf: selectedFileURL) else {
+                        print("Failed getting data from url: \(selectedFileURL)")
+                        return
+                    }
+                    guard let algorithm = try? JSONDecoder().decode(Algorithm.self, from: data) else {
+                        print("Failed decoding file.")
+                        return
+                    }
+                    defer {
+                        selectedFileURL.stopAccessingSecurityScopedResource()
+                    }
+                    withAnimation {
+                        viewModel.addImportedAlgorithm(algorithm: algorithm)
+                    }
+                    print("Algorithm imported successfully")
+                } else {
+                    print("Error occupied. Failed accessing security scoped resource.")
                 }
-                print("Success")
-                print(algorithm.name)
             } catch {
-                print("error reading")
-                print(error.localizedDescription)
+                print("Error occupied: \(error.localizedDescription)")
             }
         }
     }

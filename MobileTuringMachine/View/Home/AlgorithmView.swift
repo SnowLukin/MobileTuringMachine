@@ -76,9 +76,9 @@ struct AlgorithmView: View {
         ) { result in
             switch result {
             case .success:
-                print("Saccessed")
+                print("File successfully exported")
             case .failure:
-                print("Error")
+                print("Error occupied. Failed exporting the file.")
             }
         }
     }

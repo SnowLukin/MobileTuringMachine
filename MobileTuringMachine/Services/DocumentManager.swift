@@ -35,9 +35,3 @@ struct DocumentManager: FileDocument {
     
     
 }
-
-extension UTType {
-    static var mtm: UTType {
-        UTType(importedAs: "com.SnowLukin.TuringMachine.TuringMachineData")
-    }
-}
