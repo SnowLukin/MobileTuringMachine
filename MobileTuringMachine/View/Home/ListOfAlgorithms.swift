@@ -43,7 +43,9 @@ struct ListOfAlgorithms: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-
+                        withAnimation {
+                            openFile.toggle()
+                        }
                     } label: {
                         Image(systemName: "square.and.arrow.down")
                     }
@@ -63,17 +65,31 @@ struct ListOfAlgorithms: View {
             }
         }
         .navigationViewStyle(.stack)
-//        .fileImporter(isPresented: $openFile, allowedContentTypes: [.data], allowsMultipleSelection: false) { result in
-//            do {
-//                guard let selectedFile: URL = try result.get().first else { return }
-//                guard let data = try? JSONDecoder().decode(Algorithm.self, from: selectedFile) else { return }
-//                guard let message = String(data: try Data(contentsOf: selectedFile), encoding: .utf8) else { return }
-//                
-//                document.message = message
-//            } catch {
-//                
-//            }
-//        }
+        .fileImporter(isPresented: $openFile, allowedContentTypes: [.mtm], allowsMultipleSelection: false) { result in
+            do {
+                guard let selectedFile: URL = try result.get().first else {
+                    print("1")
+                    return
+                }
+                guard let data = try? Data(contentsOf: selectedFile) else {
+                    print("2")
+                    return
+                }
+                guard let algorithm = try? JSONDecoder().decode(Algorithm.self, from: data) else {
+                    print("3")
+                    return
+                }
+                
+                withAnimation {
+                    viewModel.addImportedAlgorithm(algorithm: algorithm)
+                }
+                print("Success")
+                print(algorithm.name)
+            } catch {
+                print("error reading")
+                print(error.localizedDescription)
+            }
+        }
     }
 }
 

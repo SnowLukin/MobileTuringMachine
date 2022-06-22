@@ -72,7 +72,7 @@ struct AlgorithmView: View {
         .fileExporter(
             isPresented: $showExport,
             document: DocumentManager(algorithm: viewModel.getAlgorithm(algorithm)),
-            contentType: .data
+            contentType: .mtm
         ) { result in
             switch result {
             case .success:

@@ -43,6 +43,13 @@ extension AlgorithmViewModel {
         algorithms.append(newAlgorithm)
     }
     
+    func addImportedAlgorithm(algorithm: Algorithm) {
+        var newAlgorithm = algorithm
+        // Update id
+        newAlgorithm.id = UUID()
+        algorithms.append(newAlgorithm)
+    }
+    
     func removeAlgorithm(_ algorithm: Algorithm) {
         guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else { return }
         algorithms.remove(at: algorithmIndex)

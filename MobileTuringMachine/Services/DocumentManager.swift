@@ -10,7 +10,7 @@ import UniformTypeIdentifiers
 
 struct DocumentManager: FileDocument {
     
-    static var readableContentTypes: [UTType] { [ .data ] }
+    static var readableContentTypes: [UTType] { [ .mtm ] }
     
     var algorithm: Algorithm
     
@@ -34,4 +34,10 @@ struct DocumentManager: FileDocument {
     }
     
     
+}
+
+extension UTType {
+    static var mtm: UTType {
+        UTType(importedAs: "com.SnowLukin.TuringMachine.TuringMachineData")
+    }
 }
