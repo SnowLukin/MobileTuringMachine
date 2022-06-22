@@ -49,7 +49,7 @@ struct PlayStack_Previews: PreviewProvider {
 extension PlayStack {
     
     private func autoPlay() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
             if isPlaying {
                 viewModel.makeStep(algorithm: algorithm)
                 autoPlay()
