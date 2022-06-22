@@ -67,7 +67,7 @@
 		D7312B152862F6ED00AF5261 /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
 		D7312B1828631B7D00AF5261 /* DocumentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentManager.swift; sourceTree = "<group>"; };
 		D7312B1A28632DBA00AF5261 /* Extension + FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension + FileManager.swift"; sourceTree = "<group>"; };
-		D7312B1C28632E5E00AF5261 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		D7312B1C28632E5E00AF5261 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D7312B1D286357AD00AF5261 /* Extension + UTType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension + UTType.swift"; sourceTree = "<group>"; };
 		D744288D285385E50073C9E2 /* ChooseCharView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseCharView.swift; sourceTree = "<group>"; };
 		D744288F285389DC0073C9E2 /* ChooseDirectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseDirectionView.swift; sourceTree = "<group>"; };
@@ -125,6 +125,14 @@
 				D7312B1828631B7D00AF5261 /* DocumentManager.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		D7312B1F286360E700AF5261 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D7312B1C28632E5E00AF5261 /* Info.plist */,
+			);
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		D7442899285754E20073C9E2 /* PlayButton */ = {
@@ -219,9 +227,9 @@
 		D7CF6DCE27DE288A0010949B /* MobileTuringMachine */ = {
 			isa = PBXGroup;
 			children = (
-				D7312B1C28632E5E00AF5261 /* Info.plist */,
 				D7CF6DCF27DE288A0010949B /* MobileTuringMachineApp.swift */,
 				D7CF6DD127DE288A0010949B /* ContentView.swift */,
+				D7312B1F286360E700AF5261 /* Supporting Files */,
 				D7312B08285F79E600AF5261 /* Services */,
 				D78098A2284DC80D00C4DDF0 /* Helpers */,
 				D7CF6DED27DE60580010949B /* Extensions */,
@@ -530,7 +538,7 @@
 				DEVELOPMENT_TEAM = AUP52MS6LU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = MobileTuringMachine/Info.plist;
+				INFOPLIST_FILE = "MobileTuringMachine/Supporting Files/Info.plist";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = NO;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -561,7 +569,7 @@
 				DEVELOPMENT_TEAM = AUP52MS6LU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = MobileTuringMachine/Info.plist;
+				INFOPLIST_FILE = "MobileTuringMachine/Supporting Files/Info.plist";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = NO;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
