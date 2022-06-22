@@ -21,7 +21,7 @@ class AlgorithmViewModel: ObservableObject {
     static let fileExtension = "mtm"
     
     let tasksDocURL = URL(
-      fileURLWithPath: "PrioritizedTasks",
+      fileURLWithPath: "TuringMachineAlgorithm",
       relativeTo: FileManager.documentsDirectoryURL
     ).appendingPathExtension(fileExtension)
     
