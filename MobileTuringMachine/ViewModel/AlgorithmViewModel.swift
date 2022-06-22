@@ -29,7 +29,10 @@ class AlgorithmViewModel: ObservableObject {
 extension AlgorithmViewModel {
     
     func addAlgorithm() {
-        algorithms.append(DefaultData.shared.algorithm)
+        var newAlgorithm = DefaultData.shared.algorithm
+        // Updating id
+        newAlgorithm.id = UUID()
+        algorithms.append(newAlgorithm)
     }
     
     func removeAlgorithm(_ algorithm: Algorithm) {
@@ -41,6 +44,21 @@ extension AlgorithmViewModel {
         guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else { return algorithms[0] }
         return algorithms[algorithmIndex]
     }
+    
+    func updateName(with newName: String, for algorithm: Algorithm) {
+        guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else { return }
+        if newName.isEmpty {
+            algorithms[algorithmIndex].name = "New Algorithm"
+            return
+        }
+        algorithms[algorithmIndex].name = newName
+    }
+    
+    func updateDescription(with newDescription: String, for algorithm: Algorithm) {
+        guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else { return }
+        algorithms[algorithmIndex].description = newDescription
+    }
+    
 }
 
 // MARK: - States

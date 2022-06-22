@@ -9,7 +9,7 @@ import SwiftUI
 
 extension View {
     
-    // MARK: Building modifier for custom popups
+    // MARK: - Building modifier for custom popups
     func popupNavigationView<Content: View>(
         horizontalPadding: CGFloat = 40,
         show: Binding<Bool>,
@@ -38,10 +38,9 @@ extension View {
                 }
             }
     }
-}
-
-// MARK: Get size of the view
-extension View {
+    
+    
+    // MARK: - Get size of the view
     func readSize(onChange: @escaping (CGSize) -> Void) -> some View {
         background(
             GeometryReader { geometryProxy in
@@ -51,9 +50,37 @@ extension View {
         )
             .onPreferenceChange(SizePreferenceKey.self, perform: onChange)
     }
-}
-
-struct SizePreferenceKey: PreferenceKey {
-    static var defaultValue: CGSize = .zero
-    static func reduce(value: inout CGSize, nextValue: () -> CGSize) {}
+    
+    
+    // MARK: - Alert with textfield
+    func alertTextField(title: String, message: String, hintText: String, primaryTitle: String, secondaryTitle: String, primaryAction: @escaping (String)->(), secondaryAction: @escaping ()->()) {
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        alert.addAction(.init(title: secondaryTitle, style: .cancel) { _ in
+            secondaryAction()
+        })
+        
+        alert.addAction(.init(title: primaryTitle, style: .default) { _ in
+            if let text = alert.textFields?[0].text {
+                primaryAction(text)
+            } else {
+                primaryAction("")
+            }
+        })
+        
+        // Presenting alert
+        getRootController().present(alert, animated: true)
+    }
+    
+    // MARK: - Root View Controller
+    func getRootController() -> UIViewController {
+        guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
+            return .init()
+        }
+        guard let root = screen.windows.first?.rootViewController else {
+            return .init()
+        }
+        return root
+    }
 }
