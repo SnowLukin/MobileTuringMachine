@@ -12,7 +12,9 @@ class AlgorithmViewModel: ObservableObject {
     
     @Published var algorithms: [Algorithm] {
         didSet {
-            DataManager.shared.updateStorage(with: algorithms)
+            DispatchQueue.global().async {
+                DataManager.shared.updateStorage(with: self.algorithms)
+            }
         }
     }
     
