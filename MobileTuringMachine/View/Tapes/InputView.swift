@@ -64,6 +64,9 @@ extension InputView {
     }
     
     private func setNewInputValue() {
+        if viewModel.getTape(tape: tape, of: algorithm).input == text {
+            return
+        }
         // if not last
         guard let lastCharacter = text.popLast() else {
             viewModel.setNewInput(text, tape: tape, algorithm: algorithm)
@@ -86,6 +89,8 @@ extension InputView {
     
     private func setNewAlphabetValue() {
         if text.isEmpty {
+            return
+        } else if viewModel.getTape(tape: tape, of: algorithm).alphabet == text {
             return
         }
         // Checking new character already exist

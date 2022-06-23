@@ -26,9 +26,11 @@ struct ListOfAlgorithms: View {
                     }
                     .onDelete {
                         viewModel.algorithms.remove(atOffsets: $0)
+                        viewModel.saveData()
                     }
                     .onMove {
                         viewModel.algorithms.move(fromOffsets: $0, toOffset: $1)
+                        viewModel.saveData()
                     }
                 }
                 if showInfo {

@@ -10,15 +10,11 @@ import Combine
 
 class AlgorithmViewModel: ObservableObject {
     
-    @Published var algorithms: [Algorithm] {
-        didSet {
-            DispatchQueue.global().async {
-                DataManager.shared.updateStorage(with: self.algorithms)
-            }
-        }
-    }
+    @Published var algorithms: [Algorithm] = []
     
     static let fileExtension = "mtm"
+    
+    let fileManager = LocalFileManager.shared
     
     let tasksDocURL = URL(
       fileURLWithPath: "TuringMachineAlgorithm",
@@ -26,12 +22,20 @@ class AlgorithmViewModel: ObservableObject {
     ).appendingPathExtension(fileExtension)
     
     required init() {
-        if let savedAlgorithms = DataManager.shared.getStorage() {
+        if let savedAlgorithms = fileManager.getData() {
+            print("getting saved data")
             algorithms = savedAlgorithms
             return
         }
+        print("setting default data")
         
         algorithms = [DefaultData.shared.algorithm]
+    }
+    
+    func saveData() {
+        DispatchQueue.global().async {
+            self.fileManager.saveData(algorithms: self.algorithms)
+        }
     }
 }
 
@@ -43,6 +47,7 @@ extension AlgorithmViewModel {
         // Updating id
         newAlgorithm.id = UUID()
         algorithms.append(newAlgorithm)
+        saveData()
     }
     
     func addImportedAlgorithm(algorithm: Algorithm) {
@@ -50,11 +55,13 @@ extension AlgorithmViewModel {
         // Update id
         newAlgorithm.id = UUID()
         algorithms.append(newAlgorithm)
+        saveData()
     }
     
     func removeAlgorithm(_ algorithm: Algorithm) {
         guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else { return }
         algorithms.remove(at: algorithmIndex)
+        saveData()
     }
     
     func getAlgorithm(_ algorithm: Algorithm) -> Algorithm {
@@ -69,11 +76,13 @@ extension AlgorithmViewModel {
             return
         }
         algorithms[algorithmIndex].name = newName
+        saveData()
     }
     
     func updateDescription(with newDescription: String, for algorithm: Algorithm) {
         guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else { return }
         algorithms[algorithmIndex].description = newDescription
+        saveData()
     }
     
 }
@@ -111,6 +120,7 @@ extension AlgorithmViewModel {
             newState.options = getOptions(for: newState, of: algorithm)
             algorithms[algorithmIndex].states.append(newState)
         }
+        saveData()
     }
     
     // MARK: Remove
@@ -131,6 +141,7 @@ extension AlgorithmViewModel {
             }
             algorithms[algorithmIndex].states.remove(at: stateIndex)
         }
+        saveData()
     }
     
     // MARK: Update
@@ -142,6 +153,7 @@ extension AlgorithmViewModel {
         for index in 0..<algorithms[algorithmIndex].states.count {
             algorithms[algorithmIndex].states[index].options = getOptions(for: algorithms[algorithmIndex].states[index], of: algorithm)
         }
+        saveData()
     }
     
     private func getCombinationsTuple(combinations: [String]) -> [Combination] {
@@ -204,6 +216,7 @@ extension AlgorithmViewModel {
         }
         if let tapeIndex = algorithms[algorithmIndex].tapes.firstIndex(where: { $0.id == tape.id }) {
             algorithms[algorithmIndex].tapes[tapeIndex].headIndex = component.id
+            saveData()
         }
     }
     
@@ -237,6 +250,7 @@ extension AlgorithmViewModel {
             algorithms[algorithmIndex].tapes.append(Tape(nameID: endElement.nameID + 1, components: getComponents()))
         }
         updateStates(for: algorithms[algorithmIndex])
+        saveData()
     }
     
     // MARK: Remove
@@ -249,6 +263,7 @@ extension AlgorithmViewModel {
             algorithms[algorithmIndex].tapes.remove(at: index)
         }
         updateStates(for: algorithms[algorithmIndex])
+        saveData()
     }
     
     // MARK: Alphabet
@@ -266,6 +281,7 @@ extension AlgorithmViewModel {
         // Update alphabet
         algorithms[algorithmIndex].tapes[tapeIndex].alphabet = text
         updateStates(for: algorithms[algorithmIndex])
+        saveData()
     }
     
     // MARK: Input
@@ -284,6 +300,7 @@ extension AlgorithmViewModel {
         algorithms[algorithmIndex].tapes[tapeIndex].input = text
         
         updateComponents(tape: tape, algorithm: algorithms[algorithmIndex])
+        saveData()
     }
     
     func updateComponents(tape: Tape, algorithm: Algorithm) {
@@ -343,6 +360,7 @@ extension AlgorithmViewModel {
         guard let stateIndex = algorithms[algorithmIndex].states.firstIndex(where: { $0.id == state.id }) else { return }
         guard let optionIndex = algorithms[algorithmIndex].states[stateIndex].options.firstIndex(where: { $0.id == option.id }) else { return }
         algorithms[algorithmIndex].states[stateIndex].options[optionIndex].toState = currentState
+        saveData()
     }
     
     func isChosenToState(algorithm: Algorithm, state: StateQ, option: Option, currentState: StateQ) -> Bool {
@@ -399,6 +417,7 @@ extension AlgorithmViewModel {
         ) else { return }
         
         algorithms[algorithmIndex].states[stateIndex].options[optionIndex].combinations[combinationIndex].toCharacter = alphabetElement
+        saveData()
     }
     
     func updateCombinationDirection(algorithm: Algorithm, state: StateQ, option: Option, combination: Combination, direction: Direction) {
@@ -412,6 +431,7 @@ extension AlgorithmViewModel {
         ) else { return }
         
         algorithms[algorithmIndex].states[stateIndex].options[optionIndex].combinations[combinationIndex].direction = direction
+        saveData()
     }
     
     func isChosenChar(algorithm: Algorithm, state: StateQ, option: Option, tape: Tape, combination: Combination, alphabetElement: String) -> Bool {
@@ -484,6 +504,7 @@ extension AlgorithmViewModel {
         guard let newStartStateIndex = algorithms[algorithmIndex].states.firstIndex(where: { $0.id == state.id }) else { return }
         algorithms[algorithmIndex].states[newStartStateIndex].isStarting.toggle()
         algorithms[algorithmIndex].stateForReset = algorithms[algorithmIndex].states[newStartStateIndex]
+        saveData()
     }
 }
 
