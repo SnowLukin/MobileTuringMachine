@@ -19,6 +19,25 @@
 		D7312B1B28632DBA00AF5261 /* Extension + FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312B1A28632DBA00AF5261 /* Extension + FileManager.swift */; };
 		D7312B1E286357AD00AF5261 /* Extension + UTType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312B1D286357AD00AF5261 /* Extension + UTType.swift */; };
 		D7312B212863871200AF5261 /* LocalFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312B202863871200AF5261 /* LocalFileManager.swift */; };
+		D7312B23286613F000AF5261 /* Combination.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312B22286613EB00AF5261 /* Combination.swift */; };
+		D7312B252866141100AF5261 /* Direction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312B242866141100AF5261 /* Direction.swift */; };
+		D7312B282866234D00AF5261 /* AlgorithmsData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D7312B262866234C00AF5261 /* AlgorithmsData.xcdatamodeld */; };
+		D7312B9A2866386300AF5261 /* TapeEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312B8A2866386300AF5261 /* TapeEntity+CoreDataClass.swift */; };
+		D7312B9B2866386300AF5261 /* TapeEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312B8B2866386300AF5261 /* TapeEntity+CoreDataProperties.swift */; };
+		D7312B9C2866386300AF5261 /* OptionEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312B8C2866386300AF5261 /* OptionEntity+CoreDataClass.swift */; };
+		D7312B9D2866386300AF5261 /* OptionEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312B8D2866386300AF5261 /* OptionEntity+CoreDataProperties.swift */; };
+		D7312B9E2866386300AF5261 /* AlgorithmsEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312B8E2866386300AF5261 /* AlgorithmsEntity+CoreDataClass.swift */; };
+		D7312B9F2866386300AF5261 /* AlgorithmsEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312B8F2866386300AF5261 /* AlgorithmsEntity+CoreDataProperties.swift */; };
+		D7312BA02866386300AF5261 /* CombinationEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312B902866386300AF5261 /* CombinationEntity+CoreDataClass.swift */; };
+		D7312BA12866386300AF5261 /* CombinationEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312B912866386300AF5261 /* CombinationEntity+CoreDataProperties.swift */; };
+		D7312BA22866386300AF5261 /* StateQEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312B922866386300AF5261 /* StateQEntity+CoreDataClass.swift */; };
+		D7312BA32866386300AF5261 /* StateQEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312B932866386300AF5261 /* StateQEntity+CoreDataProperties.swift */; };
+		D7312BA42866386300AF5261 /* DirectionEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312B942866386300AF5261 /* DirectionEntity+CoreDataClass.swift */; };
+		D7312BA52866386300AF5261 /* DirectionEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312B952866386300AF5261 /* DirectionEntity+CoreDataProperties.swift */; };
+		D7312BA62866386300AF5261 /* AlgorithmEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312B962866386300AF5261 /* AlgorithmEntity+CoreDataClass.swift */; };
+		D7312BA72866386300AF5261 /* AlgorithmEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312B972866386300AF5261 /* AlgorithmEntity+CoreDataProperties.swift */; };
+		D7312BA82866386300AF5261 /* TapeComponentEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312B982866386300AF5261 /* TapeComponentEntity+CoreDataClass.swift */; };
+		D7312BA92866386300AF5261 /* TapeComponentEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312B992866386300AF5261 /* TapeComponentEntity+CoreDataProperties.swift */; };
 		D744288E285385E60073C9E2 /* ChooseCharView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D744288D285385E50073C9E2 /* ChooseCharView.swift */; };
 		D7442890285389DC0073C9E2 /* ChooseDirectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D744288F285389DC0073C9E2 /* ChooseDirectionView.swift */; };
 		D74428922854AA130073C9E2 /* TapButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74428912854AA130073C9E2 /* TapButtonStyle.swift */; };
@@ -69,6 +88,25 @@
 		D7312B1C28632E5E00AF5261 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D7312B1D286357AD00AF5261 /* Extension + UTType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension + UTType.swift"; sourceTree = "<group>"; };
 		D7312B202863871200AF5261 /* LocalFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFileManager.swift; sourceTree = "<group>"; };
+		D7312B22286613EB00AF5261 /* Combination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Combination.swift; sourceTree = "<group>"; };
+		D7312B242866141100AF5261 /* Direction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Direction.swift; sourceTree = "<group>"; };
+		D7312B272866234D00AF5261 /* AlgorithmsData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AlgorithmsData.xcdatamodel; sourceTree = "<group>"; };
+		D7312B8A2866386300AF5261 /* TapeEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TapeEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D7312B8B2866386300AF5261 /* TapeEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TapeEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D7312B8C2866386300AF5261 /* OptionEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OptionEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D7312B8D2866386300AF5261 /* OptionEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OptionEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D7312B8E2866386300AF5261 /* AlgorithmsEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlgorithmsEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D7312B8F2866386300AF5261 /* AlgorithmsEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlgorithmsEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D7312B902866386300AF5261 /* CombinationEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CombinationEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D7312B912866386300AF5261 /* CombinationEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CombinationEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D7312B922866386300AF5261 /* StateQEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StateQEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D7312B932866386300AF5261 /* StateQEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StateQEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D7312B942866386300AF5261 /* DirectionEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DirectionEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D7312B952866386300AF5261 /* DirectionEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DirectionEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D7312B962866386300AF5261 /* AlgorithmEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlgorithmEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D7312B972866386300AF5261 /* AlgorithmEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlgorithmEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D7312B982866386300AF5261 /* TapeComponentEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TapeComponentEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D7312B992866386300AF5261 /* TapeComponentEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TapeComponentEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D744288D285385E50073C9E2 /* ChooseCharView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseCharView.swift; sourceTree = "<group>"; };
 		D744288F285389DC0073C9E2 /* ChooseDirectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseDirectionView.swift; sourceTree = "<group>"; };
 		D74428912854AA130073C9E2 /* TapButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapButtonStyle.swift; sourceTree = "<group>"; };
@@ -123,6 +161,7 @@
 				D7C1E0F6285BBFBA005662A9 /* DefaultDataManager.swift */,
 				D7312B1828631B7D00AF5261 /* DocumentManager.swift */,
 				D7312B202863871200AF5261 /* LocalFileManager.swift */,
+				D7312B262866234C00AF5261 /* AlgorithmsData.xcdatamodeld */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -133,6 +172,29 @@
 				D7312B1C28632E5E00AF5261 /* Info.plist */,
 			);
 			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D7312B4928662BD100AF5261 /* CoreDataManager */ = {
+			isa = PBXGroup;
+			children = (
+				D7312B8A2866386300AF5261 /* TapeEntity+CoreDataClass.swift */,
+				D7312B8B2866386300AF5261 /* TapeEntity+CoreDataProperties.swift */,
+				D7312B8C2866386300AF5261 /* OptionEntity+CoreDataClass.swift */,
+				D7312B8D2866386300AF5261 /* OptionEntity+CoreDataProperties.swift */,
+				D7312B8E2866386300AF5261 /* AlgorithmsEntity+CoreDataClass.swift */,
+				D7312B8F2866386300AF5261 /* AlgorithmsEntity+CoreDataProperties.swift */,
+				D7312B902866386300AF5261 /* CombinationEntity+CoreDataClass.swift */,
+				D7312B912866386300AF5261 /* CombinationEntity+CoreDataProperties.swift */,
+				D7312B922866386300AF5261 /* StateQEntity+CoreDataClass.swift */,
+				D7312B932866386300AF5261 /* StateQEntity+CoreDataProperties.swift */,
+				D7312B942866386300AF5261 /* DirectionEntity+CoreDataClass.swift */,
+				D7312B952866386300AF5261 /* DirectionEntity+CoreDataProperties.swift */,
+				D7312B962866386300AF5261 /* AlgorithmEntity+CoreDataClass.swift */,
+				D7312B972866386300AF5261 /* AlgorithmEntity+CoreDataProperties.swift */,
+				D7312B982866386300AF5261 /* TapeComponentEntity+CoreDataClass.swift */,
+				D7312B992866386300AF5261 /* TapeComponentEntity+CoreDataProperties.swift */,
+			);
+			path = CoreDataManager;
 			sourceTree = "<group>";
 		};
 		D7442899285754E20073C9E2 /* PlayButton */ = {
@@ -229,6 +291,7 @@
 			children = (
 				D7CF6DCF27DE288A0010949B /* MobileTuringMachineApp.swift */,
 				D7CF6DD127DE288A0010949B /* ContentView.swift */,
+				D7312B4928662BD100AF5261 /* CoreDataManager */,
 				D7312B1F286360E700AF5261 /* Supporting Files */,
 				D7312B08285F79E600AF5261 /* Services */,
 				D78098A2284DC80D00C4DDF0 /* Helpers */,
@@ -275,6 +338,8 @@
 				D7CF6DE227DE29180010949B /* TapeComponent.swift */,
 				D78098A8284DF29100C4DDF0 /* StateQ.swift */,
 				D721795D27E4ED4B00F39152 /* Option.swift */,
+				D7312B22286613EB00AF5261 /* Combination.swift */,
+				D7312B242866141100AF5261 /* Direction.swift */,
 				D7312B0B285F861F00AF5261 /* Algorithm.swift */,
 			);
 			path = Model;
@@ -365,31 +430,45 @@
 				D7312B1928631B7D00AF5261 /* DocumentManager.swift in Sources */,
 				D7312B212863871200AF5261 /* LocalFileManager.swift in Sources */,
 				D7312B1E286357AD00AF5261 /* Extension + UTType.swift in Sources */,
+				D7312B9A2866386300AF5261 /* TapeEntity+CoreDataClass.swift in Sources */,
 				D7312B0C285F861F00AF5261 /* Algorithm.swift in Sources */,
 				D7312B1B28632DBA00AF5261 /* Extension + FileManager.swift in Sources */,
 				D78098BC284E2A4400C4DDF0 /* ChooseStartStateView.swift in Sources */,
+				D7312B9B2866386300AF5261 /* TapeEntity+CoreDataProperties.swift in Sources */,
 				D78098A9284DF29100C4DDF0 /* StateQ.swift in Sources */,
+				D7312BA42866386300AF5261 /* DirectionEntity+CoreDataClass.swift in Sources */,
+				D7312BA52866386300AF5261 /* DirectionEntity+CoreDataProperties.swift in Sources */,
 				D78098AD284DFC0600C4DDF0 /* TapeSectionOpening.swift in Sources */,
+				D7312B23286613F000AF5261 /* Combination.swift in Sources */,
 				D7CF6DDF27DE28A20010949B /* TapeContentView.swift in Sources */,
+				D7312B9F2866386300AF5261 /* AlgorithmsEntity+CoreDataProperties.swift in Sources */,
 				D78098B5284E1AA800C4DDF0 /* TapesWorkView.swift in Sources */,
 				D744288E285385E60073C9E2 /* ChooseCharView.swift in Sources */,
 				D74428922854AA130073C9E2 /* TapButtonStyle.swift in Sources */,
 				D7CF6DE727DE312D0010949B /* TapeView.swift in Sources */,
+				D7312B282866234D00AF5261 /* AlgorithmsData.xcdatamodeld in Sources */,
 				D7312B142862EF8500AF5261 /* SizePreferenceKey.swift in Sources */,
 				D7C1E0F9285DED61005662A9 /* RootPresentationEnvironmentKey.swift in Sources */,
+				D7312B9D2866386300AF5261 /* OptionEntity+CoreDataProperties.swift in Sources */,
 				D78098A4284DC83900C4DDF0 /* BindingPreviewWrapper.swift in Sources */,
 				D721795E27E4ED4B00F39152 /* Option.swift in Sources */,
 				D7C1E0F2285B61B7005662A9 /* StatesHoneyGrid.swift in Sources */,
 				D744289B285754FE0073C9E2 /* PlayStack.swift in Sources */,
 				D780989D284CEC4E00C4DDF0 /* CombinationSettings.swift in Sources */,
 				D7CF6DEF27DE606F0010949B /* Extension + Color.swift in Sources */,
+				D7312BA22866386300AF5261 /* StateQEntity+CoreDataClass.swift in Sources */,
+				D7312B9C2866386300AF5261 /* OptionEntity+CoreDataClass.swift in Sources */,
 				D7C1E0F4285B6FC3005662A9 /* StateHoneyGridCell.swift in Sources */,
 				D74428982854EBC40073C9E2 /* ChooseStateView.swift in Sources */,
 				D78098C6284F47BE00C4DDF0 /* ConfigurationsView.swift in Sources */,
 				D7CF6DE327DE29180010949B /* TapeComponent.swift in Sources */,
+				D7312BA82866386300AF5261 /* TapeComponentEntity+CoreDataClass.swift in Sources */,
+				D7312BA12866386300AF5261 /* CombinationEntity+CoreDataProperties.swift in Sources */,
 				D7CF6DF127DE64000010949B /* ConfigTapesView.swift in Sources */,
 				D7312B0E285F863500AF5261 /* AlgorithmViewModel.swift in Sources */,
 				D780989B284CEA2100C4DDF0 /* CombinationsListView.swift in Sources */,
+				D7312BA92866386300AF5261 /* TapeComponentEntity+CoreDataProperties.swift in Sources */,
+				D7312BA02866386300AF5261 /* CombinationEntity+CoreDataClass.swift in Sources */,
 				D780989F284CF8F900C4DDF0 /* CombinationView.swift in Sources */,
 				D7312B102862D88500AF5261 /* ListOfAlgorithms.swift in Sources */,
 				D7442890285389DC0073C9E2 /* ChooseDirectionView.swift in Sources */,
@@ -397,13 +476,18 @@
 				D78098B7284E1CF200C4DDF0 /* RoundedCornersBackground.swift in Sources */,
 				D7CF6DEC27DE53B60010949B /* InputView.swift in Sources */,
 				D7CF6DD227DE288A0010949B /* ContentView.swift in Sources */,
+				D7312BA32866386300AF5261 /* StateQEntity+CoreDataProperties.swift in Sources */,
 				D7312B162862F6ED00AF5261 /* InfoView.swift in Sources */,
 				D744289D285759B10073C9E2 /* InfoPopupView.swift in Sources */,
 				D78098B1284E150200C4DDF0 /* Tapes.swift in Sources */,
 				D7C1E0F7285BBFBA005662A9 /* DefaultDataManager.swift in Sources */,
+				D7312B9E2866386300AF5261 /* AlgorithmsEntity+CoreDataClass.swift in Sources */,
+				D7312BA72866386300AF5261 /* AlgorithmEntity+CoreDataProperties.swift in Sources */,
+				D7312B252866141100AF5261 /* Direction.swift in Sources */,
 				D7312B122862DD1700AF5261 /* AlgorithmView.swift in Sources */,
 				D7CF6DF527DE731F0010949B /* TapeView + ConfigTapesView.swift in Sources */,
 				D7CF6DD027DE288A0010949B /* MobileTuringMachineApp.swift in Sources */,
+				D7312BA62866386300AF5261 /* AlgorithmEntity+CoreDataClass.swift in Sources */,
 				D7057FAF284A8CC70008E7E3 /* Extension + View.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -611,6 +695,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		D7312B262866234C00AF5261 /* AlgorithmsData.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				D7312B272866234D00AF5261 /* AlgorithmsData.xcdatamodel */,
+			);
+			currentVersion = D7312B272866234D00AF5261 /* AlgorithmsData.xcdatamodel */;
+			path = AlgorithmsData.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = D7CF6DC427DE288A0010949B /* Project object */;
 }

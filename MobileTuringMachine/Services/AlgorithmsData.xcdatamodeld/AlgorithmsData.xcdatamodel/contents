@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21C52" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="AlgorithmEntity" representedClassName="AlgorithmEntity" syncable="YES">
+        <attribute name="alDescription" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="stateForReset" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StateQEntity"/>
+        <relationship name="states" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StateQEntity"/>
+        <relationship name="tapes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TapeEntity"/>
+    </entity>
+    <entity name="AlgorithmsEntity" representedClassName="AlgorithmsEntity" syncable="YES">
+        <relationship name="algorithms" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="AlgorithmEntity"/>
+    </entity>
+    <entity name="CombinationEntity" representedClassName="CombinationEntity" syncable="YES">
+        <attribute name="character" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="toCharacter" optional="YES" attributeType="String"/>
+        <relationship name="direction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DirectionEntity"/>
+    </entity>
+    <entity name="DirectionEntity" representedClassName="DirectionEntity" syncable="YES">
+        <attribute name="state" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="OptionEntity" representedClassName="OptionEntity" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <relationship name="combinations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CombinationEntity"/>
+        <relationship name="toState" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StateQEntity"/>
+    </entity>
+    <entity name="StateQEntity" representedClassName="StateQEntity" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isStarting" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="nameID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="options" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="OptionEntity"/>
+    </entity>
+    <entity name="TapeComponentEntity" representedClassName="TapeComponentEntity" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="value" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="TapeEntity" representedClassName="TapeEntity" syncable="YES">
+        <attribute name="alphabet" optional="YES" attributeType="String"/>
+        <attribute name="headIndex" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="input" optional="YES" attributeType="String"/>
+        <attribute name="nameID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="components" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TapeComponentEntity"/>
+    </entity>
+    <elements>
+        <element name="AlgorithmEntity" positionX="-498.464599609375" positionY="-27.953125" width="128" height="119"/>
+        <element name="AlgorithmsEntity" positionX="-691.4151611328125" positionY="-126.6489868164062" width="128" height="44"/>
+        <element name="TapeEntity" positionX="-447.8888549804688" positionY="261.563232421875" width="128" height="119"/>
+        <element name="TapeComponentEntity" positionX="-252.7579345703125" positionY="378.7717437744141" width="128" height="59"/>
+        <element name="StateQEntity" positionX="-191.9715576171875" positionY="-71.77162170410156" width="128" height="103"/>
+        <element name="OptionEntity" positionX="44.09930419921875" positionY="-134.5172119140625" width="128" height="74"/>
+        <element name="CombinationEntity" positionX="60.3941650390625" positionY="204.6665954589844" width="128" height="89"/>
+        <element name="DirectionEntity" positionX="-311.8998413085938" positionY="245.5263671875" width="128" height="44"/>
+    </elements>
+</model>

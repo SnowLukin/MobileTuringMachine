@@ -8,12 +8,10 @@
 import Foundation
 
 struct Algorithm: Identifiable, Codable {
-    
     var id = UUID()
     var name: String
     var description: String = ""
     var tapes: [Tape]
     var states: [StateQ]
     var stateForReset: StateQ
-    
 }

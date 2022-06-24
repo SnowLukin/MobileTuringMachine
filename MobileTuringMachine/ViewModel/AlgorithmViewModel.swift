@@ -33,9 +33,7 @@ class AlgorithmViewModel: ObservableObject {
     }
     
     func saveData() {
-        DispatchQueue.global().async {
-            self.fileManager.saveData(algorithms: self.algorithms)
-        }
+        fileManager.saveData(algorithms: algorithms)
     }
 }
 
@@ -47,7 +45,7 @@ extension AlgorithmViewModel {
         // Updating id
         newAlgorithm.id = UUID()
         algorithms.append(newAlgorithm)
-        saveData()
+//        saveData()
     }
     
     func addImportedAlgorithm(algorithm: Algorithm) {
