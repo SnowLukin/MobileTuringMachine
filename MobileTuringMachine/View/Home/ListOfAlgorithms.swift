@@ -10,7 +10,6 @@ import SwiftUI
 struct ListOfAlgorithms: View {
     
     @EnvironmentObject private var viewModel: AlgorithmViewModel
-    @Environment(\.managedObjectContext) var viewContext
     @State private var showInfo = false
     @State private var openFile = false
     
