@@ -53,7 +53,7 @@ struct ChooseStateView: View {
 
 struct ChooseStateView_Previews: PreviewProvider {
     static var previews: some View {
-        ChooseStateView(algorithm: Algorithm(name: "New Algorithm", tapes: [], states: [], stateForReset: StateQ(nameID: 0, options: [])), state: StateQ(nameID: 0, options: []), option: Option(toState: StateQ(nameID: 0, options: []), combinations: []))
+        ChooseStateView(algorithm: Algorithm(name: "New Algorithm", tapes: [], states: [], stateForReset: StateQ(nameID: 0, options: [])), state: StateQ(nameID: 0, options: []), option: Option(id: 0, toState: StateQ(nameID: 0, options: []), combinations: []))
             .environmentObject(AlgorithmViewModel())
     }
 }

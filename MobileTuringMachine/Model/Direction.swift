@@ -7,11 +7,11 @@
 
 import Foundation
 
-enum Direction: Int16, CaseIterable, Codable {
-//    case stay = "arrow.counterclockwise"
-//    case left = "arrow.left"
-//    case right = "arrow.right"
-    case stay = 0
-    case left = 1
-    case right = 2
+enum Direction: String, CaseIterable, Codable {
+    case stay = "arrow.counterclockwise"
+    case left = "arrow.left"
+    case right = "arrow.right"
+//    case stay = 0
+//    case left = 1
+//    case right = 2
 }

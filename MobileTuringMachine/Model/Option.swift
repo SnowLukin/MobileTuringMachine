@@ -8,7 +8,7 @@
 import Foundation
 
 struct Option: Identifiable, Codable {
-    var id = UUID()
+    var id: Int
     var toState: StateQ
     var combinations: [Combination]
 }

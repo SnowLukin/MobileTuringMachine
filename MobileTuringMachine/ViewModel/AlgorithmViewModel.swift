@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import CoreData
 
 class AlgorithmViewModel: ObservableObject {
     
@@ -15,6 +16,7 @@ class AlgorithmViewModel: ObservableObject {
     static let fileExtension = "mtm"
     
     let fileManager = LocalFileManager.shared
+    let dataManager = DataManager.shared
     
     let tasksDocURL = URL(
       fileURLWithPath: "TuringMachineAlgorithm",
@@ -22,18 +24,37 @@ class AlgorithmViewModel: ObservableObject {
     ).appendingPathExtension(fileExtension)
     
     required init() {
-        if let savedAlgorithms = fileManager.getData() {
-            print("getting saved data")
-            algorithms = savedAlgorithms
-            return
+        if dataManager.isEmpty() {
+            print("setting default data")
+            algorithms = [DefaultData.shared.algorithm]
+            updateData()
+        } else {
+            algorithms = dataManager.savedAlgorithms
         }
-        print("setting default data")
         
-        algorithms = [DefaultData.shared.algorithm]
+//        if let savedAlgorithms = fileManager.getData() {
+//            print("getting saved data")
+//            algorithms = savedAlgorithms
+//            return
+//        }
+//        print("setting default data")
+//
+//        algorithms = [DefaultData.shared.algorithm]
     }
     
-    func saveData() {
-        fileManager.saveData(algorithms: algorithms)
+//    func saveData() {
+//        fileManager.saveData(algorithms: algorithms)
+//    }
+    
+    func updateData() {
+        print("FIRST")
+        dataManager.savedEntities = []
+        print("SECOND")
+        for algorithm in algorithms {
+            print("THIRD")
+            dataManager.add(algorithm: algorithm)
+            print("FOURTH")
+        }
     }
 }
 
@@ -45,7 +66,7 @@ extension AlgorithmViewModel {
         // Updating id
         newAlgorithm.id = UUID()
         algorithms.append(newAlgorithm)
-//        saveData()
+        dataManager.add(algorithm: newAlgorithm)
     }
     
     func addImportedAlgorithm(algorithm: Algorithm) {
@@ -53,13 +74,13 @@ extension AlgorithmViewModel {
         // Update id
         newAlgorithm.id = UUID()
         algorithms.append(newAlgorithm)
-        saveData()
+        dataManager.add(algorithm: algorithm)
     }
     
     func removeAlgorithm(_ algorithm: Algorithm) {
         guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else { return }
         algorithms.remove(at: algorithmIndex)
-        saveData()
+        dataManager.delete(algorithm: algorithm)
     }
     
     func getAlgorithm(_ algorithm: Algorithm) -> Algorithm {
@@ -74,13 +95,13 @@ extension AlgorithmViewModel {
             return
         }
         algorithms[algorithmIndex].name = newName
-        saveData()
+        dataManager.update(algorithm: algorithms[algorithmIndex])
     }
     
     func updateDescription(with newDescription: String, for algorithm: Algorithm) {
         guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else { return }
         algorithms[algorithmIndex].description = newDescription
-        saveData()
+        dataManager.update(algorithm: algorithms[algorithmIndex])
     }
     
 }
@@ -107,9 +128,11 @@ extension AlgorithmViewModel {
             newState.options = getOptions(for: newState, of: algorithm)
             if let indexToInsert = nameIDArray.firstIndex(where: { firstElement < $0 }) {
                 algorithms[algorithmIndex].states.insert(newState, at: indexToInsert)
+                dataManager.update(algorithm: algorithms[algorithmIndex])
             } else {
                 // Shouldn't happen
                 algorithms[algorithmIndex].states.append(newState)
+                dataManager.update(algorithm: algorithms[algorithmIndex])
             }
         } else {
             // In case there ARE NO gaps between name ids
@@ -117,8 +140,8 @@ extension AlgorithmViewModel {
             var newState = StateQ(nameID: endElement.nameID + 1, options: [])
             newState.options = getOptions(for: newState, of: algorithm)
             algorithms[algorithmIndex].states.append(newState)
+            dataManager.update(algorithm: algorithms[algorithmIndex])
         }
-        saveData()
     }
     
     // MARK: Remove
@@ -138,8 +161,8 @@ extension AlgorithmViewModel {
                 }
             }
             algorithms[algorithmIndex].states.remove(at: stateIndex)
+            dataManager.update(algorithm: algorithms[algorithmIndex])
         }
-        saveData()
     }
     
     // MARK: Update
@@ -151,13 +174,13 @@ extension AlgorithmViewModel {
         for index in 0..<algorithms[algorithmIndex].states.count {
             algorithms[algorithmIndex].states[index].options = getOptions(for: algorithms[algorithmIndex].states[index], of: algorithm)
         }
-        saveData()
+        dataManager.update(algorithm: algorithms[algorithmIndex])
     }
     
     private func getCombinationsTuple(combinations: [String]) -> [Combination] {
         var combinationsTuple: [Combination] = []
-        for combination in combinations {
-            combinationsTuple.append(Combination(character: combination, direction: .stay, toCharacter: combination))
+        for combinationIndex in 0..<combinations.count {
+            combinationsTuple.append(Combination(id: combinationIndex, character: combinations[combinationIndex], direction: .stay, toCharacter: combinations[combinationIndex]))
         }
         return combinationsTuple
     }
@@ -176,7 +199,7 @@ extension AlgorithmViewModel {
     
     func getOptions(for state: StateQ, of algorithm: Algorithm) -> [Option] {
         guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else {
-            let newOption = Option(toState: state, combinations: [])
+            let newOption = Option(id: 0, toState: state, combinations: [])
             return [newOption]
             
         }
@@ -193,7 +216,7 @@ extension AlgorithmViewModel {
         for combinationIndex in 0..<combinations.count {
             optionStates.append(
                 Option(
-                    toState: state,
+                    id: combinationIndex, toState: state,
                     combinations: getCombinationsTuple(combinations: combinations[combinationIndex])
                 )
             )
@@ -214,7 +237,7 @@ extension AlgorithmViewModel {
         }
         if let tapeIndex = algorithms[algorithmIndex].tapes.firstIndex(where: { $0.id == tape.id }) {
             algorithms[algorithmIndex].tapes[tapeIndex].headIndex = component.id
-            saveData()
+            dataManager.update(algorithm: algorithms[algorithmIndex])
         }
     }
     
@@ -248,7 +271,7 @@ extension AlgorithmViewModel {
             algorithms[algorithmIndex].tapes.append(Tape(nameID: endElement.nameID + 1, components: getComponents()))
         }
         updateStates(for: algorithms[algorithmIndex])
-        saveData()
+        dataManager.update(algorithm: algorithms[algorithmIndex])
     }
     
     // MARK: Remove
@@ -261,7 +284,7 @@ extension AlgorithmViewModel {
             algorithms[algorithmIndex].tapes.remove(at: index)
         }
         updateStates(for: algorithms[algorithmIndex])
-        saveData()
+        dataManager.update(algorithm: algorithms[algorithmIndex])
     }
     
     // MARK: Alphabet
@@ -279,7 +302,7 @@ extension AlgorithmViewModel {
         // Update alphabet
         algorithms[algorithmIndex].tapes[tapeIndex].alphabet = text
         updateStates(for: algorithms[algorithmIndex])
-        saveData()
+        dataManager.update(algorithm: algorithms[algorithmIndex])
     }
     
     // MARK: Input
@@ -298,7 +321,7 @@ extension AlgorithmViewModel {
         algorithms[algorithmIndex].tapes[tapeIndex].input = text
         
         updateComponents(tape: tape, algorithm: algorithms[algorithmIndex])
-        saveData()
+        dataManager.update(algorithm: algorithms[algorithmIndex])
     }
     
     func updateComponents(tape: Tape, algorithm: Algorithm) {
@@ -358,7 +381,7 @@ extension AlgorithmViewModel {
         guard let stateIndex = algorithms[algorithmIndex].states.firstIndex(where: { $0.id == state.id }) else { return }
         guard let optionIndex = algorithms[algorithmIndex].states[stateIndex].options.firstIndex(where: { $0.id == option.id }) else { return }
         algorithms[algorithmIndex].states[stateIndex].options[optionIndex].toState = currentState
-        saveData()
+        dataManager.update(algorithm: algorithms[algorithmIndex])
     }
     
     func isChosenToState(algorithm: Algorithm, state: StateQ, option: Option, currentState: StateQ) -> Bool {
@@ -415,7 +438,7 @@ extension AlgorithmViewModel {
         ) else { return }
         
         algorithms[algorithmIndex].states[stateIndex].options[optionIndex].combinations[combinationIndex].toCharacter = alphabetElement
-        saveData()
+        dataManager.update(algorithm: algorithms[algorithmIndex])
     }
     
     func updateCombinationDirection(algorithm: Algorithm, state: StateQ, option: Option, combination: Combination, direction: Direction) {
@@ -429,7 +452,7 @@ extension AlgorithmViewModel {
         ) else { return }
         
         algorithms[algorithmIndex].states[stateIndex].options[optionIndex].combinations[combinationIndex].direction = direction
-        saveData()
+        dataManager.update(algorithm: algorithms[algorithmIndex])
     }
     
     func isChosenChar(algorithm: Algorithm, state: StateQ, option: Option, tape: Tape, combination: Combination, alphabetElement: String) -> Bool {
@@ -502,7 +525,7 @@ extension AlgorithmViewModel {
         guard let newStartStateIndex = algorithms[algorithmIndex].states.firstIndex(where: { $0.id == state.id }) else { return }
         algorithms[algorithmIndex].states[newStartStateIndex].isStarting.toggle()
         algorithms[algorithmIndex].stateForReset = algorithms[algorithmIndex].states[newStartStateIndex]
-        saveData()
+        dataManager.update(algorithm: algorithms[algorithmIndex])
     }
 }
 

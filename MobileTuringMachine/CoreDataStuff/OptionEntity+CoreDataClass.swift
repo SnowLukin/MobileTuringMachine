@@ -2,7 +2,7 @@
 //  OptionEntity+CoreDataClass.swift
 //  MobileTuringMachine
 //
-//  Created by Snow Lukin on 24.06.2022.
+//  Created by Snow Lukin on 25.06.2022.
 //
 //
 

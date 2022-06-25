@@ -1,0 +1,109 @@
+//
+//  AlgorithmEntity+CoreDataProperties.swift
+//  MobileTuringMachine
+//
+//  Created by Snow Lukin on 25.06.2022.
+//
+//
+
+import Foundation
+import CoreData
+
+
+extension AlgorithmEntity {
+
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<AlgorithmEntity> {
+        return NSFetchRequest<AlgorithmEntity>(entityName: "AlgorithmEntity")
+    }
+
+    @NSManaged public var id: UUID
+    @NSManaged public var name: String
+    @NSManaged public var algorithmDescription: String
+    @NSManaged public var tapes: NSSet
+    @NSManaged public var states: NSSet
+    @NSManaged public var stateForReset: StateQEntity
+    
+    public var wrappedTapes: [TapeEntityEntity] {
+        let set = tapes as? Set<TapeEntityEntity> ?? []
+        return set.sorted {
+            $0.nameID < $1.nameID
+        }
+    }
+    public var wrappedStates: [StateQEntity] {
+        let set = states as? Set<StateQEntity> ?? []
+        return set.sorted {
+            $0.nameID < $1.nameID
+        }
+    }
+    
+    var algorithmModel: Algorithm {
+        get {
+            Algorithm(
+                id: id,
+                name: name,
+                description: algorithmDescription,
+                tapes: wrappedTapes.map { $0.tapeModel },
+                states: wrappedStates.map { $0.stateQModel },
+                stateForReset: stateForReset.stateQModel
+            )
+        }
+        set {
+            id = newValue.id
+            name = newValue.name
+            algorithmDescription = newValue.description
+            stateForReset.stateQModel = newValue.stateForReset
+            
+            tapes = []
+            for tape in newValue.tapes {
+                let newTape = TapeEntityEntity()
+                newTape.tapeModel = tape
+                tapes.adding(newTape)
+            }
+            states = []
+            for state in newValue.states {
+                let newState = StateQEntity()
+                newState.stateQModel = state
+                states.adding(newState)
+            }
+        }
+    }
+
+}
+
+// MARK: Generated accessors for tapes
+extension AlgorithmEntity {
+
+    @objc(addTapesObject:)
+    @NSManaged public func addToTapes(_ value: TapeEntityEntity)
+
+    @objc(removeTapesObject:)
+    @NSManaged public func removeFromTapes(_ value: TapeEntityEntity)
+
+    @objc(addTapes:)
+    @NSManaged public func addToTapes(_ values: NSSet)
+
+    @objc(removeTapes:)
+    @NSManaged public func removeFromTapes(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for states
+extension AlgorithmEntity {
+
+    @objc(addStatesObject:)
+    @NSManaged public func addToStates(_ value: StateQEntity)
+
+    @objc(removeStatesObject:)
+    @NSManaged public func removeFromStates(_ value: StateQEntity)
+
+    @objc(addStates:)
+    @NSManaged public func addToStates(_ values: NSSet)
+
+    @objc(removeStates:)
+    @NSManaged public func removeFromStates(_ values: NSSet)
+
+}
+
+extension AlgorithmEntity : Identifiable {
+
+}

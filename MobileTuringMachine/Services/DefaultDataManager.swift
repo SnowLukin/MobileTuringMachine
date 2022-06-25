@@ -40,8 +40,8 @@ class DefaultData {
     
     private func getCombinationsTuple(combinations: [String]) -> [Combination] {
         var combinationsTuple: [Combination] = []
-        for combination in combinations {
-            combinationsTuple.append(Combination(character: combination, direction: .stay, toCharacter: combination))
+        for combinationIndex in 0..<combinations.count {
+            combinationsTuple.append(Combination(id: combinationIndex, character: combinations[combinationIndex], direction: .stay, toCharacter: combinations[combinationIndex]))
         }
         return combinationsTuple
     }
@@ -72,7 +72,7 @@ class DefaultData {
         for combinationIndex in 0..<combinations.count {
             optionStates.append(
                 Option(
-                    toState: state,
+                    id: combinationIndex, toState: state,
                     combinations: getCombinationsTuple(combinations: combinations[combinationIndex])
                 )
             )

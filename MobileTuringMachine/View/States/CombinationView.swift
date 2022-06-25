@@ -51,8 +51,8 @@ struct CombinationView_Previews: PreviewProvider {
                 ),
             state: StateQ(nameID: 0, options: []),
             option: Option(
-                toState: StateQ(nameID: 0, options: []),
-                combinations: [Combination(character: "a", direction: .stay, toCharacter: "a")]
+                id: 0, toState: StateQ(nameID: 0, options: []),
+                combinations: [Combination(id: 0, character: "a", direction: .stay, toCharacter: "a")]
             )
         )
         .environmentObject(AlgorithmViewModel())

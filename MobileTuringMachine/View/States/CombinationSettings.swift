@@ -40,8 +40,8 @@ struct CombinationSettings_Previews: PreviewProvider {
                 ),
             tape: Tape(nameID: 0, components: []),
             state: StateQ(nameID: 0, options: []),
-            option: Option(toState: StateQ(nameID: 0, options: []), combinations: []),
-            combination: Combination(character: "_", direction: .stay, toCharacter: "_")
+            option: Option(id: 0, toState: StateQ(nameID: 0, options: []), combinations: []),
+            combination: Combination(id: 0, character: "_", direction: .stay, toCharacter: "_")
         )
         .environmentObject(AlgorithmViewModel())
     }

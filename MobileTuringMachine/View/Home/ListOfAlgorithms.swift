@@ -10,6 +10,7 @@ import SwiftUI
 struct ListOfAlgorithms: View {
     
     @EnvironmentObject private var viewModel: AlgorithmViewModel
+    @Environment(\.managedObjectContext) var viewContext
     @State private var showInfo = false
     @State private var openFile = false
     
@@ -26,11 +27,11 @@ struct ListOfAlgorithms: View {
                     }
                     .onDelete {
                         viewModel.algorithms.remove(atOffsets: $0)
-                        viewModel.saveData()
+                        viewModel.updateData()
                     }
                     .onMove {
                         viewModel.algorithms.move(fromOffsets: $0, toOffset: $1)
-                        viewModel.saveData()
+                        viewModel.updateData()
                     }
                 }
                 if showInfo {

@@ -43,9 +43,10 @@ struct CombinationsListView_Previews: PreviewProvider {
                 nameID: 0,
                 options: [
                     Option(
-                        toState: StateQ(nameID: 0, options: []),
+                        id: 0, toState: StateQ(nameID: 0, options: []),
                         combinations: [
                             Combination(
+                                id: 0,
                                 character: "a",
                                 direction: .stay,
                                 toCharacter: "a"

@@ -2,7 +2,7 @@
 //  TapeComponentEntity+CoreDataProperties.swift
 //  MobileTuringMachine
 //
-//  Created by Snow Lukin on 24.06.2022.
+//  Created by Snow Lukin on 25.06.2022.
 //
 //
 
@@ -17,26 +17,18 @@ extension TapeComponentEntity {
     }
 
     @NSManaged public var id: Int16
-    @NSManaged public var value: String?
-    
-    public var wrappedID: Int {
-        Int(id)
-    }
-    
-    public var wrappedValue: String {
-        value ?? "_"
-    }
-    
-    var tapeComponentStruct: TapeComponent {
+    @NSManaged public var value: String
+    @NSManaged public var tape: TapeEntityEntity?
+
+    var componentModel: TapeComponent {
         get {
-            return TapeComponent(id: wrappedID, value: wrappedValue)
+            TapeComponent(id: Int(id), value: value)
         }
         set {
             id = Int16(newValue.id)
             value = newValue.value
         }
     }
-
 }
 
 extension TapeComponentEntity : Identifiable {
