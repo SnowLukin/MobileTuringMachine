@@ -20,10 +20,7 @@ extension StateQEntity {
     @NSManaged public var nameID: Int16
     @NSManaged public var isStarting: Bool
     @NSManaged public var options: NSSet
-    @NSManaged public var algorithm: AlgorithmEntity?
-    @NSManaged public var algorithmReset: AlgorithmEntity?
-    @NSManaged public var optionToState: OptionEntity?
-
+    
     public var wrappedOptions: [OptionEntity] {
         let set = options as? Set<OptionEntity> ?? []
         return set.sorted {
@@ -46,12 +43,13 @@ extension StateQEntity {
             
             options = []
             for option in newValue.options {
-                let newOption = OptionEntity()
+                let newOption = OptionEntity(context: DataManager.shared.container.viewContext)
                 newOption.optionModel = option
-                options.adding(newOption)
+                addToOptions(newOption)
             }
         }
     }
+
 }
 
 // MARK: Generated accessors for options

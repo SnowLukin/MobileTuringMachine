@@ -19,12 +19,12 @@ extension AlgorithmEntity {
     @NSManaged public var id: UUID
     @NSManaged public var name: String
     @NSManaged public var algorithmDescription: String
-    @NSManaged public var tapes: NSSet
     @NSManaged public var states: NSSet
     @NSManaged public var stateForReset: StateQEntity
-    
-    public var wrappedTapes: [TapeEntityEntity] {
-        let set = tapes as? Set<TapeEntityEntity> ?? []
+    @NSManaged public var tapes: NSSet
+
+    public var wrappedTapes: [TapeEntity] {
+        let set = tapes as? Set<TapeEntity> ?? []
         return set.sorted {
             $0.nameID < $1.nameID
         }
@@ -51,40 +51,26 @@ extension AlgorithmEntity {
             id = newValue.id
             name = newValue.name
             algorithmDescription = newValue.description
-            stateForReset.stateQModel = newValue.stateForReset
+            
+            let newStateForReset = StateQEntity(context: DataManager.shared.container.viewContext)
+            newStateForReset.stateQModel = newValue.stateForReset
+            stateForReset = newStateForReset
             
             tapes = []
             for tape in newValue.tapes {
-                let newTape = TapeEntityEntity()
+                let newTape = TapeEntity(context: DataManager.shared.container.viewContext)
                 newTape.tapeModel = tape
-                tapes.adding(newTape)
+                addToTapes(newTape)
             }
+            
             states = []
             for state in newValue.states {
-                let newState = StateQEntity()
+                let newState = StateQEntity(context: DataManager.shared.container.viewContext)
                 newState.stateQModel = state
-                states.adding(newState)
+                addToStates(newState)
             }
         }
     }
-
-}
-
-// MARK: Generated accessors for tapes
-extension AlgorithmEntity {
-
-    @objc(addTapesObject:)
-    @NSManaged public func addToTapes(_ value: TapeEntityEntity)
-
-    @objc(removeTapesObject:)
-    @NSManaged public func removeFromTapes(_ value: TapeEntityEntity)
-
-    @objc(addTapes:)
-    @NSManaged public func addToTapes(_ values: NSSet)
-
-    @objc(removeTapes:)
-    @NSManaged public func removeFromTapes(_ values: NSSet)
-
 }
 
 // MARK: Generated accessors for states
@@ -101,6 +87,23 @@ extension AlgorithmEntity {
 
     @objc(removeStates:)
     @NSManaged public func removeFromStates(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for tapes
+extension AlgorithmEntity {
+
+    @objc(addTapesObject:)
+    @NSManaged public func addToTapes(_ value: TapeEntity)
+
+    @objc(removeTapesObject:)
+    @NSManaged public func removeFromTapes(_ value: TapeEntity)
+
+    @objc(addTapes:)
+    @NSManaged public func addToTapes(_ values: NSSet)
+
+    @objc(removeTapes:)
+    @NSManaged public func removeFromTapes(_ values: NSSet)
 
 }
 

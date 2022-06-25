@@ -19,10 +19,7 @@ extension OptionEntity {
     @NSManaged public var id: Int16
     @NSManaged public var combinations: NSSet
     @NSManaged public var toState: StateQEntity
-    @NSManaged public var state: StateQEntity?
-    
-    
-    
+
     public var wrappedCombinations: [CombinationEntity] {
         let set = combinations as? Set<CombinationEntity> ?? []
         return set.sorted {
@@ -40,17 +37,21 @@ extension OptionEntity {
         }
         set {
             id = Int16(newValue.id)
-            toState.stateQModel = newValue.toState
+            let newToStateEntity = StateQEntity(context: DataManager.shared.container.viewContext)
+            newToStateEntity.id = newValue.toState.id
+            newToStateEntity.nameID = Int16(newValue.toState.nameID)
+            newToStateEntity.isStarting = newValue.toState.isStarting
+            newToStateEntity.options = []
+            toState = newToStateEntity
             
             combinations = []
             for combination in newValue.combinations {
-                let newCombination = CombinationEntity()
+                let newCombination = CombinationEntity(context: DataManager.shared.container.viewContext)
                 newCombination.combinationModel = combination
-                combinations.adding(newCombination)
+                addToCombinations(newCombination)
             }
         }
     }
-    
 }
 
 // MARK: Generated accessors for combinations

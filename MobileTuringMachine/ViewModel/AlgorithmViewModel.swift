@@ -15,7 +15,6 @@ class AlgorithmViewModel: ObservableObject {
     
     static let fileExtension = "mtm"
     
-    let fileManager = LocalFileManager.shared
     let dataManager = DataManager.shared
     
     let tasksDocURL = URL(
@@ -25,35 +24,18 @@ class AlgorithmViewModel: ObservableObject {
     
     required init() {
         if dataManager.isEmpty() {
-            print("setting default data")
+            print("Setting default data")
             algorithms = [DefaultData.shared.algorithm]
             updateData()
         } else {
             algorithms = dataManager.savedAlgorithms
         }
-        
-//        if let savedAlgorithms = fileManager.getData() {
-//            print("getting saved data")
-//            algorithms = savedAlgorithms
-//            return
-//        }
-//        print("setting default data")
-//
-//        algorithms = [DefaultData.shared.algorithm]
     }
     
-//    func saveData() {
-//        fileManager.saveData(algorithms: algorithms)
-//    }
-    
     func updateData() {
-        print("FIRST")
         dataManager.savedEntities = []
-        print("SECOND")
         for algorithm in algorithms {
-            print("THIRD")
             dataManager.add(algorithm: algorithm)
-            print("FOURTH")
         }
     }
 }

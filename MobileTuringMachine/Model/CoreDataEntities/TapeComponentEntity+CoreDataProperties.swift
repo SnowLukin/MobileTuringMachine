@@ -18,7 +18,6 @@ extension TapeComponentEntity {
 
     @NSManaged public var id: Int16
     @NSManaged public var value: String
-    @NSManaged public var tape: TapeEntityEntity?
 
     var componentModel: TapeComponent {
         get {

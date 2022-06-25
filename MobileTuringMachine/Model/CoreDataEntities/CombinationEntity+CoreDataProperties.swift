@@ -20,9 +20,7 @@ extension CombinationEntity {
     @NSManaged public var character: String
     @NSManaged public var toCharacter: String
     @NSManaged public var direction: DirectionEntity
-    @NSManaged public var option: OptionEntity?
 
-    
     var combinationModel: Combination {
         get {
             Combination(
@@ -36,7 +34,10 @@ extension CombinationEntity {
             id = Int16(newValue.id)
             character = newValue.character
             toCharacter = newValue.toCharacter
-            direction.directionModel = newValue.direction
+            
+            let newDirectionEntity = DirectionEntity(context: DataManager.shared.container.viewContext)
+            newDirectionEntity.directionModel = newValue.direction
+            direction = newDirectionEntity
         }
     }
 }

@@ -48,11 +48,8 @@ class DataManager {
     }
     
     func add(algorithm: Algorithm) {
-        print("Trying to add")
         let entity = AlgorithmEntity(context: container.viewContext)
-        print("Created entity")
-        entity.algorithmModel = algorithm  //  На этом падает
-        print("Finished adding. trying to appy changes.")
+        entity.algorithmModel = algorithm
         applyChanges()
     }
     
@@ -63,9 +60,6 @@ class DataManager {
     }
     
     func update(algorithm: Algorithm) {
-        // TODO: Improve
-        print(savedEntities.map { $0.id })
-        print(algorithm.id)
         guard let entity = savedEntities.first(where: { $0.id == algorithm.id }) else {
             print("Error updating")
             return

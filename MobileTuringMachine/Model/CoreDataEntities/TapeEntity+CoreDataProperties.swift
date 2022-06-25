@@ -1,5 +1,5 @@
 //
-//  TapeEntityEntity+CoreDataProperties.swift
+//  TapeEntity+CoreDataProperties.swift
 //  MobileTuringMachine
 //
 //  Created by Snow Lukin on 25.06.2022.
@@ -10,10 +10,10 @@ import Foundation
 import CoreData
 
 
-extension TapeEntityEntity {
+extension TapeEntity {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<TapeEntityEntity> {
-        return NSFetchRequest<TapeEntityEntity>(entityName: "TapeEntityEntity")
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<TapeEntity> {
+        return NSFetchRequest<TapeEntity>(entityName: "TapeEntity")
     }
 
     @NSManaged public var headIndex: Int16
@@ -22,8 +22,7 @@ extension TapeEntityEntity {
     @NSManaged public var nameID: Int16
     @NSManaged public var id: UUID
     @NSManaged public var components: NSSet
-    @NSManaged public var algorithm: AlgorithmEntity?
-    
+
     public var wrappedComponents: [TapeComponentEntity] {
         let set = components as? Set<TapeComponentEntity> ?? []
         return set.sorted {
@@ -51,17 +50,16 @@ extension TapeEntityEntity {
             
             components = []
             for component in newValue.components {
-                let newTapeComponent = TapeComponentEntity()
+                let newTapeComponent = TapeComponentEntity(context: DataManager.shared.container.viewContext)
                 newTapeComponent.componentModel = component
-                components.adding(newTapeComponent)
+                addToComponents(newTapeComponent)
             }
         }
     }
-
 }
 
 // MARK: Generated accessors for components
-extension TapeEntityEntity {
+extension TapeEntity {
 
     @objc(addComponentsObject:)
     @NSManaged public func addToComponents(_ value: TapeComponentEntity)
@@ -77,6 +75,6 @@ extension TapeEntityEntity {
 
 }
 
-extension TapeEntityEntity : Identifiable {
+extension TapeEntity : Identifiable {
 
 }

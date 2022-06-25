@@ -17,7 +17,6 @@ extension DirectionEntity {
     }
 
     @NSManaged public var state: Int16
-    @NSManaged public var combination: CombinationEntity?
 
     var directionModel: Direction {
         get {
