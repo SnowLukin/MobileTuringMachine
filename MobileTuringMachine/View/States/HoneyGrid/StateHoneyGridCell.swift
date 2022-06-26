@@ -39,7 +39,7 @@ struct StateHoneyGridCell: View {
             value: isBeingEdited
         )
         .disabled(isBeingEdited)
-        //            .opacity(isBeingEdited ? 0.7 : 1)
+        .opacity(isBeingEdited ? 0.7 : 1)
         .overlay(
             removeCircleButton
         )
