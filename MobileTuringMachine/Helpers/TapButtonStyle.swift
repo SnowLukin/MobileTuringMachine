@@ -7,10 +7,16 @@
 
 import SwiftUI
 
-// MARK: Makes button stay .background color when pressed
 struct NoTapColorButtonStyle: ButtonStyle {
+    
+    var colorScheme: ColorScheme
+    
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
-            .background(configuration.isPressed ? Color.secondaryBackground : Color.secondaryBackground)
+            .background(
+                configuration.isPressed
+                ? (colorScheme == .dark ? Color.secondaryBackground : Color.background)
+                : (colorScheme == .dark ? Color.secondaryBackground : Color.background)
+            )
     }
 }

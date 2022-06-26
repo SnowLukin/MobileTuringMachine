@@ -10,6 +10,7 @@ import SwiftUI
 struct ChooseStartStateView: View {
     
     @EnvironmentObject private var viewModel: AlgorithmViewModel
+    @Environment(\.colorScheme) var colorScheme
     
     let algorithm: Algorithm
     
@@ -30,7 +31,9 @@ struct ChooseStartStateView: View {
                         }
                     }
                 }
-                .buttonStyle(NoTapColorButtonStyle())
+                .buttonStyle(
+                    NoTapColorButtonStyle(colorScheme: colorScheme)
+                )
             }
         }
         .navigationTitle("Current state")

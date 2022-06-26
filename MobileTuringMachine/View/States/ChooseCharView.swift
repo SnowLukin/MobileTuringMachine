@@ -10,6 +10,7 @@ import SwiftUI
 struct ChooseCharView: View {
     
     @EnvironmentObject private var viewModel: AlgorithmViewModel
+    @Environment(\.colorScheme) var colorScheme
     
     let algorithm: Algorithm
     let tape: Tape
@@ -50,7 +51,9 @@ struct ChooseCharView: View {
                                 )
                         }
                     }
-                }.buttonStyle(NoTapColorButtonStyle())
+                }.buttonStyle(
+                    NoTapColorButtonStyle(colorScheme: colorScheme)
+                )
             }
         }
         .navigationTitle("Choose character")

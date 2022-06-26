@@ -10,6 +10,7 @@ import SwiftUI
 struct ChooseDirectionView: View {
     
     @EnvironmentObject private var viewModel: AlgorithmViewModel
+    @Environment(\.colorScheme) var colorScheme
     
     let algorithm: Algorithm
     let tape: Tape
@@ -51,7 +52,9 @@ struct ChooseDirectionView: View {
                         }
                     }
                 }
-                .buttonStyle(NoTapColorButtonStyle())
+                .buttonStyle(
+                    NoTapColorButtonStyle(colorScheme: colorScheme)
+                )
             }
         }
         .navigationTitle("Choose direction")

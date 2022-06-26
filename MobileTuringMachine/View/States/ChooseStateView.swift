@@ -10,6 +10,7 @@ import SwiftUI
 struct ChooseStateView: View {
     
     @EnvironmentObject private var viewModel: AlgorithmViewModel
+    @Environment(\.colorScheme) var colorScheme
     
     let algorithm: Algorithm
     let state: StateQ
@@ -45,7 +46,10 @@ struct ChooseStateView: View {
                                 )
                         }
                     }
-                }.buttonStyle(NoTapColorButtonStyle())
+                }
+                .buttonStyle(
+                    NoTapColorButtonStyle(colorScheme: colorScheme)
+                )
             }
         }
     }
