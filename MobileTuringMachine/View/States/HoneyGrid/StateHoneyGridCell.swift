@@ -30,18 +30,19 @@ struct StateHoneyGridCell: View {
                 }.foregroundColor(.primary)
             }
         }
-            .rotationEffect(.degrees(isBeingEdited ? 3.5 : 0))
-            .animation(
-                isBeingEdited
-                ? .easeInOut(duration: 0.15).repeatForever(autoreverses: true)
-                : .easeInOut(duration: 0.15),
-                value: isBeingEdited
-            )
-            .disabled(isBeingEdited)
-            .opacity(isBeingEdited ? 0.7 : 1)
-            .overlay(
-                removeCircleButton
-            )
+        .shadow(radius: 5)
+        .rotationEffect(.degrees(isBeingEdited ? 5 : 0), anchor: .center)
+        .animation(
+            isBeingEdited
+            ? .easeInOut(duration: 0.12).repeatForever(autoreverses: true)
+            : .easeInOut(duration: 0.12),
+            value: isBeingEdited
+        )
+        .disabled(isBeingEdited)
+        //            .opacity(isBeingEdited ? 0.7 : 1)
+        .overlay(
+            removeCircleButton
+        )
     }
 }
 
@@ -68,7 +69,7 @@ extension StateHoneyGridCell {
                 .font(.title2)
         }
         .disabled(!isBeingEdited || viewModel.getAlgorithm(algorithm).states.count == 1)
-            .offset(x: -43, y: -40)
-            .opacity(isBeingEdited ? (viewModel.getAlgorithm(algorithm).states.count != 1 ? 1 : 0.7) : 0)
+        .offset(x: -43, y: -40)
+        .opacity(isBeingEdited ? (viewModel.getAlgorithm(algorithm).states.count != 1 ? 1 : 0.7) : 0)
     }
 }

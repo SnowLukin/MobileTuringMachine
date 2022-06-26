@@ -24,7 +24,6 @@ struct StatesHoneyGrid: View {
                         ForEach(rows[rowIndex]) { state in
                             StateHoneyGridCell(isBeingEdited: $isBeingEdited, state: state, algorithm: algorithm)
                                 .frame(width: (width - 20) / 3.2, height: 110)
-                                .shadow(radius: 5)
                                 .offset(x: getOffset(index: rowIndex))
                         }
                     }
