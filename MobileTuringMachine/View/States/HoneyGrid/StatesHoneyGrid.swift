@@ -22,7 +22,7 @@ struct StatesHoneyGrid: View {
                 ForEach(rows.indices, id: \.self) { rowIndex in
                     HStack(spacing: 10) {
                         ForEach(rows[rowIndex]) { state in
-                            StateHoneyGridCell(isBeingEdited: $isBeingEdited, state: state, algorithm: algorithm)
+                            StateHoneyGridCell(isBeingEdited: $isBeingEdited, state: state)
                                 .frame(width: (width - 20) / 3.2, height: 110)
                                 .offset(x: getOffset(index: rowIndex))
                         }
@@ -37,7 +37,7 @@ struct StatesHoneyGrid: View {
                 generateHoney()
             }
         }
-        .onChange(of: viewModel.getAlgorithm(algorithm).states, perform: { newValue in
+        .onChange(of: algorithm.wrappedStates, perform: { newValue in
             withAnimation {
                 generateHoney()
             }
@@ -47,7 +47,7 @@ struct StatesHoneyGrid: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
                     withAnimation {
-                        viewModel.addState(for: algorithm)
+                        viewModel.addState(algorithm: algorithm)
                     }
                 } label: {
                     Image(systemName: "plus")
@@ -69,7 +69,8 @@ struct StatesHoneyGrid: View {
 
 struct StatesHoneyGrid_Previews: PreviewProvider {
     static var previews: some View {
-        StatesHoneyGrid(algorithm: Algorithm(name: "New Algorithm", tapes: [], states: [], stateForReset: StateQ(nameID: 0, options: [])))
+        let algorithm = DataManager.shared.savedAlgorithms[0]
+        StatesHoneyGrid(algorithm: algorithm)
             .environmentObject(AlgorithmViewModel())
     }
 }
@@ -99,7 +100,7 @@ extension StatesHoneyGrid {
         var count = 0
         
         var generated: [StateQ] = []
-        for state in viewModel.getAlgorithm(algorithm).states {
+        for state in algorithm.wrappedStates {
             generated.append(state)
             
             if generated.count == 2 {
@@ -126,7 +127,7 @@ extension StatesHoneyGrid {
             
             count += 1
             // for exhaust data or single data
-            if count == viewModel.getAlgorithm(algorithm).states.count && !generated.isEmpty {
+            if count == algorithm.wrappedStates.count && !generated.isEmpty {
                 rows.append(generated)
             }
         }

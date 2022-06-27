@@ -69,35 +69,23 @@ struct AlgorithmView: View {
                 }
             }
         }
-        .fileExporter(
-            isPresented: $showExport,
-            document: DocumentManager(algorithm: viewModel.getAlgorithm(algorithm)),
-            contentType: .mtm
-        ) { result in
-            switch result {
-            case .success:
-                print("File successfully exported")
-            case .failure:
-                print("Error occupied. Failed exporting the file.")
-            }
-        }
+//        .fileExporter(
+//            isPresented: $showExport,
+//            document: DocumentManager(algorithm: viewModel.getAlgorithm(algorithm)),
+//            contentType: .mtm
+//        ) { result in
+//            switch result {
+//            case .success:
+//                print("File successfully exported")
+//            case .failure:
+//                print("Error occupied. Failed exporting the file.")
+//            }
+//        }
     }
 }
 
 struct AlgorithmView_Previews: PreviewProvider {
     static var previews: some View {
-        AlgorithmView(
-            algorithm:
-                Algorithm(
-                    name: "New Algorithm",
-                    tapes: [],
-                    states: [],
-                    stateForReset:
-                        StateQ(
-                            nameID: 0,
-                            options: []
-                        )
-                )
-        )
+        AlgorithmView(algorithm: DataManager.shared.savedAlgorithms[0])
     }
 }

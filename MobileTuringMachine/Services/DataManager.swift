@@ -14,13 +14,9 @@ class DataManager {
     
     let container: NSPersistentContainer
     private let containerName: String = "AlgorithmsData"
-    private let entityName: String = "AlgorithmEntity"
+    private let entityName: String = "Algorithm"
     
-    @Published var savedEntities: [AlgorithmEntity] = []
-    
-    var savedAlgorithms: [Algorithm] {
-        savedEntities.map { $0.algorithmModel }
-    }
+    @Published var savedAlgorithms: [Algorithm] = []
     
     private init() {
         container = NSPersistentContainer(name: containerName)
@@ -28,13 +24,12 @@ class DataManager {
             if let error = error {
                 print("Error loading CoreData. \(error.localizedDescription)")
             }
-            self.getAlgorithms()
         }
     }
     
     func isEmpty() -> Bool {
         do {
-            let request = NSFetchRequest<AlgorithmEntity>(entityName: entityName)
+            let request = NSFetchRequest<Algorithm>(entityName: entityName)
             let count = try container.viewContext.count(for: request)
             if count == 0 {
                 return true
@@ -47,33 +42,15 @@ class DataManager {
         }
     }
     
-    func add(algorithm: Algorithm) {
-        let entity = AlgorithmEntity(context: container.viewContext)
-        entity.algorithmModel = algorithm
-        applyChanges()
+    func applyChanges() {
+        save()
+        getAlgorithms()
     }
     
-    func delete(algorithm: Algorithm) {
-        guard let entity = savedEntities.first(where: { $0.id == algorithm.id }) else { return }
-        container.viewContext.delete(entity)
-        applyChanges()
-    }
-    
-    func update(algorithm: Algorithm) {
-        guard let entity = savedEntities.first(where: { $0.id == algorithm.id }) else {
-            print("Error updating")
-            return
-        }
-        container.viewContext.delete(entity)
-        let newEntity = AlgorithmEntity(context: container.viewContext)
-        newEntity.algorithmModel = algorithm
-        applyChanges()
-    }
-    
-    private func getAlgorithms() {
-        let request = NSFetchRequest<AlgorithmEntity>(entityName: entityName)
+    func getAlgorithms() {
+        let request = NSFetchRequest<Algorithm>(entityName: entityName)
         do {
-            savedEntities = try container.viewContext.fetch(request)
+            savedAlgorithms = try container.viewContext.fetch(request)
         } catch {
             print("Error fetching Favorities Entities. \(error)")
         }
@@ -86,10 +63,5 @@ class DataManager {
         } catch let error {
             print("Error saving to Core Data. \(error)")
         }
-    }
-    
-    private func applyChanges() {
-        save()
-        getAlgorithms()
     }
 }

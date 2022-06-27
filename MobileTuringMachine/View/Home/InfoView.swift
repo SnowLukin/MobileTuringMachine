@@ -57,12 +57,7 @@ struct InfoView: View {
 struct InfoView_Previews: PreviewProvider {
     static var previews: some View {
         InfoView(
-            algorithm: Algorithm(
-                name: "New Algorithm",
-                tapes: [],
-                states: [],
-                stateForReset: StateQ(nameID: 0, options: [])
-            )
+            algorithm: DataManager.shared.savedAlgorithms[0]
         )
         .environmentObject(AlgorithmViewModel())
     }

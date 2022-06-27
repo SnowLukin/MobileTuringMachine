@@ -41,7 +41,7 @@ struct ConfigurationsView: View {
 struct ConfigurationsView_Previews: PreviewProvider {
     static var previews: some View {
         StatefulPreviewWrapper(true) {
-            ConfigurationsView(showSettings: $0, algorithm: Algorithm(name: "New Algorithm", tapes: [], states: [], stateForReset: StateQ(nameID: 0, options: [])))
+            ConfigurationsView(showSettings: $0, algorithm: DataManager.shared.savedAlgorithms[0])
                 .environmentObject(AlgorithmViewModel())
         }
     }
@@ -59,7 +59,7 @@ extension ConfigurationsView {
     
     private var customCell: some View {
         VStack {
-            customCellButtonView("State \(viewModel.getStartState(of: algorithm).nameID)", destination: AnyView(ChooseStartStateView(algorithm: algorithm)))
+            customCellButtonView("State \(viewModel.getStartStateName(of: algorithm)?.nameID ?? 0)", destination: AnyView(ChooseStartStateView(algorithm: algorithm)))
         }.padding()
             .frame(minWidth: 0, maxWidth: .infinity)
             .background(Color.background)

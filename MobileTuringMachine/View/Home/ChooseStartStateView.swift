@@ -16,15 +16,16 @@ struct ChooseStartStateView: View {
     
     var body: some View {
         List {
-            ForEach(viewModel.getAlgorithm(algorithm).states) { state in
+            ForEach(algorithm.wrappedStates) { state in
                 Button {
-                    viewModel.changeStartState(to: state, of: algorithm)
+                    viewModel.changeStartState(to: state)
                 } label: {
                     HStack {
                         Text("State \(state.nameID)")
                             .foregroundColor(.primary)
                         Spacer()
-                        if viewModel.getStartState(of: algorithm) == state {
+                        
+                        if state.isStarting {
                             Image(systemName: "circle.fill")
                                 .foregroundColor(.blue)
                                 .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.2)))
@@ -42,7 +43,7 @@ struct ChooseStartStateView: View {
 
 struct ChooseStartStateView_Previews: PreviewProvider {
     static var previews: some View {
-        ChooseStartStateView(algorithm: Algorithm(name: "New Algorithm", tapes: [], states: [], stateForReset: StateQ(nameID: 0, options: [])))
+        ChooseStartStateView(algorithm: DataManager.shared.savedAlgorithms[0])
             .environmentObject(AlgorithmViewModel())
     }
 }

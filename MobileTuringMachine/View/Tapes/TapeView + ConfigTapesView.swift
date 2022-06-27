@@ -13,7 +13,6 @@ struct TapeViewConfigTapesView: View {
     @State private var isConfigShown = false
     
     let tape: Tape
-    let algorithm: Algorithm
     
     var body: some View {
         ZStack {
@@ -25,7 +24,7 @@ struct TapeViewConfigTapesView: View {
                             Spacer()
                         }
                         if isConfigShown {
-                            ConfigTapesView(tape: tape, algorithm: algorithm)
+                            ConfigTapesView(tape: tape)
                                 .padding(.bottom)
                         }
                         configButton
@@ -33,7 +32,7 @@ struct TapeViewConfigTapesView: View {
                             .padding(.bottom, 5)
                     }
                 }
-                TapeView(tape: tape, algorithm: algorithm)
+                TapeView(tape: tape)
             }.padding(.horizontal)
         }
     }
@@ -42,8 +41,8 @@ struct TapeViewConfigTapesView: View {
 
 struct TapeViewConfigTapesView_Previews: PreviewProvider {
     static var previews: some View {
-        TapeViewConfigTapesView(tape: Tape(nameID: 0, components: [TapeComponent(id: 0)]), algorithm: Algorithm(name: "New Algorithm", tapes: [], states: [], stateForReset: StateQ(nameID: 0, options: [])))
-            .preferredColorScheme(.dark)
+        let algorithm = DataManager.shared.savedAlgorithms[0]
+        TapeViewConfigTapesView(tape: algorithm.wrappedTapes[0])
             .environmentObject(AlgorithmViewModel())
     }
 }
@@ -53,13 +52,13 @@ extension TapeViewConfigTapesView {
     private var removeButton: some View {
         Button {
             withAnimation {
-                viewModel.removeTape(tape: tape, from: algorithm)
+                viewModel.deleteTape(tape)
             }
         } label: {
             Text("Remove")
                 .animation(.easeInOut, value: !isConfigShown)
         }
-        .disabled(viewModel.getAlgorithm(algorithm).tapes.count < 2)
+        .disabled(tape.algorithm.wrappedTapes.count < 2)
     }
     
     private var configButton: some View {

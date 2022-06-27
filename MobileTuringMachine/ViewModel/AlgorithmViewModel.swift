@@ -1,170 +1,408 @@
 //
-//  AlgorithmViewModel.swift
+//  AlgorithmViewModel2.swift
 //  MobileTuringMachine
 //
-//  Created by Snow Lukin on 19.06.2022.
+//  Created by Snow Lukin on 27.06.2022.
 //
 
-import Foundation
-import Combine
-import CoreData
+import SwiftUI
 
 class AlgorithmViewModel: ObservableObject {
     
     @Published var algorithms: [Algorithm] = []
     
-    static let fileExtension = "mtm"
-    
     let dataManager = DataManager.shared
     
-    let tasksDocURL = URL(
-      fileURLWithPath: "TuringMachineAlgorithm",
-      relativeTo: FileManager.documentsDirectoryURL
-    ).appendingPathExtension(fileExtension)
-    
     required init() {
+        
         if dataManager.isEmpty() {
-            print("Setting default data")
-            algorithms = [DefaultData.shared.algorithm]
-            updateData()
+            print("Setting default data...")
+            addAlgorithm(isDefault: true)
+            dataManager.applyChanges()
         } else {
-            algorithms = dataManager.savedAlgorithms
+            print("Loading saved data...")
+            dataManager.getAlgorithms()
         }
-    }
-    
-    func updateData() {
-        dataManager.savedEntities = []
-        for algorithm in algorithms {
-            dataManager.add(algorithm: algorithm)
-        }
+        
+        algorithms = dataManager.savedAlgorithms
     }
 }
 
-// MARK: Algorithm
 extension AlgorithmViewModel {
     
-    func addAlgorithm() {
-        var newAlgorithm = DefaultData.shared.algorithm
-        // Updating id
-        newAlgorithm.id = UUID()
-        algorithms.append(newAlgorithm)
-        dataManager.add(algorithm: newAlgorithm)
-    }
-    
-    func addImportedAlgorithm(algorithm: Algorithm) {
-        var newAlgorithm = algorithm
-        // Update id
-        newAlgorithm.id = UUID()
-        algorithms.append(newAlgorithm)
-        dataManager.add(algorithm: algorithm)
-    }
-    
-    func removeAlgorithm(_ algorithm: Algorithm) {
-        guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else { return }
-        algorithms.remove(at: algorithmIndex)
-        dataManager.delete(algorithm: algorithm)
-    }
-    
-    func getAlgorithm(_ algorithm: Algorithm) -> Algorithm {
-        guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else { return algorithms[0] }
-        return algorithms[algorithmIndex]
-    }
-    
     func updateName(with newName: String, for algorithm: Algorithm) {
-        guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else { return }
         if newName.isEmpty {
-            algorithms[algorithmIndex].name = "New Algorithm"
+            algorithm.name = "New Algorithm"
             return
         }
-        algorithms[algorithmIndex].name = newName
-        dataManager.update(algorithm: algorithms[algorithmIndex])
+        algorithm.name = newName
+        dataManager.applyChanges()
     }
     
     func updateDescription(with newDescription: String, for algorithm: Algorithm) {
-        guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else { return }
-        algorithms[algorithmIndex].description = newDescription
-        dataManager.update(algorithm: algorithms[algorithmIndex])
+        algorithm.algorithmDescription = newDescription
+        dataManager.applyChanges()
+    }
+    
+    func updateAllTapesComponents(for algorithm: Algorithm) {
+        for tape in algorithm.wrappedTapes {
+            updateComponents(for: tape)
+            tape.headIndex = 0
+        }
+        dataManager.applyChanges()
+    }
+    
+    func getStartStateName(of algorithm: Algorithm) -> StateQ? {
+        algorithm.wrappedStates.first(where: { $0.isStarting })
+    }
+    
+    func reset(algorithm: Algorithm) {
+        updateAllTapesComponents(for: algorithm)
+        for state in algorithm.wrappedStates {
+            state.isStarting = state.isForReset
+        }
+        dataManager.applyChanges()
+    }
+    
+    func makeStep(algorithm: Algorithm) {
+        
+        var combination: [String] = []
+        
+        // Gathering the components that are under tapes' head index
+        for tape in algorithm.wrappedTapes {
+            guard let component = tape.wrappedComponents.first(where: { $0.id == tape.headIndex }) else {
+                print("Error finding component equals to tape head index")
+                return
+            }
+            combination.append(component.value)
+        }
+        
+        // Finding starting state
+        guard let startState = algorithm.wrappedStates.first(where: { $0.isStarting }) else {
+            print("Error getting start state")
+            return
+        }
+        
+        // Finding needed option in state
+        guard let currentOption = startState.wrappedOptions.first(where: { $0.wrappedCombinations.map { $0.character } == combination }) else {
+            print("Error finding current option")
+            return
+        }
+        
+        for index in 0..<combination.count {
+            let currentTape = algorithm.wrappedTapes[index]
+            guard let component = currentTape.wrappedComponents.first(where: { $0.id == currentTape.headIndex }) else {
+                print("Error finding component")
+                return
+            }
+            
+            DispatchQueue.main.async {
+                component.value = currentOption.wrappedCombinations[index].toCharacter
+            }
+            switch currentOption.wrappedCombinations[index].directionID {
+                
+            case 0:
+                break
+            case 1:
+                DispatchQueue.main.async {
+                    currentTape.headIndex -= 1
+                }
+            default:
+                DispatchQueue.main.async {
+                    currentTape.headIndex += 1
+                }
+            }
+        }
+        
+        // Setting new start state
+        DispatchQueue.main.async {
+            startState.isStarting.toggle()
+            guard let toState = algorithm.wrappedStates.first(where: { $0.id == currentOption.toStateID }) else {
+                print("Error. Couldnt find toState.")
+                return
+            }
+            toState.isStarting.toggle()
+        }
     }
     
 }
 
-// MARK: - States
+// MARK: - Tape
 extension AlgorithmViewModel {
-    // MARK: Add State
-    func addState(for algorithm: Algorithm) {
-        guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else {
-            print("Error couldnt find algorithm index in AlgorithmViewModel line 34")
+    func changeHeadIndex(to component: TapeComponent) {
+        component.tape.headIndex = component.id
+        dataManager.applyChanges()
+    }
+    
+    func setNewAlphabet(_ text: String, tape: Tape) {
+        tape.alphabet = text
+        updateStates(for: tape.algorithm)
+        dataManager.applyChanges()
+    }
+    
+    func setNewInput(_ text: String, tape: Tape) {
+        tape.input = text
+        
+        updateComponents(for: tape)
+        dataManager.applyChanges()
+    }
+    
+    private func updateStates(for algorithm: Algorithm) {
+        for state in algorithm.wrappedStates {
+            state.options = []
+            addOptions(state: state)
+        }
+        dataManager.applyChanges()
+    }
+}
+
+// MARK: - State
+extension AlgorithmViewModel {
+    func changeStartState(to state: StateQ) {
+        guard let currentStartingState = state.algorithm.wrappedStates.first(where: { $0.isStarting } ) else {
+            print("Error finding current starting state")
             return
         }
-            
-        // Getting the name
-        let nameIDArray = algorithms[algorithmIndex].states.map { $0.nameID }
-        guard let max = nameIDArray.max() else { return }
-        let fullArray = Array(0...max)
+        currentStartingState.isStarting.toggle()
+        currentStartingState.isForReset.toggle()
         
+        state.isStarting.toggle()
+        state.isForReset.toggle()
+        
+        dataManager.applyChanges()
+    }
+}
+
+// MARK: - Option
+extension AlgorithmViewModel {
+    func updateOptionToState(option: Option, currentState: StateQ) {
+        option.toStateID = currentState.id
+        dataManager.applyChanges()
+    }
+    
+    func isChosenToState(option: Option, currentState: StateQ) -> Bool {
+        option.toStateID == currentState.id
+    }
+    
+    func getToStateName(for option: Option) -> Int {
+        Int(option.state.algorithm.wrappedStates.first(where: { $0.id == option.toStateID })?.nameID ?? -1)
+    }
+    
+}
+
+// MARK: - Combination
+extension AlgorithmViewModel {
+    func updateCombinationToChar(combination: Combination, alphabetElement: String) {
+        combination.toCharacter = alphabetElement
+        dataManager.applyChanges()
+    }
+    
+    func updateCombinationDirection(combination: Combination, directionID: Int) {
+        combination.directionID = Int16(directionID)
+        dataManager.applyChanges()
+    }
+    
+    func isChosenChar(combination: Combination, alphabetElement: String) -> Bool {
+        combination.toCharacter == alphabetElement
+    }
+    
+    func isChosenDirection(combination: Combination, directionID: Int) -> Bool {
+        combination.directionID == Int16(directionID)
+    }
+}
+
+
+// Working with data
+extension AlgorithmViewModel {
+    
+    func addAlgorithm(isDefault: Bool = false) {
+        let algorithm = Algorithm(context: dataManager.container.viewContext)
+        algorithm.initValues(states: [], tapes: [])
+        addTape(algorithm: algorithm)
+        addState(algorithm: algorithm)
+        
+        algorithms.append(algorithm)
+        dataManager.applyChanges()
+    }
+    
+    func deleteAlgorithm(_ algorithm: Algorithm) {
+        dataManager.container.viewContext.delete(algorithm)
+        algorithms.removeAll { $0.id == algorithm.id }
+        dataManager.applyChanges()
+    }
+    
+    func addTape(algorithm: Algorithm) {
+        if algorithm.wrappedTapes.isEmpty {
+            let tape = Tape(context: dataManager.container.viewContext)
+            tape.initValues(nameID: 0, components: [], algorithm: algorithm)
+            addComponent(tape: tape)
+            algorithm.addToTapes(tape)
+            dataManager.applyChanges()
+            return
+        }
+        // Getting the name
+        let nameIDArray = algorithm.wrappedTapes.map { $0.nameID }
+        guard let max = nameIDArray.max() else {
+            print("aboba 3")
+            return
+        }
+        let fullArray = Array(0...max)
         let arrayOfDifferentElements = fullArray.filter { !nameIDArray.contains($0) }
+        
+        let tape = Tape(context: dataManager.container.viewContext)
         
         if let firstElement = arrayOfDifferentElements.first {
             // In case there ARE gaps between name ids
-            var newState = StateQ(nameID: firstElement, options: [])
-            newState.options = getOptions(for: newState, of: algorithm)
-            if let indexToInsert = nameIDArray.firstIndex(where: { firstElement < $0 }) {
-                algorithms[algorithmIndex].states.insert(newState, at: indexToInsert)
-                dataManager.update(algorithm: algorithms[algorithmIndex])
-            } else {
-                // Shouldn't happen
-                algorithms[algorithmIndex].states.append(newState)
-                dataManager.update(algorithm: algorithms[algorithmIndex])
-            }
+            tape.initValues(nameID: Int(firstElement), components: [], algorithm: algorithm)
         } else {
             // In case there ARE NO gaps between name ids
-            guard let endElement = algorithms[algorithmIndex].states.last else { return }
-            var newState = StateQ(nameID: endElement.nameID + 1, options: [])
-            newState.options = getOptions(for: newState, of: algorithm)
-            algorithms[algorithmIndex].states.append(newState)
-            dataManager.update(algorithm: algorithms[algorithmIndex])
+            guard let endElement = algorithm.wrappedTapes.last else {
+                print("aboba 4")
+                return
+            }
+            tape.initValues(nameID: Int(endElement.nameID + 1), components: [], algorithm: algorithm)
         }
+        addComponent(tape: tape)
+        algorithm.addToTapes(tape)
+        dataManager.applyChanges()
     }
     
-    // MARK: Remove
-    func removeState(algorithm: Algorithm, state: StateQ) {
-        guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else {
-            print("Error couldnt find algorithm index in AlgorithmViewModel line 67")
-            return
+    func deleteTape(_ tape: Tape) {
+        tape.algorithm.removeFromTapes(tape)
+        dataManager.container.viewContext.delete(tape)
+        algorithms.removeAll { $0.id == tape.id }
+        dataManager.applyChanges()
+    }
+    
+    func addComponent(tape: Tape) {
+        for index in -10...10 {
+            let component = TapeComponent(context: dataManager.container.viewContext)
+            component.initValues(id: index, tape: tape)
+            tape.addToComponents(component)
         }
-        if let stateIndex = algorithms[algorithmIndex].states.firstIndex(where: { $0.id == state.id }) {
-            // if state that is being deleted is a starting state
-            // before deleting we need to set different statring state
-            if algorithms[algorithmIndex].states[stateIndex].isStarting {
-                if stateIndex == 0 {
-                    changeStartState(to: algorithms[algorithmIndex].states[1], of: algorithm)
-                } else {
-                    changeStartState(to: algorithms[algorithmIndex].states[0], of: algorithm)
+        dataManager.applyChanges()
+    }
+    
+    func updateComponents(for tape: Tape) {
+        // Reseting old components
+        tape.components = []
+        addComponent(tape: tape)
+        
+        // Update values according to input
+        for characterID in 0..<tape.input.count {
+            for componentObject in tape.components {
+                if let component = componentObject as? TapeComponent {
+                    if component.id == Int16(characterID) {
+                        component.value = tape.input.map { String($0) }[characterID]
+                    }
                 }
             }
-            algorithms[algorithmIndex].states.remove(at: stateIndex)
-            dataManager.update(algorithm: algorithms[algorithmIndex])
         }
+        dataManager.applyChanges()
     }
     
-    // MARK: Update
-    func updateStates(for algorithm: Algorithm) {
-        guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else {
-            print("Error couldnt find algorithm index in AlgorithmViewModel line 87")
+    func addState(algorithm: Algorithm, isDefault: Bool = false) {
+        if algorithm.wrappedStates.isEmpty {
+            let state = StateQ(context: dataManager.container.viewContext)
+            state.initValues(
+                nameID: 0,
+                isStarting: isDefault, isForReset: isDefault,
+                options: [], algorithm: algorithm
+            )
+            addOptions(state: state)
+            algorithm.addToStates(state)
+            dataManager.applyChanges()
             return
         }
-        for index in 0..<algorithms[algorithmIndex].states.count {
-            algorithms[algorithmIndex].states[index].options = getOptions(for: algorithms[algorithmIndex].states[index], of: algorithm)
+        
+        // Getting the name
+        let nameIDArray = algorithm.wrappedStates.map { $0.nameID }
+        guard let max = nameIDArray.max() else {
+            print("aboba 1")
+            return
         }
-        dataManager.update(algorithm: algorithms[algorithmIndex])
+        let fullArray = Array(0...max)
+        let arrayOfDifferentElements = fullArray.filter { !nameIDArray.contains($0) }
+        
+        let state = StateQ(context: dataManager.container.viewContext)
+        
+        if let firstElement = arrayOfDifferentElements.first {
+            // In case there ARE gaps between name ids
+            state.initValues(
+                nameID: Int(firstElement),
+                isStarting: isDefault, isForReset: isDefault,
+                options: [], algorithm: algorithm
+            )
+        } else {
+            // In case there ARE NO gaps between name ids
+            guard let endElement = algorithm.wrappedTapes.last else {
+                print("aboba 2")
+                return
+            }
+            state.initValues(
+                nameID: Int(endElement.nameID + 1),
+                isStarting: isDefault, isForReset: isDefault,
+                options: [], algorithm: algorithm
+            )
+        }
+        addOptions(state: state)
+        algorithm.addToStates(state)
+        dataManager.applyChanges()
     }
     
-    private func getCombinationsTuple(combinations: [String]) -> [Combination] {
-        var combinationsTuple: [Combination] = []
-        for combinationIndex in 0..<combinations.count {
-            combinationsTuple.append(Combination(id: combinationIndex, character: combinations[combinationIndex], direction: .stay, toCharacter: combinations[combinationIndex]))
+    func deleteState(_ state: StateQ) {
+        if state.isStarting {
+            if state.nameID == 0 {
+                updateStartState(state: state, id: 1)
+            } else {
+                updateStartState(state: state, id: 0)
+            }
         }
-        return combinationsTuple
+        
+        state.algorithm.removeFromStates(state)
+        dataManager.container.viewContext.delete(state)
+        dataManager.applyChanges()
+    }
+    
+    private func updateStartState(state: StateQ, id: Int) {
+        state.isStarting.toggle()
+        for element in state.algorithm.states {
+            if let state = element as? StateQ {
+                if state.nameID == Int16(id) {
+                    state.isStarting.toggle()
+                    break
+                }
+            }
+        }
+        dataManager.applyChanges()
+    }
+    
+    func addOptions(state: StateQ) {
+        var alphabets: [[String]] = []
+        for tape in state.algorithm.wrappedTapes {
+            var tapeAlphabet = tape.alphabet.map { String($0) }
+            tapeAlphabet.append("_")
+            alphabets.append(tapeAlphabet)
+        }
+        var combinations: [[String]] = []
+        getCombinations(array: alphabets, word: [], currentArrayIndex: 0, result: &combinations)
+        
+        for combinationIndex in 0..<combinations.count {
+            let option = Option(context: dataManager.container.viewContext)
+            option.initValues(id: combinationIndex, toStateID: state.id, combinations: [], state: state)
+            addCombinations(combinations: combinations[combinationIndex], option: option)
+            state.addToOptions(option)
+        }
+        dataManager.applyChanges()
+    }
+    
+    func addCombinations(combinations: [String], option: Option) {
+        for combinationIndex in 0..<combinations.count {
+            let combination = Combination(context: dataManager.container.viewContext)
+            combination.initValues(id: combinationIndex, character: combinations[combinationIndex], directionID: 0, option: option)
+            option.addToCombinations(combination)
+        }
+        dataManager.applyChanges()
     }
     
     private func getCombinations(array: [[String]], word: [String], currentArrayIndex: Int, result: inout [[String]]) {
@@ -178,409 +416,4 @@ extension AlgorithmViewModel {
             }
         }
     }
-    
-    func getOptions(for state: StateQ, of algorithm: Algorithm) -> [Option] {
-        guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else {
-            let newOption = Option(id: 0, toState: state, combinations: [])
-            return [newOption]
-            
-        }
-        var alphabets: [[String]] = []
-        for tape in algorithms[algorithmIndex].tapes {
-            var tapeAlphabet = tape.alphabet.map { String($0) }
-            tapeAlphabet.append("_")
-            alphabets.append(tapeAlphabet)
-        }
-        var combinations: [[String]] = []
-        getCombinations(array: alphabets, word: [], currentArrayIndex: 0, result: &combinations)
-        
-        var optionStates: [Option] = []
-        for combinationIndex in 0..<combinations.count {
-            optionStates.append(
-                Option(
-                    id: combinationIndex, toState: state,
-                    combinations: getCombinationsTuple(combinations: combinations[combinationIndex])
-                )
-            )
-        }
-        return optionStates
-    }
-}
-
-
-// MARK: - Tape
-extension AlgorithmViewModel {
-    
-    // MARK: Change head index
-    func changeHeadIndex(of tape: Tape, to component: TapeComponent, algorithm: Algorithm) {
-        guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else {
-            print("Error. Couldnt find algorithm index AlgorithmViewModel line 150.")
-            return
-        }
-        if let tapeIndex = algorithms[algorithmIndex].tapes.firstIndex(where: { $0.id == tape.id }) {
-            algorithms[algorithmIndex].tapes[tapeIndex].headIndex = component.id
-            dataManager.update(algorithm: algorithms[algorithmIndex])
-        }
-    }
-    
-    // MARK: Add
-    func addTape(to algorithm: Algorithm) {
-        
-        guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else {
-            print("Error. Couldnt find algorithm index AlgorithmViewModel line 161.")
-            return
-        }
-        
-        // Getting the name
-        let nameIDArray = algorithms[algorithmIndex].tapes.map { $0.nameID }
-        guard let max = nameIDArray.max() else { return }
-        
-        let fullArray = Array(0...max)
-        
-        let arrayOfDifferentElements = fullArray.filter { !nameIDArray.contains($0) }
-        if let firstElement = arrayOfDifferentElements.first {
-            // In case there ARE gaps between name ids
-            let newTape = Tape(nameID: firstElement, components: getComponents())
-            if let indexToInsert = nameIDArray.firstIndex(where: { firstElement < $0 }) {
-                algorithms[algorithmIndex].tapes.insert(newTape, at: indexToInsert)
-            } else {
-                // Shouldn't happen
-                algorithms[algorithmIndex].tapes.append(newTape)
-            }
-        } else {
-            // In case there ARE NO gaps between name ids
-            guard let endElement = algorithms[algorithmIndex].tapes.last else { return }
-            algorithms[algorithmIndex].tapes.append(Tape(nameID: endElement.nameID + 1, components: getComponents()))
-        }
-        updateStates(for: algorithms[algorithmIndex])
-        dataManager.update(algorithm: algorithms[algorithmIndex])
-    }
-    
-    // MARK: Remove
-    func removeTape(tape: Tape, from algorithm: Algorithm) {
-        guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else {
-            print("Error. Couldnt find algorithm index AlgorithmViewModel line 192.")
-            return
-        }
-        if let index = algorithms[algorithmIndex].tapes.firstIndex(where: { $0.id == tape.id }) {
-            algorithms[algorithmIndex].tapes.remove(at: index)
-        }
-        updateStates(for: algorithms[algorithmIndex])
-        dataManager.update(algorithm: algorithms[algorithmIndex])
-    }
-    
-    // MARK: Alphabet
-    func setNewAlphabet(_ text: String, tape: Tape, algorithm: Algorithm) {
-        
-        guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else {
-            print("Error. Couldnt find algorithm index AlgorithmViewModel line 205.")
-            return
-        }
-        
-        guard let tapeIndex = algorithms[algorithmIndex].tapes.firstIndex(where: { $0.id == tape.id }) else {
-            print("viewModel couldnt find tape index for setNewAlphabet function")
-            return
-        }
-        // Update alphabet
-        algorithms[algorithmIndex].tapes[tapeIndex].alphabet = text
-        updateStates(for: algorithms[algorithmIndex])
-        dataManager.update(algorithm: algorithms[algorithmIndex])
-    }
-    
-    // MARK: Input
-    func setNewInput(_ text: String, tape: Tape, algorithm: Algorithm) {
-        
-        guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else {
-            print("Error. Couldnt find algorithm index AlgorithmViewModel line 222.")
-            return
-        }
-        guard let tapeIndex = algorithms[algorithmIndex].tapes.firstIndex(where: { $0.id == tape.id }) else {
-            print("viewModel couldnt find tape index for setNewInput function")
-            return
-        }
-        
-        // Update input
-        algorithms[algorithmIndex].tapes[tapeIndex].input = text
-        
-        updateComponents(tape: tape, algorithm: algorithms[algorithmIndex])
-        dataManager.update(algorithm: algorithms[algorithmIndex])
-    }
-    
-    func updateComponents(tape: Tape, algorithm: Algorithm) {
-        guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else {
-            print("Error. Couldnt find algorithm index AlgorithmViewModel line 239.")
-            return
-        }
-        guard let tapeIndex = algorithms[algorithmIndex].tapes.firstIndex(where: { $0.id == tape.id }) else {
-            print("viewModel couldnt find tape index for setNewInput function")
-            return
-        }
-        
-        // Reset values
-        for componentIndex in 0..<algorithms[algorithmIndex].tapes[tapeIndex].components.count {
-            algorithms[algorithmIndex].tapes[tapeIndex].components[componentIndex].value = "_"
-        }
-        
-        // Update values according to input
-        for characterID in 0..<algorithms[algorithmIndex].tapes[tapeIndex].input.count {
-            if let componentIndex = algorithms[algorithmIndex].tapes[tapeIndex].components.firstIndex(where: { $0.id == characterID }) {
-                algorithms[algorithmIndex].tapes[tapeIndex].components[componentIndex].value = algorithms[algorithmIndex].tapes[tapeIndex].input.map { String($0) }[characterID]
-            }
-        }
-    }
-    
-    func updateAllTapesComponents(for algorithm: Algorithm) {
-        guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else {
-            print("Error. Couldnt find algorithm index AlgorithmViewModel line 239.")
-            return
-        }
-        
-        for tapeIndex in 0..<algorithms[algorithmIndex].tapes.count {
-            updateComponents(tape: algorithms[algorithmIndex].tapes[tapeIndex], algorithm: algorithm)
-            algorithms[algorithmIndex].tapes[tapeIndex].headIndex = 0
-        }
-    }
-    
-    // MARK: Components
-    func getComponents() -> [TapeComponent] {
-        var components: [TapeComponent] = []
-        for index in -10...10 {
-            components.append(
-                TapeComponent(
-                    id: index,
-                    value: "_"
-                )
-            )
-        }
-        return components
-    }
-}
-
-// MARK: - ChooseStateView
-extension AlgorithmViewModel {
-    func updateOptionToState(algorithm: Algorithm, state: StateQ, option: Option, currentState: StateQ) {
-        guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else { return }
-        guard let stateIndex = algorithms[algorithmIndex].states.firstIndex(where: { $0.id == state.id }) else { return }
-        guard let optionIndex = algorithms[algorithmIndex].states[stateIndex].options.firstIndex(where: { $0.id == option.id }) else { return }
-        algorithms[algorithmIndex].states[stateIndex].options[optionIndex].toState = currentState
-        dataManager.update(algorithm: algorithms[algorithmIndex])
-    }
-    
-    func isChosenToState(algorithm: Algorithm, state: StateQ, option: Option, currentState: StateQ) -> Bool {
-        guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else { return false }
-        guard let stateIndex = algorithms[algorithmIndex].states.firstIndex(where: { $0.id == state.id }) else { return false }
-        guard let optionIndex = algorithms[algorithmIndex].states[stateIndex].options.firstIndex(where: { $0.id == option.id }) else { return false }
-        return algorithms[algorithmIndex].states[stateIndex].options[optionIndex].toState.id == currentState.id
-    }
-}
-
-// MARK: - CombinationView
-extension AlgorithmViewModel {
-    func getMatchingTape(algorithm: Algorithm, state: StateQ, option: Option, combination: Combination) -> Tape {
-        guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else { return algorithms[0].tapes[0] }
-        guard let stateIndex = algorithms[algorithmIndex].states.firstIndex(where: { $0.id == state.id }) else { return algorithms[algorithmIndex].tapes[0] }
-        guard let optionIndex = algorithms[algorithmIndex].states[stateIndex].options.firstIndex(where: { $0.id == option.id }) else { return algorithms[algorithmIndex].tapes[0] }
-        guard let combinationIndex = algorithms[algorithmIndex].states[stateIndex].options[optionIndex].combinations.firstIndex(
-            where: { $0.id == combination.id }
-        ) else { return algorithms[algorithmIndex].tapes[0] }
-        return algorithms[algorithmIndex].tapes[combinationIndex]
-    }
-    
-    func getOptionToState(algorithm: Algorithm, state: StateQ, option: Option) -> Int {
-        guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else { return 0 }
-        guard let stateIndex = algorithms[algorithmIndex].states.firstIndex(where: { $0.id == state.id }) else { return 0 }
-        guard let optionIndex = algorithms[algorithmIndex].states[stateIndex].options.firstIndex(where: { $0.id == option.id }) else { return 0 }
-        return algorithms[algorithmIndex].states[stateIndex].options[optionIndex].toState.nameID
-    }
-}
-
-extension AlgorithmViewModel {
-    
-    func getCombination(algorithm: Algorithm, state: StateQ, option: Option, combination: Combination) -> Combination? {
-        guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else { return nil }
-        guard let stateIndex = algorithms[algorithmIndex].states.firstIndex(where: { $0.id == state.id }) else { return nil }
-        guard let optionIndex = algorithms[algorithmIndex].states[stateIndex].options.firstIndex(
-            where: { $0.id == option.id }
-        ) else { return nil }
-        guard let combinationIndex = algorithms[algorithmIndex].states[stateIndex].options[optionIndex].combinations.firstIndex(
-            where: { $0.id == combination.id }
-        ) else { return nil }
-        
-        return algorithms[algorithmIndex].states[stateIndex].options[optionIndex].combinations[combinationIndex]
-    }
-    
-    func updateCombinationToChar(algorithm: Algorithm, state: StateQ, option: Option, combination: Combination, alphabetElement: String) {
-        guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else { return }
-        guard let stateIndex = algorithms[algorithmIndex].states.firstIndex(where: { $0.id == state.id }) else { return }
-        guard let optionIndex = algorithms[algorithmIndex].states[stateIndex].options.firstIndex(
-            where: { $0.id == option.id }
-        ) else { return }
-        guard let combinationIndex = algorithms[algorithmIndex].states[stateIndex].options[optionIndex].combinations.firstIndex(
-            where: { $0.id == combination.id }
-        ) else { return }
-        
-        algorithms[algorithmIndex].states[stateIndex].options[optionIndex].combinations[combinationIndex].toCharacter = alphabetElement
-        dataManager.update(algorithm: algorithms[algorithmIndex])
-    }
-    
-    func updateCombinationDirection(algorithm: Algorithm, state: StateQ, option: Option, combination: Combination, direction: Direction) {
-        guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else { return }
-        guard let stateIndex = algorithms[algorithmIndex].states.firstIndex(where: { $0.id == state.id }) else { return }
-        guard let optionIndex = algorithms[algorithmIndex].states[stateIndex].options.firstIndex(
-            where: { $0.id == option.id }
-        ) else { return }
-        guard let combinationIndex = algorithms[algorithmIndex].states[stateIndex].options[optionIndex].combinations.firstIndex(
-            where: { $0.id == combination.id }
-        ) else { return }
-        
-        algorithms[algorithmIndex].states[stateIndex].options[optionIndex].combinations[combinationIndex].direction = direction
-        dataManager.update(algorithm: algorithms[algorithmIndex])
-    }
-    
-    func isChosenChar(algorithm: Algorithm, state: StateQ, option: Option, tape: Tape, combination: Combination, alphabetElement: String) -> Bool {
-        guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else { return false }
-        guard let stateIndex = algorithms[algorithmIndex].states.firstIndex(where: { $0.id == state.id }) else { return false }
-        guard let optionIndex = algorithms[algorithmIndex].states[stateIndex].options.firstIndex(
-            where: { $0.id == option.id }
-        ) else { return false }
-        guard let tapeIndex = algorithms[algorithmIndex].tapes.firstIndex(where: { $0.id == tape.id }) else { return false }
-        guard let combinationIndex = algorithms[algorithmIndex].states[stateIndex].options[optionIndex].combinations.firstIndex(
-            where: { $0.id == combination.id }
-        ) else { return false}
-        
-        guard let alphabetElementIndex = algorithms[algorithmIndex].tapes[tapeIndex].alphabetArray.firstIndex(where: { $0 == alphabetElement}) else { return false }
-        
-        return algorithms[algorithmIndex].states[stateIndex].options[optionIndex].combinations[combinationIndex].toCharacter == algorithms[algorithmIndex].tapes[tapeIndex].alphabetArray[alphabetElementIndex]
-    }
-    
-    func isChosenDirection(algorithm: Algorithm, state: StateQ, option: Option, tape: Tape, combination: Combination, direction: Direction) -> Bool {
-        guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else { return false }
-        guard let stateIndex = algorithms[algorithmIndex].states.firstIndex(where: { $0.id == state.id }) else { return false }
-        guard let optionIndex = algorithms[algorithmIndex].states[stateIndex].options.firstIndex(
-            where: { $0.id == option.id }
-        ) else { return false }
-        guard let combinationIndex = algorithms[algorithmIndex].states[stateIndex].options[optionIndex].combinations.firstIndex(
-            where: { $0.id == combination.id }
-        ) else { return false}
-        
-        return algorithms[algorithmIndex].states[stateIndex].options[optionIndex].combinations[combinationIndex].direction == direction
-    }
-}
-
-// MARK: - Tape View
-extension AlgorithmViewModel {
-    
-    func getTape(tape: Tape, of algorithm: Algorithm) -> Tape {
-        guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else { return algorithms[0].tapes[0] }
-        guard let tapeIndex = algorithms[algorithmIndex].tapes.firstIndex(where: { $0.id == tape.id }) else {
-            return algorithms[algorithmIndex].tapes[0]
-        }
-        return algorithms[algorithmIndex].tapes[tapeIndex]
-    }
-    
-    func getTapeComponent(algorithm: Algorithm, tape: Tape, component: TapeComponent) -> TapeComponent {
-        let currentTape = getTape(tape: tape, of: algorithm)
-        guard let componentIndex = currentTape.components.firstIndex(where: { $0.id == component.id }) else {
-            return currentTape.components[0]
-        }
-        return currentTape.components[componentIndex]
-    }
-    
-    func getStartState(of algorithm: Algorithm) -> StateQ {
-        guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else {
-            return algorithms[0].states[0]
-        }
-        guard let startStateIndex = algorithms[algorithmIndex].states.firstIndex(where: { $0.isStarting }) else {
-            print("Error. Couldnt find start state: TapeContentViewModel, line 337")
-            return algorithms[algorithmIndex].states[0]
-        }
-        return algorithms[algorithmIndex].states[startStateIndex]
-    }
-    
-    func changeStartState(to state: StateQ, of algorithm: Algorithm) {
-        guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else { return }
-        guard let startStateIndex = algorithms[algorithmIndex].states.firstIndex(where: { $0.isStarting }) else {
-            print("Error. Couldnt find start state")
-            return
-        }
-        algorithms[algorithmIndex].states[startStateIndex].isStarting.toggle()
-        guard let newStartStateIndex = algorithms[algorithmIndex].states.firstIndex(where: { $0.id == state.id }) else { return }
-        algorithms[algorithmIndex].states[newStartStateIndex].isStarting.toggle()
-        algorithms[algorithmIndex].stateForReset = algorithms[algorithmIndex].states[newStartStateIndex]
-        dataManager.update(algorithm: algorithms[algorithmIndex])
-    }
-}
-
-
-// MARK: - Magic
-extension AlgorithmViewModel {
-    
-    func reset(algorithm: Algorithm) {
-        guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else { return }
-        updateAllTapesComponents(for: algorithm)
-        for stateIndex in 0..<algorithms[algorithmIndex].states.count {
-            algorithms[algorithmIndex].states[stateIndex].isStarting = false
-        }
-        guard let startStateIndex = algorithms[algorithmIndex].states.firstIndex(where: { $0.id == algorithms[algorithmIndex].stateForReset.id }) else {
-            print("Error. Couldnt find startStateIndex for reset. TapeContentViewModel, line 365")
-            return
-        }
-        algorithms[algorithmIndex].states[startStateIndex].isStarting.toggle()
-    }
-    
-    func makeStep(algorithm: Algorithm) {
-        guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else { return }
-        
-        var combination: [String] = []
-        
-        // Gathering the components that are under tapes' head index
-        for tape in algorithms[algorithmIndex].tapes {
-            if let componentIndex = tape.components.firstIndex(where: { $0.id == tape.headIndex }) {
-                combination.append(tape.components[componentIndex].value)
-            }
-        }
-        
-        // Finding index of starting state
-        guard let startStateIndex = algorithms[algorithmIndex].states.firstIndex(where: { $0.isStarting }) else {
-            print("Error. Couldnt find start state index: TapeContentViewModel, line 383")
-            return
-        }
-        
-        // Finding needed option in state
-        guard let optionCombination = algorithms[algorithmIndex].states[startStateIndex].options.first(where: { $0.combinations.map { $0.character } == combination }) else {
-            print("Error. Couldnt find optionCombination")
-            return
-        }
-        
-        for index in 0..<combination.count {
-            guard let componentIndex = algorithms[algorithmIndex].tapes[index].components.firstIndex(where: { $0.id == algorithms[algorithmIndex].tapes[index].headIndex }) else { return }
-            DispatchQueue.main.async {
-                self.algorithms[algorithmIndex].tapes[index].components[componentIndex].value = optionCombination.combinations[index].toCharacter
-            }
-            switch optionCombination.combinations[index].direction {
-                
-            case .stay:
-                break
-            case .left:
-                DispatchQueue.main.async {
-                    self.algorithms[algorithmIndex].tapes[index].headIndex -= 1
-                }
-            case .right:
-                DispatchQueue.main.async {
-                    self.algorithms[algorithmIndex].tapes[index].headIndex += 1
-                }
-            }
-        }
-        
-        // Setting new start state
-        DispatchQueue.main.async {
-            self.algorithms[algorithmIndex].states[startStateIndex].isStarting.toggle()
-            guard let toStateIndex = self.algorithms[algorithmIndex].states.firstIndex(where: { $0.id == optionCombination.toState.id }) else {
-                print("Error. Couldnt find index of toState.")
-                return
-            }
-            self.algorithms[algorithmIndex].states[toStateIndex].isStarting.toggle()
-        }
-    }
-    
 }
