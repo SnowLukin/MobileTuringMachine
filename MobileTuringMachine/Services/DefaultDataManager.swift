@@ -27,7 +27,7 @@ class DefaultData {
     // MARK: Components
     func getComponents() -> [TapeComponent] {
         var components: [TapeComponent] = []
-        for index in -10...10 {
+        for index in -100...100 {
             components.append(
                 TapeComponent(
                     id: index,

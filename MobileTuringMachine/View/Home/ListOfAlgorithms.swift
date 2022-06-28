@@ -41,17 +41,21 @@ struct ListOfAlgorithms: View {
             .navigationTitle("Algorithms")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    infoButton
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        withAnimation {
-                            openFile.toggle()
-                        }
+                    NavigationLink {
+                        UserHelp()
                     } label: {
-                        Image(systemName: "square.and.arrow.down")
+                        Image(systemName: "info.circle")
                     }
                 }
+//                ToolbarItem(placement: .navigationBarTrailing) {
+//                    Button {
+//                        withAnimation {
+//                            openFile.toggle()
+//                        }
+//                    } label: {
+//                        Image(systemName: "square.and.arrow.down")
+//                    }
+//                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         withAnimation {
@@ -104,6 +108,7 @@ struct ListOfAlgorithms_Previews: PreviewProvider {
     static var previews: some View {
         ListOfAlgorithms()
             .environmentObject(AlgorithmViewModel())
+            .previewInterfaceOrientation(.portraitUpsideDown)
     }
 }
 

@@ -46,10 +46,6 @@ struct InfoView: View {
         .onChange(of: description) { newValue in
             viewModel.updateDescription(with: description, for: algorithm)
         }
-        .onTapGesture {
-            nameIsFocused = false
-            descriptionIsFocused = false
-        }
     }
     
 }

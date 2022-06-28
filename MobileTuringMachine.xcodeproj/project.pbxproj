@@ -26,8 +26,6 @@
 		D7312C9628670AF700AF5261 /* DirectionEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312C8828670AF700AF5261 /* DirectionEntity+CoreDataProperties.swift */; };
 		D7312C9728670AF700AF5261 /* CombinationEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312C8928670AF700AF5261 /* CombinationEntity+CoreDataClass.swift */; };
 		D7312C9828670AF700AF5261 /* CombinationEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312C8A28670AF700AF5261 /* CombinationEntity+CoreDataProperties.swift */; };
-		D7312C9928670AF700AF5261 /* AlgorithmEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312C8B28670AF700AF5261 /* AlgorithmEntity+CoreDataClass.swift */; };
-		D7312C9A28670AF700AF5261 /* AlgorithmEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312C8C28670AF700AF5261 /* AlgorithmEntity+CoreDataProperties.swift */; };
 		D7312C9B28670AF700AF5261 /* TapeComponentEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312C8D28670AF700AF5261 /* TapeComponentEntity+CoreDataClass.swift */; };
 		D7312C9C28670AF700AF5261 /* TapeComponentEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312C8E28670AF700AF5261 /* TapeComponentEntity+CoreDataProperties.swift */; };
 		D7312C9D28670AF700AF5261 /* OptionEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312C8F28670AF700AF5261 /* OptionEntity+CoreDataClass.swift */; };
@@ -36,6 +34,9 @@
 		D7312CA028670AF700AF5261 /* TapeEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312C9228670AF700AF5261 /* TapeEntity+CoreDataProperties.swift */; };
 		D7312CA128670AF700AF5261 /* StateQEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312C9328670AF700AF5261 /* StateQEntity+CoreDataClass.swift */; };
 		D7312CA228670AF700AF5261 /* StateQEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312C9428670AF700AF5261 /* StateQEntity+CoreDataProperties.swift */; };
+		D73A2C44286A3C320057CB55 /* UserHelp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73A2C43286A3C320057CB55 /* UserHelp.swift */; };
+		D73A2C47286A563E0057CB55 /* AlgorithmEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73A2C45286A563E0057CB55 /* AlgorithmEntity+CoreDataClass.swift */; };
+		D73A2C48286A563E0057CB55 /* AlgorithmEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73A2C46286A563E0057CB55 /* AlgorithmEntity+CoreDataProperties.swift */; };
 		D744288E285385E60073C9E2 /* ChooseCharView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D744288D285385E50073C9E2 /* ChooseCharView.swift */; };
 		D7442890285389DC0073C9E2 /* ChooseDirectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D744288F285389DC0073C9E2 /* ChooseDirectionView.swift */; };
 		D74428922854AA130073C9E2 /* TapButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74428912854AA130073C9E2 /* TapButtonStyle.swift */; };
@@ -93,8 +94,6 @@
 		D7312C8828670AF700AF5261 /* DirectionEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DirectionEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D7312C8928670AF700AF5261 /* CombinationEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CombinationEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D7312C8A28670AF700AF5261 /* CombinationEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CombinationEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		D7312C8B28670AF700AF5261 /* AlgorithmEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlgorithmEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
-		D7312C8C28670AF700AF5261 /* AlgorithmEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlgorithmEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D7312C8D28670AF700AF5261 /* TapeComponentEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TapeComponentEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D7312C8E28670AF700AF5261 /* TapeComponentEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TapeComponentEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D7312C8F28670AF700AF5261 /* OptionEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OptionEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -103,6 +102,9 @@
 		D7312C9228670AF700AF5261 /* TapeEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TapeEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D7312C9328670AF700AF5261 /* StateQEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StateQEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D7312C9428670AF700AF5261 /* StateQEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StateQEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D73A2C43286A3C320057CB55 /* UserHelp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserHelp.swift; sourceTree = "<group>"; };
+		D73A2C45286A563E0057CB55 /* AlgorithmEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlgorithmEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D73A2C46286A563E0057CB55 /* AlgorithmEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlgorithmEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D744288D285385E50073C9E2 /* ChooseCharView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseCharView.swift; sourceTree = "<group>"; };
 		D744288F285389DC0073C9E2 /* ChooseDirectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseDirectionView.swift; sourceTree = "<group>"; };
 		D74428912854AA130073C9E2 /* TapButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapButtonStyle.swift; sourceTree = "<group>"; };
@@ -172,12 +174,12 @@
 		D7312CA328670B0200AF5261 /* CoreDataEntities */ = {
 			isa = PBXGroup;
 			children = (
+				D73A2C45286A563E0057CB55 /* AlgorithmEntity+CoreDataClass.swift */,
+				D73A2C46286A563E0057CB55 /* AlgorithmEntity+CoreDataProperties.swift */,
 				D7312C8728670AF700AF5261 /* DirectionEntity+CoreDataClass.swift */,
 				D7312C8828670AF700AF5261 /* DirectionEntity+CoreDataProperties.swift */,
 				D7312C8928670AF700AF5261 /* CombinationEntity+CoreDataClass.swift */,
 				D7312C8A28670AF700AF5261 /* CombinationEntity+CoreDataProperties.swift */,
-				D7312C8B28670AF700AF5261 /* AlgorithmEntity+CoreDataClass.swift */,
-				D7312C8C28670AF700AF5261 /* AlgorithmEntity+CoreDataProperties.swift */,
 				D7312C8D28670AF700AF5261 /* TapeComponentEntity+CoreDataClass.swift */,
 				D7312C8E28670AF700AF5261 /* TapeComponentEntity+CoreDataProperties.swift */,
 				D7312C8F28670AF700AF5261 /* OptionEntity+CoreDataClass.swift */,
@@ -248,6 +250,7 @@
 				D7312B152862F6ED00AF5261 /* InfoView.swift */,
 				D78098C5284F47BE00C4DDF0 /* ConfigurationsView.swift */,
 				D78098BB284E2A4400C4DDF0 /* ChooseStartStateView.swift */,
+				D73A2C43286A3C320057CB55 /* UserHelp.swift */,
 				D7442899285754E20073C9E2 /* PlayButton */,
 			);
 			path = Home;
@@ -422,8 +425,10 @@
 			files = (
 				D7C1E0EE285B4695005662A9 /* HexagonShape.swift in Sources */,
 				D7312CA028670AF700AF5261 /* TapeEntity+CoreDataProperties.swift in Sources */,
+				D73A2C48286A563E0057CB55 /* AlgorithmEntity+CoreDataProperties.swift in Sources */,
 				D7312C9D28670AF700AF5261 /* OptionEntity+CoreDataClass.swift in Sources */,
 				D7312C9F28670AF700AF5261 /* TapeEntity+CoreDataClass.swift in Sources */,
+				D73A2C47286A563E0057CB55 /* AlgorithmEntity+CoreDataClass.swift in Sources */,
 				D7312C9B28670AF700AF5261 /* TapeComponentEntity+CoreDataClass.swift in Sources */,
 				D7312B1928631B7D00AF5261 /* DocumentManager.swift in Sources */,
 				D7312B1E286357AD00AF5261 /* Extension + UTType.swift in Sources */,
@@ -453,14 +458,13 @@
 				D7C1E0F4285B6FC3005662A9 /* StateHoneyGridCell.swift in Sources */,
 				D74428982854EBC40073C9E2 /* ChooseStateView.swift in Sources */,
 				D78098C6284F47BE00C4DDF0 /* ConfigurationsView.swift in Sources */,
-				D7312C9928670AF700AF5261 /* AlgorithmEntity+CoreDataClass.swift in Sources */,
 				D7CF6DE327DE29180010949B /* TapeComponent.swift in Sources */,
-				D7312C9A28670AF700AF5261 /* AlgorithmEntity+CoreDataProperties.swift in Sources */,
 				D7CF6DF127DE64000010949B /* ConfigTapesView.swift in Sources */,
 				D7312CA228670AF700AF5261 /* StateQEntity+CoreDataProperties.swift in Sources */,
 				D7312B0E285F863500AF5261 /* AlgorithmViewModel.swift in Sources */,
 				D780989B284CEA2100C4DDF0 /* CombinationsListView.swift in Sources */,
 				D7312C9728670AF700AF5261 /* CombinationEntity+CoreDataClass.swift in Sources */,
+				D73A2C44286A3C320057CB55 /* UserHelp.swift in Sources */,
 				D780989F284CF8F900C4DDF0 /* CombinationView.swift in Sources */,
 				D7312B102862D88500AF5261 /* ListOfAlgorithms.swift in Sources */,
 				D7312C9828670AF700AF5261 /* CombinationEntity+CoreDataProperties.swift in Sources */,
@@ -621,6 +625,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -652,6 +657,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

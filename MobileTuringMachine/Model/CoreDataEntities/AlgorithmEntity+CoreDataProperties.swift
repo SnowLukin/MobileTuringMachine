@@ -2,7 +2,7 @@
 //  AlgorithmEntity+CoreDataProperties.swift
 //  MobileTuringMachine
 //
-//  Created by Snow Lukin on 25.06.2022.
+//  Created by Snow Lukin on 28.06.2022.
 //
 //
 
@@ -16,11 +16,11 @@ extension AlgorithmEntity {
         return NSFetchRequest<AlgorithmEntity>(entityName: "AlgorithmEntity")
     }
 
+    @NSManaged public var algorithmDescription: String
     @NSManaged public var id: UUID
     @NSManaged public var name: String
-    @NSManaged public var algorithmDescription: String
-    @NSManaged public var states: NSSet
     @NSManaged public var stateForReset: StateQEntity
+    @NSManaged public var states: NSSet
     @NSManaged public var tapes: NSSet
 
     public var wrappedTapes: [TapeEntity] {

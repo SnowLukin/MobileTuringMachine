@@ -28,6 +28,7 @@ class DataManager {
             if let error = error {
                 print("Error loading CoreData. \(error.localizedDescription)")
             }
+            self.container.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             self.getAlgorithms()
         }
     }
@@ -88,7 +89,7 @@ class DataManager {
         }
     }
     
-    private func applyChanges() {
+    func applyChanges() {
         save()
         getAlgorithms()
     }

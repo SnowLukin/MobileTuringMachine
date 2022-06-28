@@ -14,7 +14,8 @@ struct StatesHoneyGrid: View {
     @State private var rows: [[StateQ]] = []
     
     let algorithm: Algorithm
-    let width = UIScreen.main.bounds.width - 30
+//    let width = UIScreen.main.bounds.width - 30
+    let width: CGFloat = 345
     
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -23,7 +24,7 @@ struct StatesHoneyGrid: View {
                     HStack(spacing: 10) {
                         ForEach(rows[rowIndex]) { state in
                             StateHoneyGridCell(isBeingEdited: $isBeingEdited, state: state, algorithm: algorithm)
-                                .frame(width: (width - 20) / 3.2, height: 110)
+                                .frame(width: 105, height: 110)
                                 .offset(x: getOffset(index: rowIndex))
                         }
                     }

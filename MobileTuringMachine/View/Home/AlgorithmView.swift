@@ -14,7 +14,7 @@ struct AlgorithmView: View {
     @State private var showEditAlgorithmNameAlert = false
     @State private var algorithmNameText = ""
     @State private var showInfo = false
-    @State private var showExport = false
+//    @State private var showExport = false
     
     let algorithm: Algorithm
     
@@ -46,15 +46,15 @@ struct AlgorithmView: View {
                 }
             }
             
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button {
-                    withAnimation {
-                        showExport.toggle()
-                    }
-                } label: {
-                    Image(systemName: "square.and.arrow.up")
-                }
-            }
+//            ToolbarItem(placement: .navigationBarTrailing) {
+//                Button {
+//                    withAnimation {
+//                        showExport.toggle()
+//                    }
+//                } label: {
+//                    Image(systemName: "square.and.arrow.up")
+//                }
+//            }
         }
         .sheet(isPresented: $showInfo) {
             InfoView(algorithm: algorithm)
@@ -69,18 +69,18 @@ struct AlgorithmView: View {
                 }
             }
         }
-        .fileExporter(
-            isPresented: $showExport,
-            document: DocumentManager(algorithm: viewModel.getAlgorithm(algorithm)),
-            contentType: .mtm
-        ) { result in
-            switch result {
-            case .success:
-                print("File successfully exported")
-            case .failure:
-                print("Error occupied. Failed exporting the file.")
-            }
-        }
+//        .fileExporter(
+//            isPresented: $showExport,
+//            document: DocumentManager(algorithm: viewModel.getAlgorithm(algorithm)),
+//            contentType: .mtm
+//        ) { result in
+//            switch result {
+//            case .success:
+//                print("File successfully exported")
+//            case .failure:
+//                print("Error occupied. Failed exporting the file.")
+//            }
+//        }
     }
 }
 

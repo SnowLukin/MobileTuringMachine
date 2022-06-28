@@ -33,7 +33,10 @@ class AlgorithmViewModel: ObservableObject {
     }
     
     func updateData() {
-        dataManager.savedEntities = []
+        for algorithm in dataManager.savedEntities {
+            dataManager.container.viewContext.delete(algorithm)
+            dataManager.applyChanges()
+        }
         for algorithm in algorithms {
             dataManager.add(algorithm: algorithm)
         }
@@ -344,7 +347,7 @@ extension AlgorithmViewModel {
     // MARK: Components
     func getComponents() -> [TapeComponent] {
         var components: [TapeComponent] = []
-        for index in -10...10 {
+        for index in -100...100 {
             components.append(
                 TapeComponent(
                     id: index,
@@ -519,13 +522,12 @@ extension AlgorithmViewModel {
         guard let algorithmIndex = algorithms.firstIndex(where: { $0.id == algorithm.id }) else { return }
         updateAllTapesComponents(for: algorithm)
         for stateIndex in 0..<algorithms[algorithmIndex].states.count {
-            algorithms[algorithmIndex].states[stateIndex].isStarting = false
+            if algorithms[algorithmIndex].states[stateIndex].id == algorithms[algorithmIndex].stateForReset.id {
+                algorithms[algorithmIndex].states[stateIndex].isStarting = true
+            } else {
+                algorithms[algorithmIndex].states[stateIndex].isStarting = false
+            }
         }
-        guard let startStateIndex = algorithms[algorithmIndex].states.firstIndex(where: { $0.id == algorithms[algorithmIndex].stateForReset.id }) else {
-            print("Error. Couldnt find startStateIndex for reset. TapeContentViewModel, line 365")
-            return
-        }
-        algorithms[algorithmIndex].states[startStateIndex].isStarting.toggle()
     }
     
     func makeStep(algorithm: Algorithm) {
@@ -541,16 +543,22 @@ extension AlgorithmViewModel {
         }
         
         // Finding index of starting state
+        print(algorithms[algorithmIndex].states.map { $0.isStarting })
         guard let startStateIndex = algorithms[algorithmIndex].states.firstIndex(where: { $0.isStarting }) else {
             print("Error. Couldnt find start state index: TapeContentViewModel, line 383")
             return
         }
         
         // Finding needed option in state
-        guard let optionCombination = algorithms[algorithmIndex].states[startStateIndex].options.first(where: { $0.combinations.map { $0.character } == combination }) else {
+        guard let optionCombinationIndex = algorithms[algorithmIndex].states[startStateIndex].options.firstIndex(where: { $0.combinations.map { $0.character } == combination }) else {
             print("Error. Couldnt find optionCombination")
             return
         }
+//        guard let optionCombination = algorithms[algorithmIndex].states[startStateIndex].options.first(where: { $0.combinations.map { $0.character } == combination }) else {
+//            print("Error. Couldnt find optionCombination")
+//            return
+//        }
+        let optionCombination = algorithms[algorithmIndex].states[startStateIndex].options[optionCombinationIndex]
         
         for index in 0..<combination.count {
             guard let componentIndex = algorithms[algorithmIndex].tapes[index].components.firstIndex(where: { $0.id == algorithms[algorithmIndex].tapes[index].headIndex }) else { return }
@@ -575,7 +583,7 @@ extension AlgorithmViewModel {
         // Setting new start state
         DispatchQueue.main.async {
             self.algorithms[algorithmIndex].states[startStateIndex].isStarting.toggle()
-            guard let toStateIndex = self.algorithms[algorithmIndex].states.firstIndex(where: { $0.id == optionCombination.toState.id }) else {
+            guard let toStateIndex = self.algorithms[algorithmIndex].states.firstIndex(where: { $0.id == self.algorithms[algorithmIndex].states[startStateIndex].options[optionCombinationIndex].toState.id }) else {
                 print("Error. Couldnt find index of toState.")
                 return
             }
