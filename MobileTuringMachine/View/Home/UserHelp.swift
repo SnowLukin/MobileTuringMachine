@@ -147,7 +147,7 @@ extension UserHelp {
                         .foregroundColor(.red)
                         .font(.body.bold())
                 }.padding(.leading, 1)
-                Text(" - make a step.")
+                Text(" - reset algorithm.")
             }
             Divider()
         }

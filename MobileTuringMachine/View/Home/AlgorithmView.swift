@@ -42,7 +42,7 @@ struct AlgorithmView: View {
                         showInfo = true
                     }
                 } label: {
-                    Image(systemName: "info")
+                    Text("Info")
                 }
             }
             
