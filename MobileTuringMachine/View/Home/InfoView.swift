@@ -34,7 +34,7 @@ struct InfoView: View {
             }
             .onAppear {
                 name = algorithm.name
-                description = algorithm.description
+                description = algorithm.algorithmDescription
             }
         }
         .onChange(of: name) { newValue in
