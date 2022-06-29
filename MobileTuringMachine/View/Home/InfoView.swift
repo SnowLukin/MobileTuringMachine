@@ -19,35 +19,46 @@ struct InfoView: View {
     let algorithm: Algorithm
     
     var body: some View {
-        Form {
-            Section("Name") {
-                TextField("Placeholder", text: $name)
-                    .focused($nameIsFocused)
-            }
-            
-            Section("Description") {
-                ZStack {
-                    TextEditor(text: $description)
-                        .focused($descriptionIsFocused)
-                    Text(description).opacity(0).padding(.all, 8)
+        NavigationView {
+            Form {
+                Section("Name") {
+                    TextField("Placeholder", text: $name)
+                        .focused($nameIsFocused)
+                }
+                
+                Section("Description") {
+                    ZStack {
+                        TextEditor(text: $description)
+                            .focused($descriptionIsFocused)
+                        Text(description).opacity(0).padding(.all, 8)
+                    }
+                }
+                .onAppear {
+                    name = algorithm.name
+                    description = algorithm.algorithmDescription
                 }
             }
-            .onAppear {
-                name = algorithm.name
-                description = algorithm.algorithmDescription
+            .navigationTitle("Algorithm info")
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Done") {
+                        nameIsFocused = false
+                        descriptionIsFocused = false
+                    }
+                }
             }
-        }
-        .onChange(of: name) { newValue in
-            if name.count > 20 {
-                name.removeLast()
+            .onChange(of: name) { newValue in
+                if name.count > 20 {
+                    name.removeLast()
+                }
+                viewModel.updateName(with: name, for: algorithm)
             }
-            viewModel.updateName(with: name, for: algorithm)
-        }
-        .onChange(of: description) { newValue in
-            viewModel.updateDescription(with: description, for: algorithm)
+            .onChange(of: description) { newValue in
+                viewModel.updateDescription(with: description, for: algorithm)
+            }
         }
     }
-    
 }
 
 struct InfoView_Previews: PreviewProvider {
