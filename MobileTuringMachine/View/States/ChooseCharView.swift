@@ -12,36 +12,21 @@ struct ChooseCharView: View {
     @EnvironmentObject private var viewModel: AlgorithmViewModel
     @Environment(\.colorScheme) var colorScheme
     
-    let algorithm: Algorithm
-    let tape: Tape
-    let state: StateQ
-    let option: Option
     let combination: Combination
+    let tape: Tape
     
     var body: some View {
         Form {
             ForEach(tape.alphabetArray, id: \.self) { alphabetElement in
                 Button {
-                    viewModel.updateCombinationToChar(
-                        algorithm: algorithm,
-                        state: state,
-                        option: option,
-                        combination: combination,
-                        alphabetElement: alphabetElement
-                    )
+                    viewModel.updateCombinationToChar(combination: combination, alphabetElement: alphabetElement)
                 } label : {
                     HStack {
                         Text(alphabetElement)
                             .foregroundColor(.primary)
                         Spacer()
-                        if viewModel.isChosenChar(
-                            algorithm: algorithm,
-                            state: state,
-                            option: option,
-                            tape: tape,
-                            combination: combination,
-                            alphabetElement: alphabetElement
-                        ) {
+                        
+                        if viewModel.isChosenChar(combination: combination, alphabetElement: alphabetElement) {
                             Image(systemName: "circle.fill")
                                 .foregroundColor(.blue)
                                 .transition(
@@ -63,19 +48,11 @@ struct ChooseCharView: View {
 
 struct ChooseCharView_Previews: PreviewProvider {
     static var previews: some View {
-        ChooseCharView(
-            algorithm:
-                Algorithm(
-                    name: "New Algorithm",
-                    tapes: [],
-                    states: [],
-                    stateForReset: StateQ(nameID: 0, options: [])
-                ),
-            tape: Tape(nameID: 0, components: []),
-            state: StateQ(nameID: 0, options: []),
-            option: Option(id: 0, toState: StateQ(nameID: 0, options: []), combinations: []),
-            combination: Combination(id: 0, character: "_", direction: .stay, toCharacter: "_")
-        )
-        .environmentObject(AlgorithmViewModel())
+        let algorithm = DataManager.shared.savedAlgorithms[0]
+        let tape = algorithm.wrappedTapes[0]
+        let combination = algorithm.wrappedStates[0].wrappedOptions[0].wrappedCombinations[0]
+        
+        ChooseCharView(combination: combination, tape: tape)
+            .environmentObject(AlgorithmViewModel())
     }
 }

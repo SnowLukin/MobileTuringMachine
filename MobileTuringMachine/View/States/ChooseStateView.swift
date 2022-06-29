@@ -12,31 +12,19 @@ struct ChooseStateView: View {
     @EnvironmentObject private var viewModel: AlgorithmViewModel
     @Environment(\.colorScheme) var colorScheme
     
-    let algorithm: Algorithm
-    let state: StateQ
     let option: Option
     
     var body: some View {
         List {
-            ForEach(viewModel.getAlgorithm(algorithm).states) { currentState in
+            ForEach(option.state.algorithm.wrappedStates) { currentState in
                 Button {
-                    viewModel.updateOptionToState(
-                        algorithm: algorithm,
-                        state: state,
-                        option: option,
-                        currentState: currentState
-                    )
+                    viewModel.updateOptionToState(option: option, currentState: currentState)
                 } label: {
                     HStack {
                         Text("State \(currentState.nameID)")
                             .foregroundColor(.primary)
                         Spacer()
-                        if viewModel.isChosenToState(
-                            algorithm: algorithm,
-                            state: state,
-                            option: option,
-                            currentState: currentState
-                        ) {
+                        if viewModel.isChosenToState(option: option, currentState: currentState) {
                             Image(systemName: "circle.fill")
                                 .foregroundColor(.blue)
                                 .transition(
@@ -57,7 +45,8 @@ struct ChooseStateView: View {
 
 struct ChooseStateView_Previews: PreviewProvider {
     static var previews: some View {
-        ChooseStateView(algorithm: Algorithm(name: "New Algorithm", tapes: [], states: [], stateForReset: StateQ(nameID: 0, options: [])), state: StateQ(nameID: 0, options: []), option: Option(id: 0, toState: StateQ(nameID: 0, options: []), combinations: []))
+        let option = DataManager.shared.savedAlgorithms[0].wrappedStates[0].wrappedOptions[0]
+        ChooseStateView(option: option)
             .environmentObject(AlgorithmViewModel())
     }
 }

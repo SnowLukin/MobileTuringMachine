@@ -14,7 +14,7 @@ struct AlgorithmView: View {
     @State private var showEditAlgorithmNameAlert = false
     @State private var algorithmNameText = ""
     @State private var showInfo = false
-//    @State private var showExport = false
+    @State private var showExport = false
     
     let algorithm: Algorithm
     
@@ -39,22 +39,22 @@ struct AlgorithmView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
                     withAnimation {
-                        showInfo = true
+                        showExport.toggle()
                     }
                 } label: {
-                    Text("Info")
+                    Image(systemName: "square.and.arrow.up")
                 }
             }
             
-//            ToolbarItem(placement: .navigationBarTrailing) {
-//                Button {
-//                    withAnimation {
-//                        showExport.toggle()
-//                    }
-//                } label: {
-//                    Image(systemName: "square.and.arrow.up")
-//                }
-//            }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    withAnimation {
+                        showInfo = true
+                    }
+                } label: {
+                    Image(systemName: "info.circle")
+                }
+            }
         }
         .sheet(isPresented: $showInfo) {
             InfoView(algorithm: algorithm)
@@ -86,18 +86,6 @@ struct AlgorithmView: View {
 
 struct AlgorithmView_Previews: PreviewProvider {
     static var previews: some View {
-        AlgorithmView(
-            algorithm:
-                Algorithm(
-                    name: "New Algorithm",
-                    tapes: [],
-                    states: [],
-                    stateForReset:
-                        StateQ(
-                            nameID: 0,
-                            options: []
-                        )
-                )
-        )
+        AlgorithmView(algorithm: DataManager.shared.savedAlgorithms[0])
     }
 }

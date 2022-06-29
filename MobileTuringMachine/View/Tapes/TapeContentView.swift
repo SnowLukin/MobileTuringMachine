@@ -12,16 +12,14 @@ struct TapeContentView: View {
     @EnvironmentObject private var viewModel: AlgorithmViewModel
     
     let component: TapeComponent
-    let tape: Tape
-    let algorithm: Algorithm
     
     var body: some View {
         Button {
-            viewModel.changeHeadIndex(of: tape, to: component, algorithm: algorithm)
+            viewModel.changeHeadIndex(to: component)
         } label: {
-            Text(viewModel.getTapeComponent(algorithm: algorithm, tape: tape, component: component).value)
+            Text(component.value)
                 .foregroundColor(
-                    viewModel.getTape(tape: tape, of: algorithm).headIndex == viewModel.getTapeComponent(algorithm: algorithm, tape: tape, component: component).id
+                    component.tape.headIndex == component.id
                     ? .white
                     : .secondary
                 )
@@ -29,7 +27,7 @@ struct TapeContentView: View {
                 .fontWeight(.semibold)
                 .frame(width: 35, height: 35)
                 .background(
-                    viewModel.getTape(tape: tape, of: algorithm).headIndex == viewModel.getTapeComponent(algorithm: algorithm, tape: tape, component: component).id
+                    component.tape.headIndex == component.id
                     ? .blue
                     : .secondaryBackground
                 )
@@ -43,8 +41,12 @@ struct TapeContentView: View {
 }
 
 struct TapeContentView_Previews: PreviewProvider {
+    
     static var previews: some View {
-        TapeContentView(component: TapeComponent(id: 0, value: "a"), tape: Tape(nameID: 0, components: [TapeComponent(id: 0)]), algorithm: Algorithm(name: "New Algorithm", tapes: [], states: [], stateForReset: StateQ(nameID: 0, options: [])))
+        let algorithm = DataManager.shared.savedAlgorithms[0]
+        
+        TapeContentView(component: algorithm.wrappedTapes[0].wrappedComponents[0])
             .environmentObject(AlgorithmViewModel())
     }
+    
 }

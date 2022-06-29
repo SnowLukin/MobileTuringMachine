@@ -14,8 +14,7 @@ struct StatesHoneyGrid: View {
     @State private var rows: [[StateQ]] = []
     
     let algorithm: Algorithm
-//    let width = UIScreen.main.bounds.width - 30
-    let width: CGFloat = 345
+    let width = UIScreen.main.bounds.width - 30
     
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -23,8 +22,8 @@ struct StatesHoneyGrid: View {
                 ForEach(rows.indices, id: \.self) { rowIndex in
                     HStack(spacing: 10) {
                         ForEach(rows[rowIndex]) { state in
-                            StateHoneyGridCell(isBeingEdited: $isBeingEdited, state: state, algorithm: algorithm)
-                                .frame(width: 105, height: 110)
+                            StateHoneyGridCell(isBeingEdited: $isBeingEdited, state: state)
+                                .frame(width: (width - 20) / 3.2, height: 110)
                                 .offset(x: getOffset(index: rowIndex))
                         }
                     }
@@ -38,17 +37,17 @@ struct StatesHoneyGrid: View {
                 generateHoney()
             }
         }
-        .onChange(of: viewModel.getAlgorithm(algorithm).states, perform: { newValue in
+        .onChange(of: algorithm.wrappedStates) { newValue in
             withAnimation {
                 generateHoney()
             }
-        })
+        }
         .navigationTitle("States")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
                     withAnimation {
-                        viewModel.addState(for: algorithm)
+                        viewModel.addState(algorithm: algorithm)
                     }
                 } label: {
                     Image(systemName: "plus")
@@ -70,7 +69,8 @@ struct StatesHoneyGrid: View {
 
 struct StatesHoneyGrid_Previews: PreviewProvider {
     static var previews: some View {
-        StatesHoneyGrid(algorithm: Algorithm(name: "New Algorithm", tapes: [], states: [], stateForReset: StateQ(nameID: 0, options: [])))
+        let algorithm = DataManager.shared.savedAlgorithms[0]
+        StatesHoneyGrid(algorithm: algorithm)
             .environmentObject(AlgorithmViewModel())
     }
 }
@@ -100,7 +100,7 @@ extension StatesHoneyGrid {
         var count = 0
         
         var generated: [StateQ] = []
-        for state in viewModel.getAlgorithm(algorithm).states {
+        for state in algorithm.wrappedStates {
             generated.append(state)
             
             if generated.count == 2 {
@@ -127,7 +127,7 @@ extension StatesHoneyGrid {
             
             count += 1
             // for exhaust data or single data
-            if count == viewModel.getAlgorithm(algorithm).states.count && !generated.isEmpty {
+            if count == algorithm.wrappedStates.count && !generated.isEmpty {
                 rows.append(generated)
             }
         }

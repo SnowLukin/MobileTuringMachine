@@ -14,8 +14,8 @@ struct Tapes: View {
     
     var body: some View {
         ScrollView {
-            ForEach(viewModel.getAlgorithm(algorithm).tapes) { tape in
-                TapeSectionOpening(tape: tape, algorithm: algorithm)
+            ForEach(algorithm.wrappedTapes) { tape in
+                TapeSectionOpening(tape: tape)
             }
         }
         .navigationTitle("Tapes")
@@ -23,7 +23,7 @@ struct Tapes: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
                     withAnimation {
-                        viewModel.addTape(to: algorithm)
+                        viewModel.addTape(algorithm: algorithm)
                     }
                 } label: {
                     Image(systemName: "plus")
@@ -35,7 +35,8 @@ struct Tapes: View {
 
 struct Tapes_Previews: PreviewProvider {
     static var previews: some View {
-        Tapes(algorithm: Algorithm(name: "New Algorithm", tapes: [], states: [], stateForReset: StateQ(nameID: 0, options: [])))
+        let algorithm = DataManager.shared.savedAlgorithms[0]
+        Tapes(algorithm: algorithm)
             .environmentObject(AlgorithmViewModel())
     }
 }

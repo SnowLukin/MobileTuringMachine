@@ -11,11 +11,8 @@ struct CombinationSettings: View {
     
     @EnvironmentObject private var viewModel: AlgorithmViewModel
     
-    let algorithm: Algorithm
-    let tape: Tape
-    let state: StateQ
-    let option: Option
     let combination: Combination
+    let tape: Tape
     
     var body: some View {
         Form {
@@ -30,20 +27,12 @@ struct CombinationSettings: View {
 
 struct CombinationSettings_Previews: PreviewProvider {
     static var previews: some View {
-        CombinationSettings(
-            algorithm:
-                Algorithm(
-                    name: "New Algorithm",
-                    tapes: [],
-                    states: [],
-                    stateForReset: StateQ(nameID: 0, options: [])
-                ),
-            tape: Tape(nameID: 0, components: []),
-            state: StateQ(nameID: 0, options: []),
-            option: Option(id: 0, toState: StateQ(nameID: 0, options: []), combinations: []),
-            combination: Combination(id: 0, character: "_", direction: .stay, toCharacter: "_")
-        )
-        .environmentObject(AlgorithmViewModel())
+        let algorithm = DataManager.shared.savedAlgorithms[0]
+        let tape = algorithm.wrappedTapes[0]
+        let combination = algorithm.wrappedStates[0].wrappedOptions[0].wrappedCombinations[0]
+        
+        CombinationSettings(combination: combination, tape: tape)
+            .environmentObject(AlgorithmViewModel())
     }
 }
 
@@ -53,12 +42,12 @@ extension CombinationSettings {
     private var characterSection: some View {
         Section(header: Text("Change to following character")) {
             NavigationLink {
-                ChooseCharView(algorithm: algorithm, tape: tape, state: state, option: option, combination: combination)
+                ChooseCharView(combination: combination, tape: tape)
             } label: {
                 HStack {
                     Text("Alphabet")
                     Spacer()
-                    Text(viewModel.getCombination(algorithm: algorithm, state: state, option: option, combination: combination)?.toCharacter ?? "Error")
+                    Text(combination.toCharacter)
                 }
             }
         }
@@ -67,20 +56,15 @@ extension CombinationSettings {
     private var directionSection: some View {
         Section(header: Text("Move tape's head to following direction")) {
             NavigationLink {
-                ChooseDirectionView(algorithm: algorithm, tape: tape, state: state, option: option, combination: combination)
+                ChooseDirectionView(combination: combination)
             } label: {
                 HStack {
                     Text("Direction")
                     Spacer()
-                    Image(
-                        systemName:
-                            viewModel.getCombination(
-                                algorithm: algorithm,
-                                state: state,
-                                option: option,
-                                combination: combination
-                            )?.direction.rawValue
-                        ?? Direction.stay.rawValue
+                    Image(systemName:
+                            combination.directionID == 0
+                          ? "arrow.counterclockwise"
+                          : combination.directionID == 1 ? "arrow.left" : "arrow.right"
                     )
                 }
             }

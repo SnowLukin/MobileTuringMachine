@@ -11,20 +11,18 @@ struct CombinationView: View {
     
     @EnvironmentObject private var viewModel: AlgorithmViewModel
     
-    let algorithm: Algorithm
-    let state: StateQ
     let option: Option
     
     var body: some View {
         List {
             Section {
                 NavigationLink {
-                    ChooseStateView(algorithm: algorithm, state: state, option: option)
+                    ChooseStateView(option: option)
                 } label: {
                     Text("Navigate to:")
                         .foregroundColor(.primary)
                     Spacer()
-                    Text("State \(viewModel.getOptionToState(algorithm: algorithm, state: state, option: option))")
+                    Text("State \(viewModel.getToStateName(for: option))")
                         .foregroundColor(.gray)
                 }
             }
@@ -33,7 +31,7 @@ struct CombinationView: View {
             }
         }
         .navigationBarTitle(
-            "Combination: \(option.combinations.map { $0.character }.joined(separator: ""))"
+            "Combination: \(option.wrappedCombinations.map { $0.character }.joined(separator: ""))"
         )
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -41,59 +39,39 @@ struct CombinationView: View {
 
 struct CombinationView_Previews: PreviewProvider {
     static var previews: some View {
-        CombinationView(
-            algorithm:
-                Algorithm(
-                    name: "New Algorithm",
-                    tapes: [],
-                    states: [],
-                    stateForReset: StateQ(nameID: 0, options: [])
-                ),
-            state: StateQ(nameID: 0, options: []),
-            option: Option(
-                id: 0, toState: StateQ(nameID: 0, options: []),
-                combinations: [Combination(id: 0, character: "a", direction: .stay, toCharacter: "a")]
-            )
-        )
-        .environmentObject(AlgorithmViewModel())
+        let option = DataManager.shared.savedAlgorithms[0].wrappedStates[0].wrappedOptions[0]
+        CombinationView(option: option)
+            .environmentObject(AlgorithmViewModel())
     }
 }
 
 extension CombinationView {
     private var combinationElements: some View {
-        ForEach(option.combinations) { combination in
+        ForEach(option.wrappedCombinations) { combination in
             NavigationLink {
-                CombinationSettings(
-                    algorithm: algorithm,
-                    tape: viewModel.getMatchingTape(
-                        algorithm: algorithm,
-                        state: state,
-                        option: option,
-                        combination: combination
-                    ),
-                    state: state,
-                    option: option,
-                    combination: combination
-                )
+                CombinationSettings(combination: combination, tape: combination.option.state.algorithm.wrappedTapes[Int(combination.id)])
             } label: {
                 HStack {
                     
-                    Text(viewModel.getCombination(algorithm: algorithm, state: state, option: option, combination: combination)?.character ?? "Error")
+                    Text(combination.character)
                         .font(.title3)
                         .fontWeight(.semibold)
                         .foregroundColor(.primary)
                     
-                    Image(systemName: viewModel.getCombination(algorithm: algorithm, state: state, option: option, combination: combination)?.direction.rawValue ?? Direction.stay.rawValue)
+                    Image(systemName: combination.directionID == 0
+                          ? "arrow.counterclockwise"
+                          : combination.directionID == 1 ? "arrow.left" : "arrow.right"
+                    )
                         .font(.title3.bold())
                         .foregroundColor(.primary)
                     
-                    Text(viewModel.getCombination(algorithm: algorithm, state: state, option: option, combination: combination)?.toCharacter ?? "Error")
+                    Text(combination.toCharacter)
                         .font(.title3)
                         .fontWeight(.semibold)
                         .foregroundColor(.primary)
                         
                     Divider()
-                    Text("Tape \(viewModel.getMatchingTape(algorithm: algorithm, state: state, option: option, combination: combination).nameID)")
+                    Text("Tape \(combination.option.state.algorithm.wrappedTapes[Int(combination.id)].nameID)")
                         .foregroundColor(Color.gray)
                 }
             }

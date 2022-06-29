@@ -15,10 +15,10 @@ struct TapesWorkView: View {
     
     var body: some View {
         ScrollView {
-            ForEach(viewModel.getAlgorithm(algorithm).tapes) { tape in
+            ForEach(algorithm.wrappedTapes) { tape in
                 VStack(spacing: 0) {
-                    setTapeNameText(tapeID: tape.nameID)
-                    TapeView(tape: tape, algorithm: algorithm)
+                    setTapeNameText(tapeID: Int(tape.nameID))
+                    TapeView(tape: tape)
                         .padding([.leading, .trailing])
                 }
             }
@@ -28,7 +28,8 @@ struct TapesWorkView: View {
 
 struct TapesWorkView_Previews: PreviewProvider {
     static var previews: some View {
-        TapesWorkView(algorithm: Algorithm(name: "New Algorithm", tapes: [], states: [], stateForReset: StateQ(nameID: 0, options: [])))
+        let algorithm = DataManager.shared.savedAlgorithms[0]
+        TapesWorkView(algorithm: algorithm)
             .environmentObject(AlgorithmViewModel())
     }
 }

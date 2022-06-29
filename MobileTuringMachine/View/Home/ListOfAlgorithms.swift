@@ -11,13 +11,13 @@ struct ListOfAlgorithms: View {
     
     @EnvironmentObject private var viewModel: AlgorithmViewModel
     @State private var showInfo = false
-    @State private var openFile = false
+//    @State private var openFile = false
     
     var body: some View {
         NavigationView {
             ZStack {
                 List {
-                    ForEach(viewModel.algorithms) { algorithm in
+                    ForEach(viewModel.dataManager.savedAlgorithms) { algorithm in
                         NavigationLink {
                             AlgorithmView(algorithm: algorithm)
                         } label: {
@@ -25,12 +25,13 @@ struct ListOfAlgorithms: View {
                         }
                     }
                     .onDelete {
-                        viewModel.algorithms.remove(atOffsets: $0)
-                        viewModel.updateData()
+                        if let index = $0.first {
+                            viewModel.deleteAlgorithm(viewModel.dataManager.savedAlgorithms[index])
+                        }
                     }
                     .onMove {
-                        viewModel.algorithms.move(fromOffsets: $0, toOffset: $1)
-                        viewModel.updateData()
+                        viewModel.dataManager.savedAlgorithms.move(fromOffsets: $0, toOffset: $1)
+                        viewModel.dataManager.applyChanges()
                     }
                 }
                 if showInfo {
@@ -41,11 +42,7 @@ struct ListOfAlgorithms: View {
             .navigationTitle("Algorithms")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    NavigationLink {
-                        UserHelp()
-                    } label: {
-                        Image(systemName: "info.circle")
-                    }
+                    infoButton
                 }
 //                ToolbarItem(placement: .navigationBarTrailing) {
 //                    Button {
@@ -71,36 +68,36 @@ struct ListOfAlgorithms: View {
             }
         }
         .navigationViewStyle(.stack)
-        .fileImporter(isPresented: $openFile, allowedContentTypes: [.mtm], allowsMultipleSelection: false) { result in
-            do {
-                guard let selectedFileURL: URL = try result.get().first else {
-                    print("Failed getting url.")
-                    return
-                }
-                
-                if selectedFileURL.startAccessingSecurityScopedResource() {
-                    guard let data = try? Data(contentsOf: selectedFileURL) else {
-                        print("Failed getting data from url: \(selectedFileURL)")
-                        return
-                    }
-                    guard let algorithm = try? JSONDecoder().decode(Algorithm.self, from: data) else {
-                        print("Failed decoding file.")
-                        return
-                    }
-                    defer {
-                        selectedFileURL.stopAccessingSecurityScopedResource()
-                    }
-                    withAnimation {
-                        viewModel.addImportedAlgorithm(algorithm: algorithm)
-                    }
-                    print("Algorithm imported successfully")
-                } else {
-                    print("Error occupied. Failed accessing security scoped resource.")
-                }
-            } catch {
-                print("Error occupied: \(error.localizedDescription)")
-            }
-        }
+//        .fileImporter(isPresented: $openFile, allowedContentTypes: [.mtm], allowsMultipleSelection: false) { result in
+//            do {
+//                guard let selectedFileURL: URL = try result.get().first else {
+//                    print("Failed getting url.")
+//                    return
+//                }
+//
+//                if selectedFileURL.startAccessingSecurityScopedResource() {
+//                    guard let data = try? Data(contentsOf: selectedFileURL) else {
+//                        print("Failed getting data from url: \(selectedFileURL)")
+//                        return
+//                    }
+//                    guard let algorithm = try? JSONDecoder().decode(Algorithm.self, from: data) else {
+//                        print("Failed decoding file.")
+//                        return
+//                    }
+//                    defer {
+//                        selectedFileURL.stopAccessingSecurityScopedResource()
+//                    }
+//                    withAnimation {
+//                        viewModel.addImportedAlgorithm(algorithm: algorithm)
+//                    }
+//                    print("Algorithm imported successfully")
+//                } else {
+//                    print("Error occupied. Failed accessing security scoped resource.")
+//                }
+//            } catch {
+//                print("Error occupied: \(error.localizedDescription)")
+//            }
+//        }
     }
 }
 
@@ -108,7 +105,6 @@ struct ListOfAlgorithms_Previews: PreviewProvider {
     static var previews: some View {
         ListOfAlgorithms()
             .environmentObject(AlgorithmViewModel())
-            .previewInterfaceOrientation(.portraitUpsideDown)
     }
 }
 
@@ -119,7 +115,7 @@ extension ListOfAlgorithms {
                 showInfo.toggle()
             }
         } label: {
-            Image(systemName: "info.circle")
+            Image(systemName: "questionmark.circle")
         }
     }
     
