@@ -34,15 +34,15 @@ struct ListOfAlgorithms: View {
                         viewModel.dataManager.applyChanges()
                     }
                 }
-                if showInfo {
-                    infoPopup
-                        .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.3)))
-                }
             }
             .navigationTitle("Algorithms")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    infoButton
+                    NavigationLink {
+                        UserHelpView()
+                    } label: {
+                        Image(systemName: "questionmark.circle")
+                    }
                 }
 //                ToolbarItem(placement: .navigationBarTrailing) {
 //                    Button {
@@ -105,34 +105,5 @@ struct ListOfAlgorithms_Previews: PreviewProvider {
     static var previews: some View {
         ListOfAlgorithms()
             .environmentObject(AlgorithmViewModel())
-    }
-}
-
-extension ListOfAlgorithms {
-    private var infoButton: some View {
-        Button {
-            withAnimation {
-                showInfo.toggle()
-            }
-        } label: {
-            Image(systemName: "questionmark.circle")
-        }
-    }
-    
-    private var infoPopup: some View {
-        VStack {
-            InfoPopupView()
-                .padding()
-        }
-        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-        .background(
-            Color.black.opacity(0.5)
-                .edgesIgnoringSafeArea(.all)
-                .onTapGesture {
-                    withAnimation {
-                        showInfo.toggle()
-                    }
-                }
-        )
     }
 }

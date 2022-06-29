@@ -1,14 +1,13 @@
 //
-//  UserHelp.swift
+//  UserHelpView.swift
 //  MobileTuringMachine
 //
-//  Created by Snow Lukin on 27.06.2022.
+//  Created by Snow Lukin on 30.06.2022.
 //
 
 import SwiftUI
 
-struct UserHelp: View {
-    
+struct UserHelpView: View {
     @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
@@ -25,13 +24,13 @@ struct UserHelp: View {
     }
 }
 
-struct UserHelp_Previews: PreviewProvider {
+struct UserHelpView_Previews: PreviewProvider {
     static var previews: some View {
-        UserHelp()
+        UserHelpView()
     }
 }
 
-extension UserHelp {
+extension UserHelpView {
     private var algorithmsInfo: some View {
         VStack(alignment: .leading) {
             HStack {
@@ -45,7 +44,6 @@ extension UserHelp {
                 Image(colorScheme == .dark ? "algorithms_dark" : "algorithms")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: UIScreen.main.bounds.width / 1.5)
                     .cornerRadius(20)
                 Spacer()
             }
@@ -79,15 +77,13 @@ extension UserHelp {
                 Image(colorScheme == .dark ? "algorithm_dark" : "algorithm")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: UIScreen.main.bounds.width / 1.5)
                     .cornerRadius(20)
                 Spacer()
             }
             Text("This is your workspace. Here you can configure tapes, states, and try your algorithm.")
             HStack(spacing: 0) {
-                Text("Info")
+                Image(systemName: "info.circle")
                     .foregroundColor(.blue)
-                    .fontWeight(.semibold)
                 Text(" - open algorithm information such as name and description.")
             }
             HStack {
@@ -167,7 +163,6 @@ extension UserHelp {
                 Image(colorScheme == .dark ? "tapes_dark" : "tapes")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: UIScreen.main.bounds.width / 1.5)
                     .cornerRadius(20)
                 Spacer()
             }
@@ -208,7 +203,6 @@ extension UserHelp {
                 Image(colorScheme == .dark ? "states_dark" : "states")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: UIScreen.main.bounds.width / 1.5)
                     .cornerRadius(20)
                 Spacer()
             }
@@ -232,7 +226,6 @@ extension UserHelp {
                 Image(colorScheme == .dark ? "combinations_dark" : "combinations")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: UIScreen.main.bounds.width / 1.5)
                     .cornerRadius(20)
                 Spacer()
             }
@@ -242,10 +235,10 @@ extension UserHelp {
                 Image(colorScheme == .dark ? "combination_dark" : "combination")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: UIScreen.main.bounds.width / 1.5)
                     .cornerRadius(20)
                 Spacer()
             }
         }
     }
 }
+
