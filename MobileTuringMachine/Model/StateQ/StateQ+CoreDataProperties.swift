@@ -2,7 +2,7 @@
 //  StateQ+CoreDataProperties.swift
 //  MobileTuringMachine
 //
-//  Created by Snow Lukin on 27.06.2022.
+//  Created by Snow Lukin on 29.06.2022.
 //
 //
 
@@ -16,12 +16,12 @@ extension StateQ {
         return NSFetchRequest<StateQ>(entityName: "StateQ")
     }
 
-    @NSManaged public var id: UUID
+    @NSManaged public var id: UUID?
+    @NSManaged public var isForReset: Bool
     @NSManaged public var isStarting: Bool
     @NSManaged public var nameID: Int16
-    @NSManaged public var isForReset: Bool
-    @NSManaged public var options: NSSet
     @NSManaged public var algorithm: Algorithm
+    @NSManaged public var options: NSSet
 
     public var wrappedOptions: [Option] {
         let set = options as? Set<Option> ?? []

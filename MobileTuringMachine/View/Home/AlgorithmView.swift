@@ -39,20 +39,20 @@ struct AlgorithmView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
                     withAnimation {
-                        showInfo = true
+                        showExport.toggle()
                     }
                 } label: {
-                    Image(systemName: "info")
+                    Image(systemName: "square.and.arrow.up")
                 }
             }
             
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
                     withAnimation {
-                        showExport.toggle()
+                        showInfo = true
                     }
                 } label: {
-                    Image(systemName: "square.and.arrow.up")
+                    Image(systemName: "info.circle")
                 }
             }
         }

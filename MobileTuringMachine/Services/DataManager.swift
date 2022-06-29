@@ -49,6 +49,7 @@ class DataManager {
     
     func getAlgorithms() {
         let request = NSFetchRequest<Algorithm>(entityName: entityName)
+//        request.returnsObjectsAsFaults = false
         do {
             savedAlgorithms = try container.viewContext.fetch(request)
         } catch {

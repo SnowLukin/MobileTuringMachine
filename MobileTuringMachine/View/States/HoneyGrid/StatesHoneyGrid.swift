@@ -37,11 +37,11 @@ struct StatesHoneyGrid: View {
                 generateHoney()
             }
         }
-        .onChange(of: algorithm.wrappedStates, perform: { newValue in
+        .onChange(of: algorithm.wrappedStates) { newValue in
             withAnimation {
                 generateHoney()
             }
-        })
+        }
         .navigationTitle("States")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {

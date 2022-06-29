@@ -61,6 +61,7 @@ extension StateHoneyGridCell {
     private var removeCircleButton: some View {
         Button {
             withAnimation {
+                
                 viewModel.deleteState(state)
             }
         } label: {

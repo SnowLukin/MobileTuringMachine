@@ -17,7 +17,7 @@ struct ListOfAlgorithms: View {
         NavigationView {
             ZStack {
                 List {
-                    ForEach(viewModel.algorithms) { algorithm in
+                    ForEach(viewModel.dataManager.savedAlgorithms) { algorithm in
                         NavigationLink {
                             AlgorithmView(algorithm: algorithm)
                         } label: {
@@ -25,17 +25,11 @@ struct ListOfAlgorithms: View {
                         }
                     }
                     .onDelete {
-                        viewModel.algorithms.remove(atOffsets: $0)
-                        for algorithm in viewModel.dataManager.savedAlgorithms {
-                            if !viewModel.algorithms.contains(algorithm) {
-                                viewModel.deleteAlgorithm(algorithm)
-                                break
-                            }
+                        if let index = $0.first {
+                            viewModel.deleteAlgorithm(viewModel.dataManager.savedAlgorithms[index])
                         }
-                        viewModel.dataManager.applyChanges()
                     }
                     .onMove {
-                        viewModel.algorithms.move(fromOffsets: $0, toOffset: $1)
                         viewModel.dataManager.savedAlgorithms.move(fromOffsets: $0, toOffset: $1)
                         viewModel.dataManager.applyChanges()
                     }
@@ -121,7 +115,7 @@ extension ListOfAlgorithms {
                 showInfo.toggle()
             }
         } label: {
-            Image(systemName: "info.circle")
+            Image(systemName: "questionmark.circle")
         }
     }
     

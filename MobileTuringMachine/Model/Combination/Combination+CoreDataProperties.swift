@@ -2,7 +2,7 @@
 //  Combination+CoreDataProperties.swift
 //  MobileTuringMachine
 //
-//  Created by Snow Lukin on 27.06.2022.
+//  Created by Snow Lukin on 29.06.2022.
 //
 //
 
@@ -17,11 +17,11 @@ extension Combination {
     }
 
     @NSManaged public var character: String
+    @NSManaged public var directionID: Int16
     @NSManaged public var id: Int16
     @NSManaged public var toCharacter: String
-    @NSManaged public var directionID: Int16
     @NSManaged public var option: Option
-    
+
     var directionImageValue: String {
         switch directionID {
         case 0:

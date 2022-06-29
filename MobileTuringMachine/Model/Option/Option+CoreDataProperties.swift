@@ -2,7 +2,7 @@
 //  Option+CoreDataProperties.swift
 //  MobileTuringMachine
 //
-//  Created by Snow Lukin on 27.06.2022.
+//  Created by Snow Lukin on 29.06.2022.
 //
 //
 

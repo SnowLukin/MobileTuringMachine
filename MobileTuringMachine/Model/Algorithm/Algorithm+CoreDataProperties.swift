@@ -2,7 +2,7 @@
 //  Algorithm+CoreDataProperties.swift
 //  MobileTuringMachine
 //
-//  Created by Snow Lukin on 27.06.2022.
+//  Created by Snow Lukin on 29.06.2022.
 //
 //
 
@@ -35,10 +35,10 @@ extension Algorithm {
         }
     }
     
-    func initValues(id: UUID = UUID(), name: String = "New Algorithm", description: String = "", states: [StateQ], tapes: [Tape]) {
+    func initValues(id: UUID = UUID(), name: String = "New Algorithm", algorithmDescription: String = "", states: [StateQ], tapes: [Tape]) {
         self.id = id
         self.name = name
-        self.algorithmDescription = description
+        self.algorithmDescription = algorithmDescription
         self.states = NSSet(array: states)
         self.tapes = NSSet(array: tapes)
     }

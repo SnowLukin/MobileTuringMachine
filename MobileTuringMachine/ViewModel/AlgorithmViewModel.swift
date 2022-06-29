@@ -9,22 +9,17 @@ import SwiftUI
 
 class AlgorithmViewModel: ObservableObject {
     
-    @Published var algorithms: [Algorithm] = []
-    
     let dataManager = DataManager.shared
     
     required init() {
-        
         if dataManager.isEmpty() {
             print("Setting default data...")
-            addAlgorithm(isDefault: true)
+            addAlgorithm()
             dataManager.applyChanges()
         } else {
             print("Loading saved data...")
             dataManager.getAlgorithms()
         }
-        
-        algorithms = dataManager.savedAlgorithms
     }
 }
 
@@ -36,12 +31,15 @@ extension AlgorithmViewModel {
             return
         }
         algorithm.name = newName
+        
         dataManager.applyChanges()
+        objectWillChange.send()
     }
     
     func updateDescription(with newDescription: String, for algorithm: Algorithm) {
         algorithm.algorithmDescription = newDescription
         dataManager.applyChanges()
+        objectWillChange.send()
     }
     
     func updateAllTapesComponents(for algorithm: Algorithm) {
@@ -50,6 +48,7 @@ extension AlgorithmViewModel {
             tape.headIndex = 0
         }
         dataManager.applyChanges()
+        objectWillChange.send()
     }
     
     func getStartStateName(of algorithm: Algorithm) -> StateQ? {
@@ -62,6 +61,7 @@ extension AlgorithmViewModel {
             state.isStarting = state.isForReset
         }
         dataManager.applyChanges()
+        objectWillChange.send()
     }
     
     func makeStep(algorithm: Algorithm) {
@@ -113,7 +113,7 @@ extension AlgorithmViewModel {
                 }
             }
         }
-        
+        objectWillChange.send()
         // Setting new start state
         DispatchQueue.main.async {
             startState.isStarting.toggle()
@@ -122,6 +122,7 @@ extension AlgorithmViewModel {
                 return
             }
             toState.isStarting.toggle()
+            self.objectWillChange.send()
         }
     }
     
@@ -131,28 +132,33 @@ extension AlgorithmViewModel {
 extension AlgorithmViewModel {
     func changeHeadIndex(to component: TapeComponent) {
         component.tape.headIndex = component.id
+        objectWillChange.send()
         dataManager.applyChanges()
     }
     
     func setNewAlphabet(_ text: String, tape: Tape) {
         tape.alphabet = text
         updateStates(for: tape.algorithm)
+        objectWillChange.send()
         dataManager.applyChanges()
     }
     
     func setNewInput(_ text: String, tape: Tape) {
         tape.input = text
-        
         updateComponents(for: tape)
+        objectWillChange.send()
         dataManager.applyChanges()
     }
     
     private func updateStates(for algorithm: Algorithm) {
         for state in algorithm.wrappedStates {
-            state.options = []
-            addOptions(state: state)
+            for option in state.wrappedOptions {
+                state.removeFromOptions(option)
+                dataManager.container.viewContext.delete(option)
+            }
+            let combinations = getPossibleCombinations(for: state)
+            addOptions(to: state, combinations: combinations)
         }
-        dataManager.applyChanges()
     }
 }
 
@@ -169,6 +175,7 @@ extension AlgorithmViewModel {
         state.isStarting.toggle()
         state.isForReset.toggle()
         
+        objectWillChange.send()
         dataManager.applyChanges()
     }
 }
@@ -176,7 +183,8 @@ extension AlgorithmViewModel {
 // MARK: - Option
 extension AlgorithmViewModel {
     func updateOptionToState(option: Option, currentState: StateQ) {
-        option.toStateID = currentState.id
+        option.toStateID = currentState.id!
+        objectWillChange.send()
         dataManager.applyChanges()
     }
     
@@ -194,11 +202,13 @@ extension AlgorithmViewModel {
 extension AlgorithmViewModel {
     func updateCombinationToChar(combination: Combination, alphabetElement: String) {
         combination.toCharacter = alphabetElement
+        objectWillChange.send()
         dataManager.applyChanges()
     }
     
     func updateCombinationDirection(combination: Combination, directionID: Int) {
         combination.directionID = Int16(directionID)
+        objectWillChange.send()
         dataManager.applyChanges()
     }
     
@@ -221,13 +231,13 @@ extension AlgorithmViewModel {
         addTape(algorithm: algorithm)
         addState(algorithm: algorithm)
         
-        algorithms.append(algorithm)
+        objectWillChange.send()
         dataManager.applyChanges()
     }
     
     func deleteAlgorithm(_ algorithm: Algorithm) {
         dataManager.container.viewContext.delete(algorithm)
-        algorithms.removeAll { $0.id == algorithm.id }
+        objectWillChange.send()
         dataManager.applyChanges()
     }
     
@@ -237,13 +247,13 @@ extension AlgorithmViewModel {
             tape.initValues(nameID: 0, components: [], algorithm: algorithm)
             addComponent(tape: tape)
             algorithm.addToTapes(tape)
+            objectWillChange.send()
             dataManager.applyChanges()
             return
         }
         // Getting the name
         let nameIDArray = algorithm.wrappedTapes.map { $0.nameID }
         guard let max = nameIDArray.max() else {
-            print("aboba 3")
             return
         }
         let fullArray = Array(0...max)
@@ -257,20 +267,20 @@ extension AlgorithmViewModel {
         } else {
             // In case there ARE NO gaps between name ids
             guard let endElement = algorithm.wrappedTapes.last else {
-                print("aboba 4")
                 return
             }
             tape.initValues(nameID: Int(endElement.nameID + 1), components: [], algorithm: algorithm)
         }
         addComponent(tape: tape)
         algorithm.addToTapes(tape)
+        objectWillChange.send()
         dataManager.applyChanges()
     }
     
     func deleteTape(_ tape: Tape) {
         tape.algorithm.removeFromTapes(tape)
         dataManager.container.viewContext.delete(tape)
-        algorithms.removeAll { $0.id == tape.id }
+        objectWillChange.send()
         dataManager.applyChanges()
     }
     
@@ -280,37 +290,37 @@ extension AlgorithmViewModel {
             component.initValues(id: index, tape: tape)
             tape.addToComponents(component)
         }
+        objectWillChange.send()
         dataManager.applyChanges()
     }
     
     func updateComponents(for tape: Tape) {
-        // Reseting old components
-        tape.components = []
-        addComponent(tape: tape)
-        
-        // Update values according to input
-        for characterID in 0..<tape.input.count {
-            for componentObject in tape.components {
-                if let component = componentObject as? TapeComponent {
-                    if component.id == Int16(characterID) {
-                        component.value = tape.input.map { String($0) }[characterID]
-                    }
-                }
+        // Update components values according to input
+        for component in tape.wrappedComponents {
+            if (0..<tape.input.count).contains(Int(component.id)) {
+                component.value = tape.input.map { String($0) }[Int(component.id)]
+            } else {
+                component.value = "_"
             }
         }
+        
+        objectWillChange.send()
         dataManager.applyChanges()
     }
     
-    func addState(algorithm: Algorithm, isDefault: Bool = false) {
+    func addState(algorithm: Algorithm) {
         if algorithm.wrappedStates.isEmpty {
             let state = StateQ(context: dataManager.container.viewContext)
             state.initValues(
+                id: UUID(),
                 nameID: 0,
-                isStarting: isDefault, isForReset: isDefault,
+                isStarting: true, isForReset: true,
                 options: [], algorithm: algorithm
             )
-            addOptions(state: state)
+            let combinations = getPossibleCombinations(for: state)
+            addOptions(to: state, combinations: combinations)
             algorithm.addToStates(state)
+            objectWillChange.send()
             dataManager.applyChanges()
             return
         }
@@ -318,7 +328,6 @@ extension AlgorithmViewModel {
         // Getting the name
         let nameIDArray = algorithm.wrappedStates.map { $0.nameID }
         guard let max = nameIDArray.max() else {
-            print("aboba 1")
             return
         }
         let fullArray = Array(0...max)
@@ -328,29 +337,23 @@ extension AlgorithmViewModel {
         
         if let firstElement = arrayOfDifferentElements.first {
             // In case there ARE gaps between name ids
-            state.initValues(
-                nameID: Int(firstElement),
-                isStarting: isDefault, isForReset: isDefault,
-                options: [], algorithm: algorithm
-            )
+            state.initValues(id: UUID(), nameID: Int(firstElement), options: [], algorithm: algorithm)
         } else {
             // In case there ARE NO gaps between name ids
-            guard let endElement = algorithm.wrappedTapes.last else {
-                print("aboba 2")
+            guard let endElement = algorithm.wrappedStates.last else {
                 return
             }
-            state.initValues(
-                nameID: Int(endElement.nameID + 1),
-                isStarting: isDefault, isForReset: isDefault,
-                options: [], algorithm: algorithm
-            )
+            state.initValues(id: UUID(), nameID: Int(endElement.nameID + 1), options: [], algorithm: algorithm)
         }
-        addOptions(state: state)
+        let combinations = getPossibleCombinations(for: state)
+        addOptions(to: state, combinations: combinations)
         algorithm.addToStates(state)
+        objectWillChange.send()
         dataManager.applyChanges()
     }
     
     func deleteState(_ state: StateQ) {
+        objectWillChange.send()
         if state.isStarting {
             if state.nameID == 0 {
                 updateStartState(state: state, id: 1)
@@ -358,7 +361,6 @@ extension AlgorithmViewModel {
                 updateStartState(state: state, id: 0)
             }
         }
-        
         state.algorithm.removeFromStates(state)
         dataManager.container.viewContext.delete(state)
         dataManager.applyChanges()
@@ -366,42 +368,8 @@ extension AlgorithmViewModel {
     
     private func updateStartState(state: StateQ, id: Int) {
         state.isStarting.toggle()
-        for element in state.algorithm.states {
-            if let state = element as? StateQ {
-                if state.nameID == Int16(id) {
-                    state.isStarting.toggle()
-                    break
-                }
-            }
-        }
-        dataManager.applyChanges()
-    }
-    
-    func addOptions(state: StateQ) {
-        var alphabets: [[String]] = []
-        for tape in state.algorithm.wrappedTapes {
-            var tapeAlphabet = tape.alphabet.map { String($0) }
-            tapeAlphabet.append("_")
-            alphabets.append(tapeAlphabet)
-        }
-        var combinations: [[String]] = []
-        getCombinations(array: alphabets, word: [], currentArrayIndex: 0, result: &combinations)
-        
-        for combinationIndex in 0..<combinations.count {
-            let option = Option(context: dataManager.container.viewContext)
-            option.initValues(id: combinationIndex, toStateID: state.id, combinations: [], state: state)
-            addCombinations(combinations: combinations[combinationIndex], option: option)
-            state.addToOptions(option)
-        }
-        dataManager.applyChanges()
-    }
-    
-    func addCombinations(combinations: [String], option: Option) {
-        for combinationIndex in 0..<combinations.count {
-            let combination = Combination(context: dataManager.container.viewContext)
-            combination.initValues(id: combinationIndex, character: combinations[combinationIndex], directionID: 0, option: option)
-            option.addToCombinations(combination)
-        }
+        state.algorithm.wrappedStates.first(where: { $0.nameID == Int16(id) })?.isStarting.toggle()
+        objectWillChange.send()
         dataManager.applyChanges()
     }
     
@@ -415,5 +383,46 @@ extension AlgorithmViewModel {
                 getCombinations(array: array, word: newWord, currentArrayIndex: currentArrayIndex + 1, result: &result)
             }
         }
+    }
+    
+    func getTapesAlphabets(of algorithm: Algorithm) -> [[String]] {
+        var alphabets: [[String]] = []
+        for tape in algorithm.wrappedTapes {
+            var tapeAlphabet = tape.alphabet.map { String($0) }
+            tapeAlphabet.append("_")
+            alphabets.append(tapeAlphabet)
+        }
+        return alphabets
+    }
+    
+    func getPossibleCombinations(for state: StateQ) -> [[String]] {
+        let alphabets: [[String]] = getTapesAlphabets(of: state.algorithm)
+        var combinations: [[String]] = []
+        getCombinations(array: alphabets, word: [], currentArrayIndex: 0, result: &combinations)
+        return combinations
+    }
+}
+
+extension AlgorithmViewModel {
+    
+    func addOptions(to state: StateQ, combinations: [[String]]) {
+        for combinationIndex in 0..<combinations.count {
+            let option = Option(context: dataManager.container.viewContext)
+            option.initValues(id: combinationIndex, toStateID: state.id!, combinations: [], state: state)
+            addCombinations(combinations: combinations[combinationIndex], option: option)
+            state.addToOptions(option)
+        }
+        objectWillChange.send()
+        dataManager.applyChanges()
+    }
+    
+    func addCombinations(combinations: [String], option: Option) {
+        for combinationIndex in 0..<combinations.count {
+            let combination = Combination(context: dataManager.container.viewContext)
+            combination.initValues(id: combinationIndex, character: combinations[combinationIndex], directionID: 0, option: option)
+            option.addToCombinations(combination)
+        }
+        dataManager.applyChanges()
+        objectWillChange.send()
     }
 }

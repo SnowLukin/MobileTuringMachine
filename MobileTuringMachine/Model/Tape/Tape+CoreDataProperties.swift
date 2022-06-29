@@ -2,7 +2,7 @@
 //  Tape+CoreDataProperties.swift
 //  MobileTuringMachine
 //
-//  Created by Snow Lukin on 27.06.2022.
+//  Created by Snow Lukin on 29.06.2022.
 //
 //
 
@@ -18,11 +18,11 @@ extension Tape {
 
     @NSManaged public var alphabet: String
     @NSManaged public var headIndex: Int16
-    @NSManaged public var id: UUID
+    @NSManaged public var id: UUID?
     @NSManaged public var input: String
     @NSManaged public var nameID: Int16
-    @NSManaged public var components: NSSet
     @NSManaged public var algorithm: Algorithm
+    @NSManaged public var components: NSSet
 
     public var wrappedComponents: [TapeComponent] {
         let set = components as? Set<TapeComponent> ?? []
@@ -47,6 +47,7 @@ extension Tape {
         self.components = NSSet(array: components)
         self.algorithm = algorithm
     }
+
 }
 
 // MARK: Generated accessors for components
