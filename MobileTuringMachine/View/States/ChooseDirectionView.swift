@@ -48,8 +48,14 @@ struct ChooseDirectionView: View {
 
 struct ChooseDirectionView_Previews: PreviewProvider {
     static var previews: some View {
-        let combination = DataManager.shared.savedAlgorithms[0].wrappedStates[0].wrappedOptions[0].wrappedCombinations[0]
-        ChooseDirectionView(combination: combination)
+        let viewModel = AlgorithmViewModel()
+        for algorithm in viewModel.dataManager.savedAlgorithms {
+            viewModel.deleteAlgorithm(algorithm)
+        }
+        viewModel.addAlgorithm()
+        let option = DataManager.shared.savedAlgorithms[0].wrappedStates[0].wrappedOptions[0]
+        let combination = option.wrappedCombinations[0]
+        return ChooseDirectionView(combination: combination)
             .environmentObject(AlgorithmViewModel())
     }
 }

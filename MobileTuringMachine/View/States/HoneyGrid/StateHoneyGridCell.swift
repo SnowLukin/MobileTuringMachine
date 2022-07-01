@@ -47,8 +47,13 @@ struct StateHoneyGridCell: View {
 
 struct StateHoneyGridCell_Previews: PreviewProvider {
     static var previews: some View {
+        let viewModel = AlgorithmViewModel()
+        for algorithm in viewModel.dataManager.savedAlgorithms {
+            viewModel.deleteAlgorithm(algorithm)
+        }
+        viewModel.addAlgorithm()
         let algorithm = DataManager.shared.savedAlgorithms[0]
-        StatefulPreviewWrapper(true) {
+        return StatefulPreviewWrapper(false) {
             StateHoneyGridCell(isBeingEdited: $0, state: algorithm.wrappedStates[0])
                 .frame(width: (UIScreen.main.bounds.width - 50) / 3.2, height: 110)
                 .shadow(radius: 5)
@@ -61,7 +66,6 @@ extension StateHoneyGridCell {
     private var removeCircleButton: some View {
         Button {
             withAnimation {
-                
                 viewModel.deleteState(state)
             }
         } label: {

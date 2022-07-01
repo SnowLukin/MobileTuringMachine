@@ -40,8 +40,13 @@ struct ConfigurationsView: View {
 
 struct ConfigurationsView_Previews: PreviewProvider {
     static var previews: some View {
-        StatefulPreviewWrapper(true) {
-            ConfigurationsView(showSettings: $0, algorithm: DataManager.shared.savedAlgorithms[0])
+        let viewModel = AlgorithmViewModel()
+        for algorithm in viewModel.dataManager.savedAlgorithms {
+            viewModel.deleteAlgorithm(algorithm)
+        }
+        viewModel.addAlgorithm()
+        return StatefulPreviewWrapper(true) {
+            ConfigurationsView(showSettings: $0, algorithm: viewModel.dataManager.savedAlgorithms[0])
                 .environmentObject(AlgorithmViewModel())
         }
     }

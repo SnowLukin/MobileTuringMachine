@@ -41,8 +41,13 @@ struct TapeViewConfigTapesView: View {
 
 struct TapeViewConfigTapesView_Previews: PreviewProvider {
     static var previews: some View {
+        let viewModel = AlgorithmViewModel()
+        for algorithm in viewModel.dataManager.savedAlgorithms {
+            viewModel.deleteAlgorithm(algorithm)
+        }
+        viewModel.addAlgorithm()
         let algorithm = DataManager.shared.savedAlgorithms[0]
-        TapeViewConfigTapesView(tape: algorithm.wrappedTapes[0])
+        return TapeViewConfigTapesView(tape: algorithm.wrappedTapes[0])
             .environmentObject(AlgorithmViewModel())
     }
 }

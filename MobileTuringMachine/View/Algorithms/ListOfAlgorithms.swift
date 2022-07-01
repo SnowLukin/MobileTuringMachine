@@ -117,7 +117,12 @@ struct ListOfAlgorithms: View {
 
 struct ListOfAlgorithms_Previews: PreviewProvider {
     static var previews: some View {
-        ListOfAlgorithms()
+        let viewModel = AlgorithmViewModel()
+        for algorithm in viewModel.dataManager.savedAlgorithms {
+            viewModel.deleteAlgorithm(algorithm)
+        }
+        viewModel.addAlgorithm()
+        return ListOfAlgorithms()
             .environmentObject(AlgorithmViewModel())
     }
 }

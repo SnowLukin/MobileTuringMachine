@@ -63,10 +63,13 @@ struct InfoView: View {
 
 struct InfoView_Previews: PreviewProvider {
     static var previews: some View {
-        InfoView(
-            algorithm: DataManager.shared.savedAlgorithms[0]
-        )
-        .environmentObject(AlgorithmViewModel())
+        let viewModel = AlgorithmViewModel()
+        for algorithm in viewModel.dataManager.savedAlgorithms {
+            viewModel.deleteAlgorithm(algorithm)
+        }
+        viewModel.addAlgorithm()
+        return InfoView(algorithm: viewModel.dataManager.savedAlgorithms[0])
+            .environmentObject(AlgorithmViewModel())
     }
 }
 

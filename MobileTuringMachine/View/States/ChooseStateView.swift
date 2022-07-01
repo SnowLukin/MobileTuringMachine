@@ -45,8 +45,13 @@ struct ChooseStateView: View {
 
 struct ChooseStateView_Previews: PreviewProvider {
     static var previews: some View {
+        let viewModel = AlgorithmViewModel()
+        for algorithm in viewModel.dataManager.savedAlgorithms {
+            viewModel.deleteAlgorithm(algorithm)
+        }
+        viewModel.addAlgorithm()
         let option = DataManager.shared.savedAlgorithms[0].wrappedStates[0].wrappedOptions[0]
-        ChooseStateView(option: option)
+        return ChooseStateView(option: option)
             .environmentObject(AlgorithmViewModel())
     }
 }

@@ -35,8 +35,13 @@ struct Tapes: View {
 
 struct Tapes_Previews: PreviewProvider {
     static var previews: some View {
+        let viewModel = AlgorithmViewModel()
+        for algorithm in viewModel.dataManager.savedAlgorithms {
+            viewModel.deleteAlgorithm(algorithm)
+        }
+        viewModel.addAlgorithm()
         let algorithm = DataManager.shared.savedAlgorithms[0]
-        Tapes(algorithm: algorithm)
+        return Tapes(algorithm: algorithm)
             .environmentObject(AlgorithmViewModel())
     }
 }

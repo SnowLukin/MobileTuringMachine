@@ -39,7 +39,13 @@ struct PlayStack: View {
 
 struct PlayStack_Previews: PreviewProvider {
     static var previews: some View {
-        StatefulPreviewWrapper(true) {
+        let viewModel = AlgorithmViewModel()
+        for algorithm in viewModel.dataManager.savedAlgorithms {
+            viewModel.deleteAlgorithm(algorithm)
+        }
+        viewModel.addAlgorithm()
+        
+        return StatefulPreviewWrapper(true) {
             PlayStack(isChanged: $0, algorithm: DataManager.shared.savedAlgorithms[0])
                 .environmentObject(AlgorithmViewModel())
         }

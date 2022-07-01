@@ -43,7 +43,12 @@ struct ChooseStartStateView: View {
 
 struct ChooseStartStateView_Previews: PreviewProvider {
     static var previews: some View {
-        ChooseStartStateView(algorithm: DataManager.shared.savedAlgorithms[0])
+        let viewModel = AlgorithmViewModel()
+        for algorithm in viewModel.dataManager.savedAlgorithms {
+            viewModel.deleteAlgorithm(algorithm)
+        }
+        viewModel.addAlgorithm()
+        return ChooseStartStateView(algorithm: viewModel.dataManager.savedAlgorithms[0])
             .environmentObject(AlgorithmViewModel())
     }
 }

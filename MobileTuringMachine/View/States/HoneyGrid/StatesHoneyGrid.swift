@@ -69,8 +69,13 @@ struct StatesHoneyGrid: View {
 
 struct StatesHoneyGrid_Previews: PreviewProvider {
     static var previews: some View {
+        let viewModel = AlgorithmViewModel()
+        for algorithm in viewModel.dataManager.savedAlgorithms {
+            viewModel.deleteAlgorithm(algorithm)
+        }
+        viewModel.addAlgorithm()
         let algorithm = DataManager.shared.savedAlgorithms[0]
-        StatesHoneyGrid(algorithm: algorithm)
+        return StatesHoneyGrid(algorithm: algorithm)
             .environmentObject(AlgorithmViewModel())
     }
 }

@@ -86,6 +86,11 @@ struct AlgorithmView: View {
 
 struct AlgorithmView_Previews: PreviewProvider {
     static var previews: some View {
-        AlgorithmView(algorithm: DataManager.shared.savedAlgorithms[0])
+        let viewModel = AlgorithmViewModel()
+        for algorithm in viewModel.dataManager.savedAlgorithms {
+            viewModel.deleteAlgorithm(algorithm)
+        }
+        viewModel.addAlgorithm()
+        return AlgorithmView(algorithm: viewModel.dataManager.savedAlgorithms[0])
     }
 }

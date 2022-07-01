@@ -30,8 +30,13 @@ struct CombinationsListView: View {
 
 struct CombinationsListView_Previews: PreviewProvider {
     static var previews: some View {
+        let viewModel = AlgorithmViewModel()
+        for algorithm in viewModel.dataManager.savedAlgorithms {
+            viewModel.deleteAlgorithm(algorithm)
+        }
+        viewModel.addAlgorithm()
         let state = DataManager.shared.savedAlgorithms[0].wrappedStates[0]
-        CombinationsListView(state: state)
+        return CombinationsListView(state: state)
             .environmentObject(AlgorithmViewModel())
     }
 }

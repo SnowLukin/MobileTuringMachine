@@ -37,7 +37,6 @@
 		D78098B7284E1CF200C4DDF0 /* RoundedCornersBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78098B6284E1CF200C4DDF0 /* RoundedCornersBackground.swift */; };
 		D78098BC284E2A4400C4DDF0 /* ChooseStartStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78098BB284E2A4400C4DDF0 /* ChooseStartStateView.swift */; };
 		D78098C6284F47BE00C4DDF0 /* ConfigurationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78098C5284F47BE00C4DDF0 /* ConfigurationsView.swift */; };
-		D781E8B2286BBFC800E08687 /* TestStateList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D781E8B1286BBFC800E08687 /* TestStateList.swift */; };
 		D781E8BF286BD21900E08687 /* Combination+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D781E8B3286BD21900E08687 /* Combination+CoreDataClass.swift */; };
 		D781E8C0286BD21900E08687 /* Combination+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D781E8B4286BD21900E08687 /* Combination+CoreDataProperties.swift */; };
 		D781E8C3286BD21900E08687 /* TapeComponent+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D781E8B7286BD21900E08687 /* TapeComponent+CoreDataClass.swift */; };
@@ -96,7 +95,6 @@
 		D78098B6284E1CF200C4DDF0 /* RoundedCornersBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCornersBackground.swift; sourceTree = "<group>"; };
 		D78098BB284E2A4400C4DDF0 /* ChooseStartStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseStartStateView.swift; sourceTree = "<group>"; };
 		D78098C5284F47BE00C4DDF0 /* ConfigurationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationsView.swift; sourceTree = "<group>"; };
-		D781E8B1286BBFC800E08687 /* TestStateList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestStateList.swift; sourceTree = "<group>"; };
 		D781E8B3286BD21900E08687 /* Combination+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Combination+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D781E8B4286BD21900E08687 /* Combination+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Combination+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D781E8B7286BD21900E08687 /* TapeComponent+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TapeComponent+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -215,10 +213,16 @@
 			path = PlayButton;
 			sourceTree = "<group>";
 		};
+		D7753D1E286EEC8B00394826 /* AlgorithmEdit */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = AlgorithmEdit;
+			sourceTree = "<group>";
+		};
 		D7809892284CE47300C4DDF0 /* States */ = {
 			isa = PBXGroup;
 			children = (
-				D781E8B0286BBFA100E08687 /* Test */,
 				D7C1E0EC285B4664005662A9 /* HoneyGrid */,
 				D780989A284CEA2100C4DDF0 /* CombinationsListView.swift */,
 				D780989E284CF8F900C4DDF0 /* CombinationView.swift */,
@@ -257,10 +261,11 @@
 			path = Tapes;
 			sourceTree = "<group>";
 		};
-		D78098B8284E211400C4DDF0 /* Home */ = {
+		D78098B8284E211400C4DDF0 /* Algorithms */ = {
 			isa = PBXGroup;
 			children = (
 				D7312B0F2862D88500AF5261 /* ListOfAlgorithms.swift */,
+				D7753D1E286EEC8B00394826 /* AlgorithmEdit */,
 				D7312B112862DD1700AF5261 /* AlgorithmView.swift */,
 				D7312B152862F6ED00AF5261 /* InfoView.swift */,
 				D78098C5284F47BE00C4DDF0 /* ConfigurationsView.swift */,
@@ -268,15 +273,7 @@
 				D7753D14286D150200394826 /* UserHelpView.swift */,
 				D7442899285754E20073C9E2 /* PlayButton */,
 			);
-			path = Home;
-			sourceTree = "<group>";
-		};
-		D781E8B0286BBFA100E08687 /* Test */ = {
-			isa = PBXGroup;
-			children = (
-				D781E8B1286BBFC800E08687 /* TestStateList.swift */,
-			);
-			path = Test;
+			path = Algorithms;
 			sourceTree = "<group>";
 		};
 		D7C1E0EC285B4664005662A9 /* HoneyGrid */ = {
@@ -334,7 +331,7 @@
 		D7CF6DDD27DE28960010949B /* View */ = {
 			isa = PBXGroup;
 			children = (
-				D78098B8284E211400C4DDF0 /* Home */,
+				D78098B8284E211400C4DDF0 /* Algorithms */,
 				D78098A7284DF23300C4DDF0 /* Tapes */,
 				D7809892284CE47300C4DDF0 /* States */,
 			);
@@ -462,7 +459,6 @@
 				D7312B142862EF8500AF5261 /* SizePreferenceKey.swift in Sources */,
 				D781E8C3286BD21900E08687 /* TapeComponent+CoreDataClass.swift in Sources */,
 				D7C1E0F9285DED61005662A9 /* RootPresentationEnvironmentKey.swift in Sources */,
-				D781E8B2286BBFC800E08687 /* TestStateList.swift in Sources */,
 				D781E8C4286BD21900E08687 /* TapeComponent+CoreDataProperties.swift in Sources */,
 				D781E8C9286BD21900E08687 /* Tape+CoreDataClass.swift in Sources */,
 				D781E8C7286BD21900E08687 /* StateQ+CoreDataClass.swift in Sources */,
