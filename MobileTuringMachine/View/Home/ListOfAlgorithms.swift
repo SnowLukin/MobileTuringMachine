@@ -10,30 +10,44 @@ import SwiftUI
 struct ListOfAlgorithms: View {
     
     @EnvironmentObject private var viewModel: AlgorithmViewModel
+    @State private var searchText = ""
     @State private var showInfo = false
 //    @State private var openFile = false
+    
+    var searchResults: [Algorithm] {
+        if searchText.isEmpty {
+            return DataManager.shared.savedAlgorithms
+        } else {
+            return DataManager.shared.savedAlgorithms.filter { $0.name.contains(searchText) }
+        }
+    }
     
     var body: some View {
         NavigationView {
             ZStack {
-                List {
-                    ForEach(viewModel.dataManager.savedAlgorithms) { algorithm in
-                        NavigationLink {
-                            AlgorithmView(algorithm: algorithm)
-                        } label: {
+                List(searchResults) { algorithm in
+                    NavigationLink {
+                        AlgorithmView(algorithm: algorithm)
+                    } label: {
+                        VStack(alignment: .leading) {
                             Text(algorithm.name)
+                                .font(.headline)
+                            Text("23.09.2022")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
                         }
                     }
-                    .onDelete {
-                        if let index = $0.first {
-                            viewModel.deleteAlgorithm(viewModel.dataManager.savedAlgorithms[index])
+                    .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                        Button(role: .destructive) {
+                            withAnimation {
+                                viewModel.deleteAlgorithm(algorithm)
+                            }
+                        } label: {
+                            Image(systemName: "trash.fill")
                         }
-                    }
-                    .onMove {
-                        viewModel.dataManager.savedAlgorithms.move(fromOffsets: $0, toOffset: $1)
-                        viewModel.dataManager.applyChanges()
                     }
                 }
+                .searchable(text: $searchText)
             }
             .navigationTitle("Algorithms")
             .toolbar {

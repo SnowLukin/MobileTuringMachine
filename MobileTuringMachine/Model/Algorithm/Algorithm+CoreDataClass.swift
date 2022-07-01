@@ -2,7 +2,7 @@
 //  Algorithm+CoreDataClass.swift
 //  MobileTuringMachine
 //
-//  Created by Snow Lukin on 29.06.2022.
+//  Created by Snow Lukin on 01.07.2022.
 //
 //
 

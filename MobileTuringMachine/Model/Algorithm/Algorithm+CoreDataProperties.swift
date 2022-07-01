@@ -2,7 +2,7 @@
 //  Algorithm+CoreDataProperties.swift
 //  MobileTuringMachine
 //
-//  Created by Snow Lukin on 29.06.2022.
+//  Created by Snow Lukin on 01.07.2022.
 //
 //
 
@@ -17,11 +17,11 @@ extension Algorithm {
     }
 
     @NSManaged public var algorithmDescription: String
-    @NSManaged public var id: UUID
+    @NSManaged public var id: UUID?
     @NSManaged public var name: String
     @NSManaged public var states: NSSet
     @NSManaged public var tapes: NSSet
-
+    
     public var wrappedTapes: [Tape] {
         let set = tapes as? Set<Tape> ?? []
         return set.sorted {

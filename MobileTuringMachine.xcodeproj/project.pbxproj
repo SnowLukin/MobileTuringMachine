@@ -25,6 +25,8 @@
 		D744289B285754FE0073C9E2 /* PlayStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = D744289A285754FD0073C9E2 /* PlayStack.swift */; };
 		D744289D285759B10073C9E2 /* InfoPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D744289C285759B10073C9E2 /* InfoPopupView.swift */; };
 		D7753D15286D150200394826 /* UserHelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7753D14286D150200394826 /* UserHelpView.swift */; };
+		D7753D1C286ECFEF00394826 /* Algorithm+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7753D1A286ECFEF00394826 /* Algorithm+CoreDataClass.swift */; };
+		D7753D1D286ECFEF00394826 /* Algorithm+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7753D1B286ECFEF00394826 /* Algorithm+CoreDataProperties.swift */; };
 		D780989B284CEA2100C4DDF0 /* CombinationsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780989A284CEA2100C4DDF0 /* CombinationsListView.swift */; };
 		D780989D284CEC4E00C4DDF0 /* CombinationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780989C284CEC4E00C4DDF0 /* CombinationSettings.swift */; };
 		D780989F284CF8F900C4DDF0 /* CombinationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780989E284CF8F900C4DDF0 /* CombinationView.swift */; };
@@ -38,8 +40,6 @@
 		D781E8B2286BBFC800E08687 /* TestStateList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D781E8B1286BBFC800E08687 /* TestStateList.swift */; };
 		D781E8BF286BD21900E08687 /* Combination+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D781E8B3286BD21900E08687 /* Combination+CoreDataClass.swift */; };
 		D781E8C0286BD21900E08687 /* Combination+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D781E8B4286BD21900E08687 /* Combination+CoreDataProperties.swift */; };
-		D781E8C1286BD21900E08687 /* Algorithm+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D781E8B5286BD21900E08687 /* Algorithm+CoreDataClass.swift */; };
-		D781E8C2286BD21900E08687 /* Algorithm+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D781E8B6286BD21900E08687 /* Algorithm+CoreDataProperties.swift */; };
 		D781E8C3286BD21900E08687 /* TapeComponent+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D781E8B7286BD21900E08687 /* TapeComponent+CoreDataClass.swift */; };
 		D781E8C4286BD21900E08687 /* TapeComponent+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D781E8B8286BD21900E08687 /* TapeComponent+CoreDataProperties.swift */; };
 		D781E8C5286BD21900E08687 /* Option+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D781E8B9286BD21900E08687 /* Option+CoreDataClass.swift */; };
@@ -84,6 +84,8 @@
 		D744289A285754FD0073C9E2 /* PlayStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayStack.swift; sourceTree = "<group>"; };
 		D744289C285759B10073C9E2 /* InfoPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoPopupView.swift; sourceTree = "<group>"; };
 		D7753D14286D150200394826 /* UserHelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserHelpView.swift; sourceTree = "<group>"; };
+		D7753D1A286ECFEF00394826 /* Algorithm+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Algorithm+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D7753D1B286ECFEF00394826 /* Algorithm+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Algorithm+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D780989A284CEA2100C4DDF0 /* CombinationsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationsListView.swift; sourceTree = "<group>"; };
 		D780989C284CEC4E00C4DDF0 /* CombinationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationSettings.swift; sourceTree = "<group>"; };
 		D780989E284CF8F900C4DDF0 /* CombinationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationView.swift; sourceTree = "<group>"; };
@@ -97,8 +99,6 @@
 		D781E8B1286BBFC800E08687 /* TestStateList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestStateList.swift; sourceTree = "<group>"; };
 		D781E8B3286BD21900E08687 /* Combination+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Combination+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D781E8B4286BD21900E08687 /* Combination+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Combination+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		D781E8B5286BD21900E08687 /* Algorithm+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Algorithm+CoreDataClass.swift"; sourceTree = "<group>"; };
-		D781E8B6286BD21900E08687 /* Algorithm+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Algorithm+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D781E8B7286BD21900E08687 /* TapeComponent+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TapeComponent+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D781E8B8286BD21900E08687 /* TapeComponent+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TapeComponent+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D781E8B9286BD21900E08687 /* Option+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Option+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -155,8 +155,8 @@
 		D73A2C322869B33F0057CB55 /* Algorithm */ = {
 			isa = PBXGroup;
 			children = (
-				D781E8B5286BD21900E08687 /* Algorithm+CoreDataClass.swift */,
-				D781E8B6286BD21900E08687 /* Algorithm+CoreDataProperties.swift */,
+				D7753D1A286ECFEF00394826 /* Algorithm+CoreDataClass.swift */,
+				D7753D1B286ECFEF00394826 /* Algorithm+CoreDataProperties.swift */,
 			);
 			path = Algorithm;
 			sourceTree = "<group>";
@@ -475,6 +475,7 @@
 				D7C1E0F4285B6FC3005662A9 /* StateHoneyGridCell.swift in Sources */,
 				D74428982854EBC40073C9E2 /* ChooseStateView.swift in Sources */,
 				D78098C6284F47BE00C4DDF0 /* ConfigurationsView.swift in Sources */,
+				D7753D1D286ECFEF00394826 /* Algorithm+CoreDataProperties.swift in Sources */,
 				D7CF6DF127DE64000010949B /* ConfigTapesView.swift in Sources */,
 				D780989B284CEA2100C4DDF0 /* CombinationsListView.swift in Sources */,
 				D780989F284CF8F900C4DDF0 /* CombinationView.swift in Sources */,
@@ -490,10 +491,9 @@
 				D781E8C5286BD21900E08687 /* Option+CoreDataClass.swift in Sources */,
 				D744289D285759B10073C9E2 /* InfoPopupView.swift in Sources */,
 				D78098B1284E150200C4DDF0 /* Tapes.swift in Sources */,
-				D781E8C1286BD21900E08687 /* Algorithm+CoreDataClass.swift in Sources */,
+				D7753D1C286ECFEF00394826 /* Algorithm+CoreDataClass.swift in Sources */,
 				D7312B122862DD1700AF5261 /* AlgorithmView.swift in Sources */,
 				D781E8C0286BD21900E08687 /* Combination+CoreDataProperties.swift in Sources */,
-				D781E8C2286BD21900E08687 /* Algorithm+CoreDataProperties.swift in Sources */,
 				D7CF6DF527DE731F0010949B /* TapeView + ConfigTapesView.swift in Sources */,
 				D7CF6DD027DE288A0010949B /* MobileTuringMachineApp.swift in Sources */,
 				D7057FAF284A8CC70008E7E3 /* Extension + View.swift in Sources */,

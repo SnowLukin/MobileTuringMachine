@@ -289,7 +289,7 @@ extension AlgorithmViewModel {
 // Working with data
 extension AlgorithmViewModel {
     
-    func addAlgorithm(isDefault: Bool = false) {
+    func addAlgorithm() {
         let algorithm = Algorithm(context: dataManager.container.viewContext)
         algorithm.initValues(states: [], tapes: [])
         addTape(algorithm: algorithm)
