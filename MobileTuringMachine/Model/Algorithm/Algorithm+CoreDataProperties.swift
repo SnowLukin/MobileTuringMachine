@@ -19,15 +19,19 @@ extension Algorithm {
     @NSManaged public var algorithmDescription: String
     @NSManaged public var id: UUID?
     @NSManaged public var name: String
+    @NSManaged public var editedDate: Date?
+    @NSManaged public var creationDate: Date?
+    @NSManaged public var pinned: Bool
     @NSManaged public var states: NSSet
     @NSManaged public var tapes: NSSet
-    
+
     public var wrappedTapes: [Tape] {
         let set = tapes as? Set<Tape> ?? []
         return set.sorted {
             $0.nameID < $1.nameID
         }
     }
+    
     public var wrappedStates: [StateQ] {
         let set = states as? Set<StateQ> ?? []
         return set.sorted {
@@ -35,12 +39,42 @@ extension Algorithm {
         }
     }
     
-    func initValues(id: UUID = UUID(), name: String = "New Algorithm", algorithmDescription: String = "", states: [StateQ], tapes: [Tape]) {
+    public var wrappedCreationDate: Date {
+        handleCreationDate()
+    }
+    
+    public var wrappedEditedDate: Date {
+        handleEditedDate()
+    }
+    
+    func initValues(id: UUID = UUID(), name: String = "New Algorithm",
+                    algorithmDescription: String = "", states: [StateQ],
+                    pinned: Bool = false, tapes: [Tape],
+                    creationDate: Date = Date.now, editedDate: Date = Date.now) {
         self.id = id
         self.name = name
         self.algorithmDescription = algorithmDescription
         self.states = NSSet(array: states)
+        self.pinned = pinned
         self.tapes = NSSet(array: tapes)
+        self.creationDate = creationDate
+        self.editedDate = editedDate
+    }
+    
+    private func handleCreationDate() -> Date {
+        if let creationDate = creationDate {
+            return creationDate
+        }
+        creationDate = Date.now
+        return creationDate!
+    }
+    
+    private func handleEditedDate() -> Date {
+        if let editedDate = editedDate {
+            return editedDate
+        }
+        editedDate = Date.now
+        return editedDate!
     }
 }
 

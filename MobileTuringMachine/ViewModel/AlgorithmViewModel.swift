@@ -32,12 +32,15 @@ extension AlgorithmViewModel {
             algorithm.name = newName
         }
         
+        algorithm.editedDate = Date.now
         dataManager.applyChanges()
         objectWillChange.send()
     }
     
     func updateDescription(with newDescription: String, for algorithm: Algorithm) {
         algorithm.algorithmDescription = newDescription
+        
+        algorithm.editedDate = Date.now
         dataManager.applyChanges()
         objectWillChange.send()
     }
@@ -47,6 +50,8 @@ extension AlgorithmViewModel {
             updateComponents(for: tape)
             tape.headIndex = 0
         }
+        
+        algorithm.editedDate = Date.now
         dataManager.applyChanges()
         objectWillChange.send()
     }
@@ -60,6 +65,7 @@ extension AlgorithmViewModel {
         for state in algorithm.wrappedStates {
             state.isStarting = state.isForReset
         }
+        
         dataManager.applyChanges()
         objectWillChange.send()
     }
@@ -132,6 +138,8 @@ extension AlgorithmViewModel {
 extension AlgorithmViewModel {
     func changeHeadIndex(to component: TapeComponent) {
         component.tape.headIndex = component.id
+        
+        component.tape.algorithm.editedDate = Date.now
         objectWillChange.send()
         dataManager.applyChanges()
     }
@@ -197,6 +205,8 @@ extension AlgorithmViewModel {
     private func updateAlphabet(_ text: String, for tape: Tape) {
         tape.alphabet = text
         updateStates(for: tape.algorithm)
+        
+        tape.algorithm.editedDate = Date.now
         objectWillChange.send()
         dataManager.applyChanges()
     }
@@ -204,6 +214,8 @@ extension AlgorithmViewModel {
     private func updateInput(_ text: String, for tape: Tape) {
         tape.input = text
         updateComponents(for: tape)
+        
+        tape.algorithm.editedDate = Date.now
         objectWillChange.send()
         dataManager.applyChanges()
     }
@@ -217,6 +229,8 @@ extension AlgorithmViewModel {
             let combinations = getPossibleCombinations(for: state)
             addOptions(to: state, combinations: combinations)
         }
+        
+        algorithm.editedDate = Date.now
         objectWillChange.send()
         dataManager.applyChanges()
     }
@@ -235,6 +249,7 @@ extension AlgorithmViewModel {
         state.isStarting.toggle()
         state.isForReset.toggle()
         
+        state.algorithm.editedDate = Date.now
         objectWillChange.send()
         dataManager.applyChanges()
     }
@@ -248,6 +263,8 @@ extension AlgorithmViewModel {
             return
         }
         option.toStateID = id
+        
+        option.state.algorithm.editedDate = Date.now
         objectWillChange.send()
         dataManager.applyChanges()
     }
@@ -266,12 +283,16 @@ extension AlgorithmViewModel {
 extension AlgorithmViewModel {
     func updateCombinationToChar(combination: Combination, alphabetElement: String) {
         combination.toCharacter = alphabetElement
+        
+        combination.option.state.algorithm.editedDate = Date.now
         objectWillChange.send()
         dataManager.applyChanges()
     }
     
     func updateCombinationDirection(combination: Combination, directionID: Int) {
         combination.directionID = Int16(directionID)
+        
+        combination.option.state.algorithm.editedDate = Date.now
         objectWillChange.send()
         dataManager.applyChanges()
     }
@@ -311,6 +332,8 @@ extension AlgorithmViewModel {
             tape.initValues(nameID: 0, components: [], algorithm: algorithm)
             addComponent(tape: tape)
             algorithm.addToTapes(tape)
+            
+            algorithm.editedDate = Date.now
             objectWillChange.send()
             dataManager.applyChanges()
             return
@@ -338,6 +361,8 @@ extension AlgorithmViewModel {
         addComponent(tape: tape)
         algorithm.addToTapes(tape)
         updateStates(for: algorithm)
+        
+        algorithm.editedDate = Date.now
         objectWillChange.send()
         dataManager.applyChanges()
     }
@@ -386,6 +411,8 @@ extension AlgorithmViewModel {
             let combinations = getPossibleCombinations(for: state)
             addOptions(to: state, combinations: combinations)
             algorithm.addToStates(state)
+            
+            algorithm.editedDate = Date.now
             objectWillChange.send()
             dataManager.applyChanges()
             return
@@ -414,6 +441,8 @@ extension AlgorithmViewModel {
         let combinations = getPossibleCombinations(for: state)
         addOptions(to: state, combinations: combinations)
         algorithm.addToStates(state)
+        
+        algorithm.editedDate = Date.now
         objectWillChange.send()
         dataManager.applyChanges()
     }
@@ -435,6 +464,8 @@ extension AlgorithmViewModel {
     private func updateStartState(state: StateQ, id: Int) {
         state.isStarting.toggle()
         state.algorithm.wrappedStates.first(where: { $0.nameID == Int16(id) })?.isStarting.toggle()
+        
+        state.algorithm.editedDate = Date.now
         objectWillChange.send()
         dataManager.applyChanges()
     }
@@ -490,5 +521,32 @@ extension AlgorithmViewModel {
         }
         dataManager.applyChanges()
         objectWillChange.send()
+    }
+    
+    func getSearchResult(_ searchText: String, sorting: Sortings, sortingOrder: SortingOrder) -> [Algorithm] {
+        let filteredAlgorithms = getSearchedAlgorithms(searchText)
+        switch sorting {
+        case .name:
+            return filteredAlgorithms
+                .sorted(by: { sortingOrder == .up ? $0.name < $1.name : $0.name > $1.name })
+        case .dateCreated:
+            return filteredAlgorithms.sorted(by: {
+                sortingOrder == .up
+                ? $0.wrappedCreationDate < $1.wrappedCreationDate
+                : $0.wrappedCreationDate > $1.wrappedCreationDate
+            })
+        case .dateEdited:
+            return filteredAlgorithms.sorted(by: {
+                sortingOrder == .up
+                ? $0.wrappedEditedDate < $1.wrappedEditedDate
+                : $0.wrappedEditedDate > $1.wrappedEditedDate
+            })
+        }
+    }
+    
+    private func getSearchedAlgorithms(_ searchText: String) -> [Algorithm] {
+        searchText.isEmpty
+        ? DataManager.shared.savedAlgorithms
+        : DataManager.shared.savedAlgorithms.filter { $0.name.contains(searchText) }
     }
 }

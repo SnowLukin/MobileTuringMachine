@@ -14,13 +14,11 @@ struct ListOfAlgorithms: View {
     @State private var showInfo = false
     @State private var showEditSheet = false
 //    @State private var openFile = false
+    @State private var sorting: Sortings = .name
+    @State private var sortingOrder: SortingOrder = .up
     
     var searchResults: [Algorithm] {
-        if searchText.isEmpty {
-            return DataManager.shared.savedAlgorithms
-        } else {
-            return DataManager.shared.savedAlgorithms.filter { $0.name.contains(searchText) }
-        }
+        viewModel.getSearchResult(searchText, sorting: sorting, sortingOrder: sortingOrder)
     }
     
     var body: some View {
@@ -30,13 +28,7 @@ struct ListOfAlgorithms: View {
                     NavigationLink {
                         AlgorithmView(algorithm: algorithm)
                     } label: {
-                        VStack(alignment: .leading) {
-                            Text(algorithm.name)
-                                .font(.headline)
-                            Text("1.07.2022")
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
-                        }
+                        customCell(algorithm)
                     }
                     .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                         Button(role: .destructive) {
@@ -119,5 +111,28 @@ struct ListOfAlgorithms_Previews: PreviewProvider {
         viewModel.addAlgorithm()
         return ListOfAlgorithms()
             .environmentObject(AlgorithmViewModel())
+    }
+}
+
+extension ListOfAlgorithms {
+    private func customCell(_ algorithm: Algorithm) -> some View {
+        VStack(alignment: .leading) {
+            Text(algorithm.name)
+                .font(.headline)
+            
+            if Calendar.current.isDateInYesterday(algorithm.wrappedEditedDate) {
+                Text("Yesterday")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            } else {
+                Text(algorithm.wrappedEditedDate,
+                     format: Calendar.current.isDateInToday(algorithm.wrappedEditedDate)
+                     ? .dateTime.hour().minute()
+                     : .dateTime.day().month().year() 
+                )
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+            }
+        }
     }
 }
