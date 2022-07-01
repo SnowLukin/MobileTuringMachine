@@ -27,6 +27,10 @@
 		D7753D15286D150200394826 /* UserHelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7753D14286D150200394826 /* UserHelpView.swift */; };
 		D7753D1C286ECFEF00394826 /* Algorithm+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7753D1A286ECFEF00394826 /* Algorithm+CoreDataClass.swift */; };
 		D7753D1D286ECFEF00394826 /* Algorithm+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7753D1B286ECFEF00394826 /* Algorithm+CoreDataProperties.swift */; };
+		D7753D20286EECF000394826 /* AlgorithmEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7753D1F286EECF000394826 /* AlgorithmEditView.swift */; };
+		D7753D22286EF7EE00394826 /* AddAlgorithmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7753D21286EF7EE00394826 /* AddAlgorithmView.swift */; };
+		D7753D27286F658B00394826 /* SheetPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7753D26286F658B00394826 /* SheetPresentation.swift */; };
+		D7753D29286F661300394826 /* SheetViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7753D28286F661300394826 /* SheetViewModifier.swift */; };
 		D780989B284CEA2100C4DDF0 /* CombinationsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780989A284CEA2100C4DDF0 /* CombinationsListView.swift */; };
 		D780989D284CEC4E00C4DDF0 /* CombinationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780989C284CEC4E00C4DDF0 /* CombinationSettings.swift */; };
 		D780989F284CF8F900C4DDF0 /* CombinationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780989E284CF8F900C4DDF0 /* CombinationView.swift */; };
@@ -85,6 +89,10 @@
 		D7753D14286D150200394826 /* UserHelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserHelpView.swift; sourceTree = "<group>"; };
 		D7753D1A286ECFEF00394826 /* Algorithm+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Algorithm+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D7753D1B286ECFEF00394826 /* Algorithm+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Algorithm+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D7753D1F286EECF000394826 /* AlgorithmEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorithmEditView.swift; sourceTree = "<group>"; };
+		D7753D21286EF7EE00394826 /* AddAlgorithmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAlgorithmView.swift; sourceTree = "<group>"; };
+		D7753D26286F658B00394826 /* SheetPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetPresentation.swift; sourceTree = "<group>"; };
+		D7753D28286F661300394826 /* SheetViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewModifier.swift; sourceTree = "<group>"; };
 		D780989A284CEA2100C4DDF0 /* CombinationsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationsListView.swift; sourceTree = "<group>"; };
 		D780989C284CEC4E00C4DDF0 /* CombinationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationSettings.swift; sourceTree = "<group>"; };
 		D780989E284CF8F900C4DDF0 /* CombinationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationView.swift; sourceTree = "<group>"; };
@@ -216,8 +224,19 @@
 		D7753D1E286EEC8B00394826 /* AlgorithmEdit */ = {
 			isa = PBXGroup;
 			children = (
+				D7753D1F286EECF000394826 /* AlgorithmEditView.swift */,
+				D7753D21286EF7EE00394826 /* AddAlgorithmView.swift */,
 			);
 			path = AlgorithmEdit;
+			sourceTree = "<group>";
+		};
+		D7753D25286F656200394826 /* SheetUIKit */ = {
+			isa = PBXGroup;
+			children = (
+				D7753D26286F658B00394826 /* SheetPresentation.swift */,
+				D7753D28286F661300394826 /* SheetViewModifier.swift */,
+			);
+			path = SheetUIKit;
 			sourceTree = "<group>";
 		};
 		D7809892284CE47300C4DDF0 /* States */ = {
@@ -242,6 +261,7 @@
 				D74428912854AA130073C9E2 /* TapButtonStyle.swift */,
 				D7C1E0F8285DED61005662A9 /* RootPresentationEnvironmentKey.swift */,
 				D7312B132862EF8500AF5261 /* SizePreferenceKey.swift */,
+				D7753D25286F656200394826 /* SheetUIKit */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -463,9 +483,11 @@
 				D781E8C9286BD21900E08687 /* Tape+CoreDataClass.swift in Sources */,
 				D781E8C7286BD21900E08687 /* StateQ+CoreDataClass.swift in Sources */,
 				D78098A4284DC83900C4DDF0 /* BindingPreviewWrapper.swift in Sources */,
+				D7753D22286EF7EE00394826 /* AddAlgorithmView.swift in Sources */,
 				D7C1E0F2285B61B7005662A9 /* StatesHoneyGrid.swift in Sources */,
 				D744289B285754FE0073C9E2 /* PlayStack.swift in Sources */,
 				D781E8CA286BD21900E08687 /* Tape+CoreDataProperties.swift in Sources */,
+				D7753D20286EECF000394826 /* AlgorithmEditView.swift in Sources */,
 				D780989D284CEC4E00C4DDF0 /* CombinationSettings.swift in Sources */,
 				D7CF6DEF27DE606F0010949B /* Extension + Color.swift in Sources */,
 				D7C1E0F4285B6FC3005662A9 /* StateHoneyGridCell.swift in Sources */,
@@ -474,7 +496,9 @@
 				D7753D1D286ECFEF00394826 /* Algorithm+CoreDataProperties.swift in Sources */,
 				D7CF6DF127DE64000010949B /* ConfigTapesView.swift in Sources */,
 				D780989B284CEA2100C4DDF0 /* CombinationsListView.swift in Sources */,
+				D7753D27286F658B00394826 /* SheetPresentation.swift in Sources */,
 				D780989F284CF8F900C4DDF0 /* CombinationView.swift in Sources */,
+				D7753D29286F661300394826 /* SheetViewModifier.swift in Sources */,
 				D7312B102862D88500AF5261 /* ListOfAlgorithms.swift in Sources */,
 				D781E8C8286BD21900E08687 /* StateQ+CoreDataProperties.swift in Sources */,
 				D7442890285389DC0073C9E2 /* ChooseDirectionView.swift in Sources */,

@@ -83,4 +83,19 @@ extension View {
         }
         return root
     }
+    
+    // MARK: - Sheet
+    func sheetWithDetents<Content>(
+            isPresented: Binding<Bool>,
+            detents: [UISheetPresentationController.Detent],
+            onDismiss: (() -> Void)?,
+            content: @escaping () -> Content) -> some View where Content : View {
+                modifier(
+                    sheetWithDetentsViewModifier(
+                        isPresented: isPresented,
+                        detents: detents,
+                        onDismiss: onDismiss,
+                        content: content)
+                )
+            }
 }

@@ -12,6 +12,7 @@ struct ListOfAlgorithms: View {
     @EnvironmentObject private var viewModel: AlgorithmViewModel
     @State private var searchText = ""
     @State private var showInfo = false
+    @State private var showEditSheet = false
 //    @State private var openFile = false
     
     var searchResults: [Algorithm] {
@@ -32,7 +33,7 @@ struct ListOfAlgorithms: View {
                         VStack(alignment: .leading) {
                             Text(algorithm.name)
                                 .font(.headline)
-                            Text("23.09.2022")
+                            Text("1.07.2022")
                                 .font(.subheadline)
                                 .foregroundColor(.secondary)
                         }
@@ -48,6 +49,12 @@ struct ListOfAlgorithms: View {
                     }
                 }
                 .searchable(text: $searchText)
+                AddAlgorithmView()
+            }
+            .sheetWithDetents(isPresented: $showEditSheet, detents: [.medium(), .large()]) {
+                print("Sheet closed")
+            } content: {
+                AlgorithmEditView(showEditView: $showEditSheet)
             }
             .navigationTitle("Algorithms")
             .toolbar {
@@ -58,26 +65,14 @@ struct ListOfAlgorithms: View {
                         Image(systemName: "questionmark.circle")
                     }
                 }
-//                ToolbarItem(placement: .navigationBarTrailing) {
-//                    Button {
-//                        withAnimation {
-//                            openFile.toggle()
-//                        }
-//                    } label: {
-//                        Image(systemName: "square.and.arrow.down")
-//                    }
-//                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         withAnimation {
-                            viewModel.addAlgorithm()
+                            showEditSheet.toggle()
                         }
                     } label: {
-                        Image(systemName: "plus")
+                        Image(systemName: "ellipsis.circle")
                     }
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
                 }
             }
         }

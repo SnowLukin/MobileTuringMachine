@@ -7,10 +7,6 @@
 
 import SwiftUI
 
-// MARK: Credits to AlanQuatermain – Jim Dovey for this piece of code.
-// MARK: Git: https://github.com/AlanQuatermain
-// MARK: Link to this code: https://github.com/AlanQuatermain/AQUI/blob/master/Sources/AQUI/StatefulPreviewWrapper.swift
-
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
 public struct StatefulPreviewWrapper<Value, Content: View>: View {
     @State var value: Value
