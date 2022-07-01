@@ -55,50 +55,21 @@ extension InputView {
             .background(Color.secondaryBackground)
             .cornerRadius(12)
             .onChange(of: text) { _ in
-                purpose == .alphabet
-                ? setNewAlphabetValue()
-                : setNewInputValue()
+                if purpose == .alphabet {
+                    viewModel.setNewAlphabetValue(text, for: tape)
+                } else {
+                    viewModel.setNewInputValue(text, for: tape)
+                }
             }
-    }
-    
-    private func setNewInputValue() {
-        if tape.input == text {
-            return
-        }
-        // if not last
-        guard let lastCharacter = text.popLast() else {
-            viewModel.setNewInput(text, tape: tape)
-            return
-        }
-        
-        // if new character is "space" change it to "_"
-        if lastCharacter == " " {
-            text.append("_")
-            viewModel.setNewInput(text, tape: tape)
-            return
-        }
-        // if there is such character in alphabet - save it
-        // otherwise delete it
-        if tape.alphabet.contains(lastCharacter) {
-            text.append(lastCharacter)
-        }
-        viewModel.setNewInput(text, tape: tape)
-    }
-    
-    private func setNewAlphabetValue() {
-        if text.isEmpty || tape.alphabet == text {
-            return
-        }
-        
-        // Checking new character already exist
-        // if it is - delete it
-        if let lastCharacter = text.popLast() {
-            if lastCharacter == " " {
-                return
-            } else if !text.contains(lastCharacter) {
-                text.append(String(lastCharacter))
+            .onChange(of: tape.alphabet) { newValue in
+                if purpose == .alphabet {
+                    text = newValue
+                }
             }
-        }
-        viewModel.setNewAlphabet(text, tape: tape)
+            .onChange(of: tape.input) { newValue in
+                if purpose == .input {
+                    text = newValue
+                }
+            }
     }
 }

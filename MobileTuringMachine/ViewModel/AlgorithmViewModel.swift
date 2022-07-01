@@ -28,9 +28,9 @@ extension AlgorithmViewModel {
     func updateName(with newName: String, for algorithm: Algorithm) {
         if newName.isEmpty {
             algorithm.name = "New Algorithm"
-            return
+        } else {
+            algorithm.name = newName
         }
-        algorithm.name = newName
         
         dataManager.applyChanges()
         objectWillChange.send()
@@ -136,14 +136,72 @@ extension AlgorithmViewModel {
         dataManager.applyChanges()
     }
     
-    func setNewAlphabet(_ text: String, tape: Tape) {
+    func setNewInputValue(_ text: String, for tape: Tape) {
+        var text = text
+        
+        // Return if nothin changed
+        if tape.input == text {
+            return
+        }
+        
+        // Poping last element if possible.
+        guard let lastCharacter = text.popLast() else {
+            // If not possible -> text is empty.
+            updateInput(text, for: tape)
+            return
+        }
+        
+        // if new character is "space" change it to "_"
+        if lastCharacter == " " {
+            text.append("_")
+            updateInput(text, for: tape)
+            return
+        }
+        // if there is such character in alphabet - save it
+        // otherwise delete it
+        if tape.alphabet.contains(lastCharacter) {
+            text.append(lastCharacter)
+        }
+        updateInput(text, for: tape)
+    }
+    
+    private func removeInputCharactersWhichAreNotInAlphabet(for tape: Tape) {
+        let filteredInput = tape.input.filter { tape.alphabet.contains($0)}
+        updateInput(filteredInput, for: tape)
+    }
+    
+    func setNewAlphabetValue(_ text: String, for tape: Tape) {
+        var text = text
+        // Return if nothin changed
+        if tape.alphabet == text {
+            return
+        }
+        // Poping last element if possible.
+        guard let lastCharacter = text.popLast() else {
+            // If not possible -> text is empty.
+            updateAlphabet(text, for: tape)
+            removeInputCharactersWhichAreNotInAlphabet(for: tape)
+            return
+        }
+        // If last character is a "space". Remove it.
+        if lastCharacter == " " {
+            return
+        }  else if !text.contains(lastCharacter) {  // Checking new character already exist
+            // if it isn't - add it
+            text.append(String(lastCharacter))
+            updateAlphabet(text, for: tape)
+            removeInputCharactersWhichAreNotInAlphabet(for: tape)
+        }
+    }
+    
+    private func updateAlphabet(_ text: String, for tape: Tape) {
         tape.alphabet = text
         updateStates(for: tape.algorithm)
         objectWillChange.send()
         dataManager.applyChanges()
     }
     
-    func setNewInput(_ text: String, tape: Tape) {
+    private func updateInput(_ text: String, for tape: Tape) {
         tape.input = text
         updateComponents(for: tape)
         objectWillChange.send()
@@ -159,6 +217,8 @@ extension AlgorithmViewModel {
             let combinations = getPossibleCombinations(for: state)
             addOptions(to: state, combinations: combinations)
         }
+        objectWillChange.send()
+        dataManager.applyChanges()
     }
 }
 
@@ -183,7 +243,11 @@ extension AlgorithmViewModel {
 // MARK: - Option
 extension AlgorithmViewModel {
     func updateOptionToState(option: Option, currentState: StateQ) {
-        option.toStateID = currentState.id!
+        guard let id = currentState.id else {
+            print("Error getting current state's id")
+            return
+        }
+        option.toStateID = id
         objectWillChange.send()
         dataManager.applyChanges()
     }
@@ -273,6 +337,7 @@ extension AlgorithmViewModel {
         }
         addComponent(tape: tape)
         algorithm.addToTapes(tape)
+        updateStates(for: algorithm)
         objectWillChange.send()
         dataManager.applyChanges()
     }
@@ -280,6 +345,7 @@ extension AlgorithmViewModel {
     func deleteTape(_ tape: Tape) {
         tape.algorithm.removeFromTapes(tape)
         dataManager.container.viewContext.delete(tape)
+        updateStates(for: tape.algorithm)
         objectWillChange.send()
         dataManager.applyChanges()
     }
