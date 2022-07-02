@@ -15,7 +15,7 @@ struct AddAlgorithmView: View {
             Spacer()
             ZStack(alignment: .center) {
                 Text("\(viewModel.dataManager.savedAlgorithms.count) Algorithms")
-                    .font(.subheadline)
+                    .font(.footnote)
                 HStack {
                     Spacer()
                     Button {
@@ -30,7 +30,8 @@ struct AddAlgorithmView: View {
                     }
                 }
             }
-            .frame(width: UIScreen.main.bounds.width, height: 50)
+            .frame(minWidth: 0, maxWidth: .infinity)
+            .frame(height: 40)
             .overlay(Divider(), alignment: .top)
             .background(Color.secondaryBackground)
         }

@@ -23,7 +23,7 @@ struct StatesHoneyGrid: View {
                     HStack(spacing: 10) {
                         ForEach(rows[rowIndex]) { state in
                             StateHoneyGridCell(isBeingEdited: $isBeingEdited, state: state)
-                                .frame(width: (width - 20) / 3.2, height: 110)
+                                .frame(width: 110, height: 110)
                                 .offset(x: getOffset(index: rowIndex))
                         }
                     }
@@ -84,7 +84,7 @@ extension StatesHoneyGrid {
     private func getOffset(index: Int) -> CGFloat {
         let current = rows[index].count
         
-        let offset = ((width - 20) / 3) / 2
+        let offset: CGFloat = (375 - 20) / 3 / 2
         
         if index != 0 {
             let previous = rows[index - 1].count

@@ -9,6 +9,8 @@ import SwiftUI
 
 struct AlgorithmEditView: View {
     @Binding var showEditView: Bool
+    @Binding var sorting: Sortings
+    @Binding var sortingOrder: SortingOrder
     
     let folderName: String = "Algorithms"
     
@@ -40,7 +42,7 @@ struct AlgorithmEditView: View {
 struct AlgorithmEditView_Previews: PreviewProvider {
     static var previews: some View {
         StatefulPreviewWrapper(true) {
-            AlgorithmEditView(showEditView: $0)
+            AlgorithmEditView(showEditView: $0, sorting: .constant(.dateEdited), sortingOrder: .constant(.up))
         }
     }
 }
@@ -72,14 +74,85 @@ extension AlgorithmEditView {
     }
     
     private var sortButton: some View {
-        Button {
+        Menu {
+            Section {
+                Button {
+                    withAnimation {
+                        sortingOrder = .down
+                        showEditView.toggle()
+                    }
+                } label: {
+                    HStack {
+                        if sortingOrder == .down {
+                            Image(systemName: "checkmark")
+                        }
+                        Text(sorting == .name ? "Z to A" : "Oldest to Newest")
+                    }
+                }
+                Button {
+                    withAnimation {
+                        sortingOrder = .up
+                        showEditView.toggle()
+                    }
+                } label: {
+                    HStack {
+                        if sortingOrder == .up {
+                            Image(systemName: "checkmark")
+                        }
+                        Text(sorting == .name ? "A to Z" : "Newest to Oldest")
+                    }
+                }
+            }
             
+            Button {
+                withAnimation {
+                    sorting = .name
+                    showEditView.toggle()
+                }
+            } label: {
+                HStack {
+                    if sorting == .name {
+                        Image(systemName: "checkmark")
+                    }
+                    Text("Name")
+                }
+            }
+            
+            Button {
+                withAnimation {
+                    sorting = .dateCreated
+                    showEditView.toggle()
+                }
+            } label: {
+                HStack {
+                    if sorting == .dateCreated {
+                        Image(systemName: "checkmark")
+                    }
+                    Text("Date Created")
+                }
+            }
+            Button {
+                withAnimation {
+                    sorting = .dateEdited
+                    showEditView.toggle()
+                }
+            } label: {
+                HStack {
+                    if sorting == .dateEdited {
+                        Image(systemName: "checkmark")
+                    }
+                    Text("Date Edited")
+                }
+            }
+
         } label: {
             HStack {
-                Text("Sort Algorithms By Name")
+                Text("Sort Algorithms By \(sorting.rawValue)")
+                    .foregroundColor(.primary)
                 Spacer()
                 Image(systemName: "arrow.up.arrow.down")
-            }.foregroundColor(.primary)
+                    .foregroundColor(.primary)
+            }
         }
     }
     

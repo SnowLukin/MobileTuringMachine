@@ -549,4 +549,18 @@ extension AlgorithmViewModel {
         ? DataManager.shared.savedAlgorithms
         : DataManager.shared.savedAlgorithms.filter { $0.name.contains(searchText) }
     }
+    
+    func getAlgorithmEditedTimeForTextView(_ algorithm: Algorithm) -> String {
+        if Calendar.current.isDateInYesterday(algorithm.wrappedEditedDate) {
+            return "Yesterday"
+        }
+        
+        let formatter = DateFormatter()
+        if Calendar.current.isDateInToday(algorithm.wrappedEditedDate) {
+            formatter.dateFormat = "HH:mm"
+            return formatter.string(from: algorithm.wrappedEditedDate)
+        }
+        formatter.dateFormat = "d MMM y"
+        return formatter.string(from: algorithm.wrappedEditedDate)
+    }
 }

@@ -50,7 +50,7 @@ extension Algorithm {
     func initValues(id: UUID = UUID(), name: String = "New Algorithm",
                     algorithmDescription: String = "", states: [StateQ],
                     pinned: Bool = false, tapes: [Tape],
-                    creationDate: Date = Date.now, editedDate: Date = Date.now) {
+                    creationDate: Date = Date.now) {
         self.id = id
         self.name = name
         self.algorithmDescription = algorithmDescription
@@ -58,7 +58,7 @@ extension Algorithm {
         self.pinned = pinned
         self.tapes = NSSet(array: tapes)
         self.creationDate = creationDate
-        self.editedDate = editedDate
+        self.editedDate = creationDate
     }
     
     private func handleCreationDate() -> Date {

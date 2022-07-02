@@ -40,15 +40,15 @@ struct ListOfAlgorithms: View {
                         }
                     }
                 }
+                .listStyle(InsetGroupedListStyle())
                 .searchable(text: $searchText)
                 AddAlgorithmView()
             }
             .sheetWithDetents(isPresented: $showEditSheet, detents: [.medium(), .large()]) {
                 print("Sheet closed")
             } content: {
-                AlgorithmEditView(showEditView: $showEditSheet)
+                AlgorithmEditView(showEditView: $showEditSheet, sorting: $sorting, sortingOrder: $sortingOrder)
             }
-            .navigationTitle("Algorithms")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     NavigationLink {
@@ -67,8 +67,9 @@ struct ListOfAlgorithms: View {
                     }
                 }
             }
+            .navigationTitle("Algorithms")
         }
-        .navigationViewStyle(.stack)
+//        .navigationViewStyle(.stack)
 //        .fileImporter(isPresented: $openFile, allowedContentTypes: [.mtm], allowsMultipleSelection: false) { result in
 //            do {
 //                guard let selectedFileURL: URL = try result.get().first else {
@@ -111,6 +112,7 @@ struct ListOfAlgorithms_Previews: PreviewProvider {
         viewModel.addAlgorithm()
         return ListOfAlgorithms()
             .environmentObject(AlgorithmViewModel())
+            .previewInterfaceOrientation(.portrait)
     }
 }
 
@@ -119,20 +121,7 @@ extension ListOfAlgorithms {
         VStack(alignment: .leading) {
             Text(algorithm.name)
                 .font(.headline)
-            
-            if Calendar.current.isDateInYesterday(algorithm.wrappedEditedDate) {
-                Text("Yesterday")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-            } else {
-                Text(algorithm.wrappedEditedDate,
-                     format: Calendar.current.isDateInToday(algorithm.wrappedEditedDate)
-                     ? .dateTime.hour().minute()
-                     : .dateTime.day().month().year() 
-                )
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-            }
-        }
+            Text(viewModel.getAlgorithmEditedTimeForTextView(algorithm))
+        }.foregroundStyle(.primary)
     }
 }

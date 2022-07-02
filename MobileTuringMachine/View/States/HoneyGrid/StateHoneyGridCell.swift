@@ -55,7 +55,7 @@ struct StateHoneyGridCell_Previews: PreviewProvider {
         let algorithm = DataManager.shared.savedAlgorithms[0]
         return StatefulPreviewWrapper(false) {
             StateHoneyGridCell(isBeingEdited: $0, state: algorithm.wrappedStates[0])
-                .frame(width: (UIScreen.main.bounds.width - 50) / 3.2, height: 110)
+                .frame(width: 110, height: 110)
                 .shadow(radius: 5)
                 .environmentObject(AlgorithmViewModel())
         }
