@@ -59,7 +59,7 @@ struct SheetPresentationForSwiftUI<Content>: UIViewRepresentable where Content: 
 //            sheetController.prefersGrabberVisible = false
             sheetController.prefersEdgeAttachedInCompactHeight = true
             sheetController.prefersScrollingExpandsWhenScrolledToEdge = false
-            sheetController.largestUndimmedDetentIdentifier = .medium
+//            sheetController.largestUndimmedDetentIdentifier = .medium
         }
         
         // Set the coordinator (delegate)
