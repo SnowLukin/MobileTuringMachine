@@ -44,11 +44,11 @@ struct ListOfAlgorithms: View {
                 .searchable(text: $searchText)
                 AddAlgorithmView()
             }
-            .sheetWithDetents(isPresented: $showEditSheet, detents: [.medium(), .large()]) {
-                print("Sheet closed")
-            } content: {
-                AlgorithmEditView(showEditView: $showEditSheet, sorting: $sorting, sortingOrder: $sortingOrder)
-            }
+//            .sheetWithDetents(isPresented: $showEditSheet, detents: [.medium(), .large()]) {
+//                print("Sheet closed")
+//            } content: {
+//                AlgorithmEditView(showEditView: $showEditSheet, sorting: $sorting, sortingOrder: $sortingOrder)
+//            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     NavigationLink {
@@ -64,6 +64,17 @@ struct ListOfAlgorithms: View {
                         }
                     } label: {
                         Image(systemName: "ellipsis.circle")
+                    }
+                    .popover(isPresented: $showEditSheet) {
+                        AlgorithmEditView(showEditView: $showEditSheet, sorting: $sorting, sortingOrder: $sortingOrder)
+                            .frame(
+                                width: UIDevice.current.userInterfaceIdiom == .pad
+                                ? UIScreen.main.bounds.width / 2.5
+                                : nil,
+                                height: UIDevice.current.userInterfaceIdiom == .pad
+                                ? 320
+                                : nil
+                            )
                     }
                 }
             }
@@ -112,7 +123,7 @@ struct ListOfAlgorithms_Previews: PreviewProvider {
         viewModel.addAlgorithm()
         return ListOfAlgorithms()
             .environmentObject(AlgorithmViewModel())
-            .previewInterfaceOrientation(.portrait)
+            .previewInterfaceOrientation(.landscapeLeft)
     }
 }
 
