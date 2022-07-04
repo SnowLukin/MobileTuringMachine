@@ -12,12 +12,12 @@ struct AlgorithmEditView: View {
     @Binding var sorting: Sortings
     @Binding var sortingOrder: SortingOrder
     
-    let folderName: String = "Algorithms"
+    let folder: Folder
     
     var body: some View {
         VStack(spacing: 0) {
             HStack {
-                folder
+                folderTitle
                 Spacer()
                 dismissButton
             }
@@ -41,8 +41,11 @@ struct AlgorithmEditView: View {
 
 struct AlgorithmEditView_Previews: PreviewProvider {
     static var previews: some View {
-        StatefulPreviewWrapper(true) {
-            AlgorithmEditView(showEditView: $0, sorting: .constant(.dateEdited), sortingOrder: .constant(.up))
+        let viewModel = AlgorithmViewModel()
+        viewModel.addFolder(name: "Algorithms")
+        let folder = viewModel.dataManager.savedFolders[0]
+        return StatefulPreviewWrapper(true) {
+            AlgorithmEditView(showEditView: $0, sorting: .constant(.dateEdited), sortingOrder: .constant(.up), folder: folder)
         }
     }
 }
@@ -167,12 +170,12 @@ extension AlgorithmEditView {
             }.foregroundColor(.primary)
         }
     }
-    private var folder: some View {
+    private var folderTitle: some View {
         HStack {
             Image(systemName: "folder.fill")
                 .symbolRenderingMode(.multicolor)
                 .font(.largeTitle)
-            Text(folderName)
+            Text(folder.name)
                 .fontWeight(.semibold)
         }
     }

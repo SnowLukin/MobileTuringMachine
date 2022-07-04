@@ -44,11 +44,14 @@ struct ChooseStartStateView: View {
 struct ChooseStartStateView_Previews: PreviewProvider {
     static var previews: some View {
         let viewModel = AlgorithmViewModel()
-        for algorithm in viewModel.dataManager.savedAlgorithms {
+        viewModel.addFolder(name: "Algorithms")
+        let folder = viewModel.dataManager.savedFolders[0]
+        for algorithm in folder.wrappedAlgorithms {
             viewModel.deleteAlgorithm(algorithm)
         }
-        viewModel.addAlgorithm()
-        return ChooseStartStateView(algorithm: viewModel.dataManager.savedAlgorithms[0])
+        viewModel.addAlgorithm(to: folder)
+        let algorithm = folder.wrappedAlgorithms[0]
+        return ChooseStartStateView(algorithm: algorithm)
             .environmentObject(AlgorithmViewModel())
     }
 }

@@ -31,11 +31,14 @@ struct CombinationsListView: View {
 struct CombinationsListView_Previews: PreviewProvider {
     static var previews: some View {
         let viewModel = AlgorithmViewModel()
-        for algorithm in viewModel.dataManager.savedAlgorithms {
+        viewModel.addFolder(name: "Algorithms")
+        let folder = viewModel.dataManager.savedFolders[0]
+        for algorithm in folder.wrappedAlgorithms {
             viewModel.deleteAlgorithm(algorithm)
         }
-        viewModel.addAlgorithm()
-        let state = DataManager.shared.savedAlgorithms[0].wrappedStates[0]
+        viewModel.addAlgorithm(to: folder)
+        let algorithm = folder.wrappedAlgorithms[0]
+        let state = algorithm.wrappedStates[0]
         return CombinationsListView(state: state)
             .environmentObject(AlgorithmViewModel())
     }

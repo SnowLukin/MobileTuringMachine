@@ -12,7 +12,7 @@ struct ContentView: View {
     @EnvironmentObject private var viewModel: AlgorithmViewModel
     
     var body: some View {
-        ListOfAlgorithms()
+        FoldersView()
     }
 }
 
@@ -20,5 +20,6 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
             .preferredColorScheme(.dark)
+            .environmentObject(AlgorithmViewModel())
     }
 }

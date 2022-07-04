@@ -48,13 +48,16 @@ struct StateHoneyGridCell: View {
 struct StateHoneyGridCell_Previews: PreviewProvider {
     static var previews: some View {
         let viewModel = AlgorithmViewModel()
-        for algorithm in viewModel.dataManager.savedAlgorithms {
+        viewModel.addFolder(name: "Algorithms")
+        let folder = viewModel.dataManager.savedFolders[0]
+        for algorithm in folder.wrappedAlgorithms {
             viewModel.deleteAlgorithm(algorithm)
         }
-        viewModel.addAlgorithm()
-        let algorithm = DataManager.shared.savedAlgorithms[0]
+        viewModel.addAlgorithm(to: folder)
+        let algorithm = folder.wrappedAlgorithms[0]
+        let state = algorithm.wrappedStates[0]
         return StatefulPreviewWrapper(false) {
-            StateHoneyGridCell(isBeingEdited: $0, state: algorithm.wrappedStates[0])
+            StateHoneyGridCell(isBeingEdited: $0, state: state)
                 .frame(width: 110, height: 110)
                 .shadow(radius: 5)
                 .environmentObject(AlgorithmViewModel())

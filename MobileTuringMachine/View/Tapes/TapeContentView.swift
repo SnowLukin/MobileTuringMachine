@@ -44,13 +44,17 @@ struct TapeContentView_Previews: PreviewProvider {
     
     static var previews: some View {
         let viewModel = AlgorithmViewModel()
-        for algorithm in viewModel.dataManager.savedAlgorithms {
+        viewModel.addFolder(name: "Algorithms")
+        let folder = viewModel.dataManager.savedFolders[0]
+        for algorithm in folder.wrappedAlgorithms {
             viewModel.deleteAlgorithm(algorithm)
         }
-        viewModel.addAlgorithm()
-        let algorithm = DataManager.shared.savedAlgorithms[0]
+        viewModel.addAlgorithm(to: folder)
+        let algorithm = folder.wrappedAlgorithms[0]
+        let tape = algorithm.wrappedTapes[0]
+        let component = tape.wrappedComponents[0]
         
-        return TapeContentView(component: algorithm.wrappedTapes[0].wrappedComponents[0])
+        return TapeContentView(component: component)
             .environmentObject(AlgorithmViewModel())
     }
     

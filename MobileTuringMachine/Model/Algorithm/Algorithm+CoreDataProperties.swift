@@ -2,7 +2,7 @@
 //  Algorithm+CoreDataProperties.swift
 //  MobileTuringMachine
 //
-//  Created by Snow Lukin on 01.07.2022.
+//  Created by Snow Lukin on 03.07.2022.
 //
 //
 
@@ -17,65 +17,67 @@ extension Algorithm {
     }
 
     @NSManaged public var algorithmDescription: String
+    @NSManaged public var creationDate: Date?
+    @NSManaged public var editedDate: Date?
     @NSManaged public var id: UUID?
     @NSManaged public var name: String
-    @NSManaged public var editedDate: Date?
-    @NSManaged public var creationDate: Date?
     @NSManaged public var pinned: Bool
     @NSManaged public var states: NSSet
     @NSManaged public var tapes: NSSet
+    @NSManaged public var folder: Folder
 
     public var wrappedTapes: [Tape] {
-        let set = tapes as? Set<Tape> ?? []
-        return set.sorted {
-            $0.nameID < $1.nameID
+            let set = tapes as? Set<Tape> ?? []
+            return set.sorted {
+                $0.nameID < $1.nameID
+            }
         }
-    }
-    
-    public var wrappedStates: [StateQ] {
-        let set = states as? Set<StateQ> ?? []
-        return set.sorted {
-            $0.nameID < $1.nameID
+        
+        public var wrappedStates: [StateQ] {
+            let set = states as? Set<StateQ> ?? []
+            return set.sorted {
+                $0.nameID < $1.nameID
+            }
         }
-    }
-    
-    public var wrappedCreationDate: Date {
-        handleCreationDate()
-    }
-    
-    public var wrappedEditedDate: Date {
-        handleEditedDate()
-    }
-    
-    func initValues(id: UUID = UUID(), name: String = "New Algorithm",
-                    algorithmDescription: String = "", states: [StateQ],
-                    pinned: Bool = false, tapes: [Tape],
-                    creationDate: Date = Date.now) {
-        self.id = id
-        self.name = name
-        self.algorithmDescription = algorithmDescription
-        self.states = NSSet(array: states)
-        self.pinned = pinned
-        self.tapes = NSSet(array: tapes)
-        self.creationDate = creationDate
-        self.editedDate = creationDate
-    }
-    
-    private func handleCreationDate() -> Date {
-        if let creationDate = creationDate {
-            return creationDate
+        
+        public var wrappedCreationDate: Date {
+            handleCreationDate()
         }
-        creationDate = Date.now
-        return creationDate!
-    }
-    
-    private func handleEditedDate() -> Date {
-        if let editedDate = editedDate {
-            return editedDate
+        
+        public var wrappedEditedDate: Date {
+            handleEditedDate()
         }
-        editedDate = Date.now
-        return editedDate!
-    }
+        
+        func initValues(id: UUID = UUID(), name: String = "New Algorithm",
+                        algorithmDescription: String = "", folder: Folder, states: [StateQ],
+                        pinned: Bool = false, tapes: [Tape],
+                        creationDate: Date = Date.now) {
+            self.id = id
+            self.name = name
+            self.algorithmDescription = algorithmDescription
+            self.folder = folder
+            self.states = NSSet(array: states)
+            self.pinned = pinned
+            self.tapes = NSSet(array: tapes)
+            self.creationDate = creationDate
+            self.editedDate = creationDate
+        }
+        
+        private func handleCreationDate() -> Date {
+            if let creationDate = creationDate {
+                return creationDate
+            }
+            creationDate = Date.now
+            return creationDate!
+        }
+        
+        private func handleEditedDate() -> Date {
+            if let editedDate = editedDate {
+                return editedDate
+            }
+            editedDate = Date.now
+            return editedDate!
+        }
 }
 
 // MARK: Generated accessors for states

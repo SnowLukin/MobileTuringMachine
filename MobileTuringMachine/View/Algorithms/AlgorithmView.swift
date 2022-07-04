@@ -30,12 +30,11 @@ struct AlgorithmView: View {
                 }
                 TapesWorkView(algorithm: algorithm)
                     .shadow(radius: 1)
-            }.zIndex(1)
-            PlayStack(isChanged: $isChanged, algorithm: algorithm).zIndex(2)
+            }
+            PlayStack(isChanged: $isChanged, algorithm: algorithm)
         }
-        .navigationTitle("\(algorithm.name)")
+//        .navigationTitle("\(algorithm.name)")
         .toolbar {
-            
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
                     withAnimation {
@@ -87,10 +86,13 @@ struct AlgorithmView: View {
 struct AlgorithmView_Previews: PreviewProvider {
     static var previews: some View {
         let viewModel = AlgorithmViewModel()
-        for algorithm in viewModel.dataManager.savedAlgorithms {
+        viewModel.addFolder(name: "Algorithms")
+        let folder = viewModel.dataManager.savedFolders[0]
+        for algorithm in folder.wrappedAlgorithms {
             viewModel.deleteAlgorithm(algorithm)
         }
-        viewModel.addAlgorithm()
-        return AlgorithmView(algorithm: viewModel.dataManager.savedAlgorithms[0])
+        viewModel.addAlgorithm(to: folder)
+        let algorithm = folder.wrappedAlgorithms[0]
+        return AlgorithmView(algorithm: algorithm)
     }
 }

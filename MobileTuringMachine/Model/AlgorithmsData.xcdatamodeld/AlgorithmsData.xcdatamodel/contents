@@ -7,6 +7,7 @@
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="pinned" attributeType="Boolean" usesScalarValueType="YES"/>
+        <relationship name="folder" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="algorithms" inverseEntity="Folder"/>
         <relationship name="states" toMany="YES" deletionRule="Cascade" destinationEntity="StateQ" inverseName="algorithm" inverseEntity="StateQ"/>
         <relationship name="tapes" toMany="YES" deletionRule="Cascade" destinationEntity="Tape" inverseName="algorithm" inverseEntity="Tape"/>
     </entity>
@@ -16,6 +17,12 @@
         <attribute name="id" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="toCharacter" attributeType="String"/>
         <relationship name="option" maxCount="1" deletionRule="Nullify" destinationEntity="Option" inverseName="combinations" inverseEntity="Option"/>
+    </entity>
+    <entity name="Folder" representedClassName=".Folder" syncable="YES">
+        <attribute name="name" attributeType="String"/>
+        <relationship name="algorithms" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Algorithm" inverseName="folder" inverseEntity="Algorithm"/>
+        <relationship name="parentFolder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="subFolders" inverseEntity="Folder"/>
+        <relationship name="subFolders" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Folder" inverseName="parentFolder" inverseEntity="Folder"/>
     </entity>
     <entity name="Option" representedClassName="Option" syncable="YES">
         <attribute name="id" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
@@ -46,11 +53,12 @@
         <relationship name="tape" maxCount="1" deletionRule="Nullify" destinationEntity="Tape" inverseName="components" inverseEntity="Tape"/>
     </entity>
     <elements>
-        <element name="Algorithm" positionX="-498.464599609375" positionY="-27.953125" width="128" height="149"/>
+        <element name="Algorithm" positionX="-498.464599609375" positionY="-27.953125" width="128" height="164"/>
         <element name="Combination" positionX="60.3941650390625" positionY="204.6665954589844" width="128" height="104"/>
         <element name="Option" positionX="44.09930419921875" positionY="-134.5172119140625" width="128" height="89"/>
         <element name="StateQ" positionX="-191.9715576171875" positionY="-71.77162170410156" width="128" height="119"/>
         <element name="Tape" positionX="-447.8888549804688" positionY="261.563232421875" width="128" height="134"/>
         <element name="TapeComponent" positionX="-252.7579345703125" positionY="378.7717437744141" width="128" height="74"/>
+        <element name="Folder" positionX="-270" positionY="54" width="128" height="89"/>
     </elements>
 </model>

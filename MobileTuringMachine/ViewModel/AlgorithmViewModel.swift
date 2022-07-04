@@ -14,16 +14,29 @@ class AlgorithmViewModel: ObservableObject {
     required init() {
         if dataManager.isEmpty() {
             print("Setting default data...")
-            addAlgorithm()
+            addFolder(name: "Algorithms")
             dataManager.applyChanges()
         } else {
             print("Loading saved data...")
-            dataManager.getAlgorithms()
+            dataManager.getFolders()
         }
     }
 }
 
 extension AlgorithmViewModel {
+    func addFolder(name: String, parentFolder: Folder? = nil) {
+        let folder = Folder(context: dataManager.container.viewContext)
+        folder.initValues(name: name)
+        
+        objectWillChange.send()
+        dataManager.applyChanges()
+    }
+    
+    func deleteFolder(_ folder: Folder) {
+        dataManager.container.viewContext.delete(folder)
+        objectWillChange.send()
+        dataManager.applyChanges()
+    }
     
     func updateName(with newName: String, for algorithm: Algorithm) {
         if newName.isEmpty {
@@ -310,17 +323,19 @@ extension AlgorithmViewModel {
 // Working with data
 extension AlgorithmViewModel {
     
-    func addAlgorithm() {
+    func addAlgorithm(to folder: Folder) {
         let algorithm = Algorithm(context: dataManager.container.viewContext)
-        algorithm.initValues(states: [], tapes: [])
+        algorithm.initValues(folder: folder, states: [], tapes: [])
         addTape(algorithm: algorithm)
         addState(algorithm: algorithm)
         
+        folder.addToAlgorithms(algorithm)
         objectWillChange.send()
         dataManager.applyChanges()
     }
     
     func deleteAlgorithm(_ algorithm: Algorithm) {
+        algorithm.folder.removeFromAlgorithms(algorithm)
         dataManager.container.viewContext.delete(algorithm)
         objectWillChange.send()
         dataManager.applyChanges()
@@ -523,8 +538,8 @@ extension AlgorithmViewModel {
         objectWillChange.send()
     }
     
-    func getSearchResult(_ searchText: String, sorting: Sortings, sortingOrder: SortingOrder) -> [Algorithm] {
-        let filteredAlgorithms = getSearchedAlgorithms(searchText)
+    func getSearchResult(_ searchText: String, sorting: Sortings, sortingOrder: SortingOrder, folder: Folder) -> [Algorithm] {
+        let filteredAlgorithms = getSearchedAlgorithms(searchText, folder: folder)
         switch sorting {
         case .name:
             return filteredAlgorithms
@@ -544,10 +559,10 @@ extension AlgorithmViewModel {
         }
     }
     
-    private func getSearchedAlgorithms(_ searchText: String) -> [Algorithm] {
+    private func getSearchedAlgorithms(_ searchText: String, folder: Folder) -> [Algorithm] {
         searchText.isEmpty
-        ? DataManager.shared.savedAlgorithms
-        : DataManager.shared.savedAlgorithms.filter { $0.name.contains(searchText) }
+        ? folder.wrappedAlgorithms
+        : folder.wrappedAlgorithms.filter { $0.name.contains(searchText) }
     }
     
     func getAlgorithmEditedTimeForTextView(_ algorithm: Algorithm) -> String {

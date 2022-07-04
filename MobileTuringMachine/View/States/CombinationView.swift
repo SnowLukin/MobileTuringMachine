@@ -40,11 +40,15 @@ struct CombinationView: View {
 struct CombinationView_Previews: PreviewProvider {
     static var previews: some View {
         let viewModel = AlgorithmViewModel()
-        for algorithm in viewModel.dataManager.savedAlgorithms {
+        viewModel.addFolder(name: "Algorithms")
+        let folder = viewModel.dataManager.savedFolders[0]
+        for algorithm in folder.wrappedAlgorithms {
             viewModel.deleteAlgorithm(algorithm)
         }
-        viewModel.addAlgorithm()
-        let option = DataManager.shared.savedAlgorithms[0].wrappedStates[0].wrappedOptions[0]
+        viewModel.addAlgorithm(to: folder)
+        let algorithm = folder.wrappedAlgorithms[0]
+        let state = algorithm.wrappedStates[0]
+        let option = state.wrappedOptions[0]
         return CombinationView(option: option)
             .environmentObject(AlgorithmViewModel())
     }

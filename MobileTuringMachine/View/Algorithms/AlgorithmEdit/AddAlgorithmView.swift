@@ -10,17 +10,19 @@ import SwiftUI
 struct AddAlgorithmView: View {
     @EnvironmentObject private var viewModel: AlgorithmViewModel
     
+    let folder: Folder
+    
     var body: some View {
         VStack {
             Spacer()
             ZStack(alignment: .center) {
-                Text("\(viewModel.dataManager.savedAlgorithms.count) Algorithms")
+                Text("\(folder.wrappedAlgorithms.count) Algorithms")
                     .font(.footnote)
                 HStack {
                     Spacer()
                     Button {
                         withAnimation {
-                            viewModel.addAlgorithm()
+                            viewModel.addAlgorithm(to: folder)
                         }
                     } label: {
                         Image(systemName: "doc.badge.plus")
@@ -41,11 +43,9 @@ struct AddAlgorithmView: View {
 struct AddAlgorithmView_Previews: PreviewProvider {
     static var previews: some View {
         let viewModel = AlgorithmViewModel()
-        for algorithm in viewModel.dataManager.savedAlgorithms {
-            viewModel.deleteAlgorithm(algorithm)
-        }
-        viewModel.addAlgorithm()
-        return AddAlgorithmView()
+        viewModel.addFolder(name: "Algorithms")
+        let folder = viewModel.dataManager.savedFolders[0]
+        return AddAlgorithmView(folder: folder)
             .environmentObject(AlgorithmViewModel())
     }
 }

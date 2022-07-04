@@ -14,9 +14,9 @@ class DataManager {
     
     let container: NSPersistentContainer
     private let containerName: String = "AlgorithmsData"
-    private let entityName: String = "Algorithm"
+    private let entityName: String = "Folder"
     
-    @Published var savedAlgorithms: [Algorithm] = []
+    @Published var savedFolders: [Folder] = []
     
     private init() {
         container = NSPersistentContainer(name: containerName)
@@ -29,7 +29,7 @@ class DataManager {
     
     func isEmpty() -> Bool {
         do {
-            let request = NSFetchRequest<Algorithm>(entityName: entityName)
+            let request = NSFetchRequest<Folder>(entityName: entityName)
             let count = try container.viewContext.count(for: request)
             if count == 0 {
                 return true
@@ -44,14 +44,14 @@ class DataManager {
     
     func applyChanges() {
         save()
-        getAlgorithms()
+        getFolders()
     }
     
-    func getAlgorithms() {
-        let request = NSFetchRequest<Algorithm>(entityName: entityName)
+    func getFolders() {
+        let request = NSFetchRequest<Folder>(entityName: entityName)
 //        request.returnsObjectsAsFaults = false
         do {
-            savedAlgorithms = try container.viewContext.fetch(request)
+            savedFolders = try container.viewContext.fetch(request)
         } catch {
             print("Error fetching Favorities Entities. \(error)")
         }

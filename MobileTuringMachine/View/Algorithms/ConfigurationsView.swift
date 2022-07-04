@@ -41,12 +41,15 @@ struct ConfigurationsView: View {
 struct ConfigurationsView_Previews: PreviewProvider {
     static var previews: some View {
         let viewModel = AlgorithmViewModel()
-        for algorithm in viewModel.dataManager.savedAlgorithms {
+        viewModel.addFolder(name: "Algorithms")
+        let folder = viewModel.dataManager.savedFolders[0]
+        for algorithm in folder.wrappedAlgorithms {
             viewModel.deleteAlgorithm(algorithm)
         }
-        viewModel.addAlgorithm()
+        viewModel.addAlgorithm(to: folder)
+        let algorithm = folder.wrappedAlgorithms[0]
         return StatefulPreviewWrapper(true) {
-            ConfigurationsView(showSettings: $0, algorithm: viewModel.dataManager.savedAlgorithms[0])
+            ConfigurationsView(showSettings: $0, algorithm: algorithm)
                 .environmentObject(AlgorithmViewModel())
         }
     }
