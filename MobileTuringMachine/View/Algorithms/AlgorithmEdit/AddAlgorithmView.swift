@@ -33,7 +33,7 @@ struct AddAlgorithmView: View {
                 }
             }
             .frame(minWidth: 0, maxWidth: .infinity)
-            .frame(height: 40)
+            .frame(height: 60)
             .overlay(Divider(), alignment: .top)
             .background(Color.secondaryBackground)
         }

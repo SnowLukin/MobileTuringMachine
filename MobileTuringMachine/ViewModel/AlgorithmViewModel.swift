@@ -24,6 +24,24 @@ class AlgorithmViewModel: ObservableObject {
 }
 
 extension AlgorithmViewModel {
+    
+    func handleAddingNewFolder(name newFolderName: String) -> Bool {
+        let trimmedNewFolderNameResult = newFolderName.trimmingCharacters(in: .whitespaces)
+        if trimmedNewFolderNameResult.isEmpty {
+            return true
+        }
+        
+        for folder in dataManager.savedFolders {
+            let trimmedName = folder.name.trimmingCharacters(in: .whitespaces)
+            if trimmedName == trimmedNewFolderNameResult {
+                return true
+            }
+            continue
+        }
+        addFolder(name: newFolderName)
+        return false
+    }
+    
     func addFolder(name: String, parentFolder: Folder? = nil) {
         let folder = Folder(context: dataManager.container.viewContext)
         folder.initValues(name: name)
@@ -336,9 +354,10 @@ extension AlgorithmViewModel {
     
     func deleteAlgorithm(_ algorithm: Algorithm) {
         algorithm.folder.removeFromAlgorithms(algorithm)
-        dataManager.container.viewContext.delete(algorithm)
         objectWillChange.send()
+        dataManager.container.viewContext.delete(algorithm)
         dataManager.applyChanges()
+        objectWillChange.send()
     }
     
     func addTape(algorithm: Algorithm) {
@@ -391,7 +410,7 @@ extension AlgorithmViewModel {
     }
     
     func addComponent(tape: Tape) {
-        for index in -10...10 {
+        for index in -100...100 {
             let component = TapeComponent(context: dataManager.container.viewContext)
             component.initValues(id: index, tape: tape)
             tape.addToComponents(component)

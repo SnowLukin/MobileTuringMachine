@@ -98,4 +98,43 @@ extension View {
                         content: content)
                 )
             }
+    
+    // MARK: - Alert with textfield
+    func alertWithTextField(title: String? = nil,
+                            message: String? = nil,
+                            hintText: String? = nil,
+                            primaryTitle: String? = nil,
+                            secondaryTitle: String? = nil,
+                            primaryAction: @escaping (String) -> (),
+                            secondaryAction: @escaping () -> ()) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addTextField { field in
+            field.placeholder = hintText
+        }
+        alert.addAction(
+            .init(title: secondaryTitle, style: .cancel) { _ in
+                secondaryAction()
+            }
+        )
+        
+        alert.addAction(
+            .init(title: primaryTitle, style: .default) { _ in
+                if let text = alert.textFields?.first?.text {
+                    primaryAction(text)
+                } else {
+                    primaryAction("")
+                }
+            }
+        )
+        
+        // Presenting alert
+        rootController().present(alert, animated: true)
+    }
+    
+    // MARK: Root View Controller
+    func rootController() -> UIViewController {
+        guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return .init() }
+        guard let root = screen.windows.first?.rootViewController else { return .init() }
+        return root
+    }
 }

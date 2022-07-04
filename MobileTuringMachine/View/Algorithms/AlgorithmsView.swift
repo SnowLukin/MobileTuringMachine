@@ -1,5 +1,5 @@
 //
-//  ListOfAlgorithms.swift
+//  AlgorithmsView.swift
 //  MobileTuringMachine
 //
 //  Created by Snow Lukin on 22.06.2022.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ListOfAlgorithms: View {
+struct AlgorithmsView: View {
     
     @EnvironmentObject private var viewModel: AlgorithmViewModel
     @State private var searchText = ""
@@ -16,6 +16,7 @@ struct ListOfAlgorithms: View {
 //    @State private var openFile = false
     @State private var sorting: Sortings = .name
     @State private var sortingOrder: SortingOrder = .up
+    @State private var selectedAlgorithm: Algorithm?
     
     let folder: Folder
     
@@ -25,32 +26,15 @@ struct ListOfAlgorithms: View {
     
     var body: some View {
         ZStack {
-            List(searchResults) { algorithm in
-                NavigationLink {
-                    AlgorithmView(algorithm: algorithm)
-                        .navigationTitle("\(algorithm.name)")
-                } label: {
-                    customCell(algorithm)
-                }
-                .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                    Button(role: .destructive) {
-                        withAnimation {
-                            viewModel.deleteAlgorithm(algorithm)
-                        }
-                    } label: {
-                        Image(systemName: "trash.fill")
-                    }
-                }
+            if folder.wrappedAlgorithms.isEmpty {
+                Text("No Algorithms")
+                    .foregroundColor(.secondary)
+                    .font(.title2)
+            } else {
+                algorithmsList
             }
-            .listStyle(InsetGroupedListStyle())
-            .searchable(text: $searchText)
             AddAlgorithmView(folder: folder)
         }
-        //            .sheetWithDetents(isPresented: $showEditSheet, detents: [.medium(), .large()]) {
-        //                print("Sheet closed")
-        //            } content: {
-        //                AlgorithmEditView(showEditView: $showEditSheet, sorting: $sorting, sortingOrder: $sortingOrder)
-        //            }
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 NavigationLink {
@@ -115,7 +99,7 @@ struct ListOfAlgorithms: View {
     }
 }
 
-struct ListOfAlgorithms_Previews: PreviewProvider {
+struct AlgorithmsView_Previews: PreviewProvider {
     static var previews: some View {
         let viewModel = AlgorithmViewModel()
         viewModel.addFolder(name: "Algorithms")
@@ -124,13 +108,36 @@ struct ListOfAlgorithms_Previews: PreviewProvider {
             viewModel.deleteAlgorithm(algorithm)
         }
         viewModel.addAlgorithm(to: folder)
-        return ListOfAlgorithms(folder: folder)
+        return AlgorithmsView(folder: folder)
             .environmentObject(AlgorithmViewModel())
             .previewInterfaceOrientation(.landscapeLeft)
     }
 }
 
-extension ListOfAlgorithms {
+extension AlgorithmsView {
+    
+    private var algorithmsList: some View {
+        List(searchResults) { algorithm in
+            NavigationLink(tag: algorithm, selection: $selectedAlgorithm) {
+                AlgorithmView(algorithm: algorithm)
+                    .navigationTitle("\(algorithm.name)")
+            } label: {
+                customCell(algorithm)
+            }
+            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                Button(role: .destructive) {
+                    withAnimation {
+                        viewModel.deleteAlgorithm(algorithm)
+                    }
+                } label: {
+                    Image(systemName: "trash.fill")
+                }
+            }
+        }
+        .listStyle(InsetGroupedListStyle())
+        .searchable(text: $searchText)
+    }
+    
     private func customCell(_ algorithm: Algorithm) -> some View {
         VStack(alignment: .leading) {
             Text(algorithm.name)
