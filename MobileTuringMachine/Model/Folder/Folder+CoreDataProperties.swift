@@ -35,7 +35,7 @@ extension Folder {
         if let algorithms = algorithms {
             let entities = algorithms as? Set<Algorithm> ?? []
             return entities.sorted(by: {
-                $0.name < $1.name
+                $0.wrappedEditedDate > $1.wrappedEditedDate
             })
         }
         return []

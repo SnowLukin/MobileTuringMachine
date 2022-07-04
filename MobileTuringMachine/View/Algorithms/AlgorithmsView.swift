@@ -14,58 +14,43 @@ struct AlgorithmsView: View {
     @State private var showInfo = false
     @State private var showEditSheet = false
 //    @State private var openFile = false
-    @State private var sorting: Sortings = .name
+    @State private var sorting: Sortings = .dateEdited
     @State private var sortingOrder: SortingOrder = .up
     @State private var selectedAlgorithm: Algorithm?
+    @State private var listSelection: Algorithm?
+    @Environment(\.editMode) private var editMode
     
-    let folder: Folder
+    private var defaultAlgorithm: Algorithm? {
+        let savedFolders = viewModel.dataManager.savedFolders
+        let folder = savedFolders.first
+        return folder?.wrappedAlgorithms.first
+    }
     
     var searchResults: [Algorithm] {
-        viewModel.getSearchResult(searchText, sorting: sorting, sortingOrder: sortingOrder, folder: folder)
+        if let folder = viewModel.selectedFolder {
+            return viewModel.getSearchResult(searchText, sorting: sorting, sortingOrder: sortingOrder, folder: folder)
+        } else {
+            return []
+        }
     }
     
     var body: some View {
-        ZStack {
-            if folder.wrappedAlgorithms.isEmpty {
-                Text("No Algorithms")
-                    .foregroundColor(.secondary)
-                    .font(.title2)
-            } else {
-                algorithmsList
-            }
-            AddAlgorithmView(folder: folder)
-        }
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                NavigationLink {
-                    UserHelpView()
-                } label: {
-                    Image(systemName: "questionmark.circle")
-                }
-            }
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button {
-                    withAnimation {
-                        showEditSheet.toggle()
+        if let folder = viewModel.selectedFolder {
+            wrappedAlgorithmsView(folder)
+                .navigationTitle(folder.name)
+                // getting rid of .transient editMode
+                // after deleting all elements in list
+                .onChange(of: searchResults) { newValue in
+                    if (editMode?.wrappedValue == .active || editMode?.wrappedValue == .transient) && newValue.isEmpty {
+                        editMode?.wrappedValue = .inactive
                     }
-                } label: {
-                    Image(systemName: "ellipsis.circle")
                 }
-                .popover(isPresented: $showEditSheet) {
-                    AlgorithmEditView(showEditView: $showEditSheet, sorting: $sorting, sortingOrder: $sortingOrder, folder: folder)
-                        .frame(
-                            width: UIDevice.current.userInterfaceIdiom == .pad
-                            ? UIScreen.main.bounds.width / 2.5
-                            : nil,
-                            height: UIDevice.current.userInterfaceIdiom == .pad
-                            ? 320
-                            : nil
-                        )
-                }
-            }
+        } else {
+            Text("No folder selected")
+                .font(.title2)
+                .foregroundColor(.secondary)
         }
         
-        //        .navigationViewStyle(.stack)
         //        .fileImporter(isPresented: $openFile, allowedContentTypes: [.mtm], allowsMultipleSelection: false) { result in
         //            do {
         //                guard let selectedFileURL: URL = try result.get().first else {
@@ -108,7 +93,7 @@ struct AlgorithmsView_Previews: PreviewProvider {
             viewModel.deleteAlgorithm(algorithm)
         }
         viewModel.addAlgorithm(to: folder)
-        return AlgorithmsView(folder: folder)
+        return AlgorithmsView()
             .environmentObject(AlgorithmViewModel())
             .previewInterfaceOrientation(.landscapeLeft)
     }
@@ -116,17 +101,69 @@ struct AlgorithmsView_Previews: PreviewProvider {
 
 extension AlgorithmsView {
     
+    private var userHelpButton: some View {
+        NavigationLink {
+            UserHelpView()
+        } label: {
+            Image(systemName: "questionmark.circle")
+        }
+    }
+    
+    private func wrappedAlgorithmsView(_ folder: Folder) -> some View {
+        ZStack {
+            if folder.wrappedAlgorithms.isEmpty {
+                Text("No Algorithms")
+                    .foregroundColor(.secondary)
+                    .font(.title2)
+            } else {
+                algorithmsList
+            }
+            AddAlgorithmView(folder: folder)
+        }
+        .toolbar {
+            ToolbarItem {
+                EditButton()
+            }
+            ToolbarItem(placement: .navigationBarLeading) {
+                userHelpButton
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    withAnimation {
+                        showEditSheet.toggle()
+                    }
+                } label: {
+                    Image(systemName: "ellipsis.circle")
+                }
+                .popover(isPresented: $showEditSheet) {
+                    AlgorithmEditView(showEditView: $showEditSheet, sorting: $sorting, sortingOrder: $sortingOrder, folder: folder)
+                        .frame(
+                            width: UIDevice.current.userInterfaceIdiom == .pad
+                            ? UIScreen.main.bounds.width / 2.5
+                            : nil,
+                            height: UIDevice.current.userInterfaceIdiom == .pad
+                            ? 320
+                            : nil
+                        )
+                }
+            }
+        }
+    }
+    
     private var algorithmsList: some View {
-        List(searchResults) { algorithm in
-            NavigationLink(tag: algorithm, selection: $selectedAlgorithm) {
-                AlgorithmView(algorithm: algorithm)
-                    .navigationTitle("\(algorithm.name)")
-            } label: {
+        List(searchResults, selection: $listSelection) { algorithm in
+            NavigationLink(destination: AlgorithmView(), tag: algorithm, selection: $viewModel.selectedAlgorithm) {
                 customCell(algorithm)
+            }
+            .onTapGesture {
+                withAnimation {
+                    viewModel.selectedAlgorithm = algorithm
+                }
             }
             .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                 Button(role: .destructive) {
                     withAnimation {
+                        viewModel.selectedAlgorithm = nil
                         viewModel.deleteAlgorithm(algorithm)
                     }
                 } label: {
@@ -134,7 +171,7 @@ extension AlgorithmsView {
                 }
             }
         }
-        .listStyle(InsetGroupedListStyle())
+        .listStyle(.insetGrouped)
         .searchable(text: $searchText)
     }
     
@@ -142,7 +179,10 @@ extension AlgorithmsView {
         VStack(alignment: .leading) {
             Text(algorithm.name)
                 .font(.headline)
+                .foregroundColor(.primary)
             Text(viewModel.getAlgorithmEditedTimeForTextView(algorithm))
-        }.foregroundStyle(.primary)
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+        }
     }
 }

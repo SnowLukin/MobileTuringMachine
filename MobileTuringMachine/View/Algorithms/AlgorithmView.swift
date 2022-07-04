@@ -16,9 +16,84 @@ struct AlgorithmView: View {
     @State private var showInfo = false
     @State private var showExport = false
     
-    let algorithm: Algorithm
-    
     var body: some View {
+        if let algorithm = viewModel.selectedAlgorithm {
+            wrappedAlgorithmView(algorithm)
+                .navigationTitle("\(algorithm.name)")
+        } else {
+            initualView(viewModel.selectedFolder)
+        }
+//        .fileExporter(
+//            isPresented: $showExport,
+//            document: DocumentManager(algorithm: viewModel.getAlgorithm(algorithm)),
+//            contentType: .mtm
+//        ) { result in
+//            switch result {
+//            case .success:
+//                print("File successfully exported")
+//            case .failure:
+//                print("Error occupied. Failed exporting the file.")
+//            }
+//        }
+    }
+}
+
+struct AlgorithmView_Previews: PreviewProvider {
+    static var previews: some View {
+        let viewModel = AlgorithmViewModel()
+        viewModel.addFolder(name: "Algorithms")
+        let folder = viewModel.dataManager.savedFolders[0]
+        for algorithm in folder.wrappedAlgorithms {
+            viewModel.deleteAlgorithm(algorithm)
+        }
+        viewModel.addAlgorithm(to: folder)
+        return AlgorithmView()
+    }
+}
+
+extension AlgorithmView {
+    
+    private func initualView(_ folder: Folder?) -> some View {
+        VStack {
+            Text("No algorithm selected")
+                .font(.title2)
+                .foregroundColor(.secondary)
+            HStack {
+                Text("Create a new algorithm: ")
+                    .foregroundColor(.secondary)
+                    .font(.title3)
+                Button {
+                    if let folder = folder {
+                        withAnimation {
+                            viewModel.addAlgorithm(to: folder)
+                        }
+                    }
+                } label: {
+                    Image(systemName: "doc.badge.plus")
+                        .foregroundColor(.blue)
+                        .font(.title2)
+                }
+            }
+        }
+        // Toolbar for empty algorithm view
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                if let folder = folder {
+                    Button {
+                        withAnimation {
+                            viewModel.addAlgorithm(to: folder)
+                        }
+                    } label: {
+                        Image(systemName: "doc.badge.plus")
+                    }
+                } else {
+                    EmptyView()
+                }
+            }
+        }
+    }
+    
+    private func wrappedAlgorithmView(_ algorithm: Algorithm) -> some View {
         ZStack {
             VStack {
                 ConfigurationsView(showSettings: $showSettings, algorithm: algorithm)
@@ -33,7 +108,6 @@ struct AlgorithmView: View {
             }
             PlayStack(isChanged: $isChanged, algorithm: algorithm)
         }
-//        .navigationTitle("\(algorithm.name)")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
@@ -68,31 +142,5 @@ struct AlgorithmView: View {
                 }
             }
         }
-//        .fileExporter(
-//            isPresented: $showExport,
-//            document: DocumentManager(algorithm: viewModel.getAlgorithm(algorithm)),
-//            contentType: .mtm
-//        ) { result in
-//            switch result {
-//            case .success:
-//                print("File successfully exported")
-//            case .failure:
-//                print("Error occupied. Failed exporting the file.")
-//            }
-//        }
-    }
-}
-
-struct AlgorithmView_Previews: PreviewProvider {
-    static var previews: some View {
-        let viewModel = AlgorithmViewModel()
-        viewModel.addFolder(name: "Algorithms")
-        let folder = viewModel.dataManager.savedFolders[0]
-        for algorithm in folder.wrappedAlgorithms {
-            viewModel.deleteAlgorithm(algorithm)
-        }
-        viewModel.addAlgorithm(to: folder)
-        let algorithm = folder.wrappedAlgorithms[0]
-        return AlgorithmView(algorithm: algorithm)
     }
 }

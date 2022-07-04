@@ -9,18 +9,12 @@ import SwiftUI
 
 struct FoldersView: View {
     @EnvironmentObject private var viewModel: AlgorithmViewModel
-    @State private var selectedFolder: Folder? = nil
     @State private var showNameTakenAlert: Bool = false
+    @State private var selectedFolder: Folder?
     
     private var defaultFolder: Folder? {
         let savedFolders = viewModel.dataManager.savedFolders
         return savedFolders.first
-    }
-    private var defaultAlgorithm: Algorithm? {
-        let savedFolders = viewModel.dataManager.savedFolders
-//        print(defaultFolder?.wrappedAlgorithms.first?.name ?? "Nil")
-        let folder = savedFolders.first
-        return folder?.wrappedAlgorithms.first
     }
     
     var body: some View {
@@ -40,23 +34,12 @@ struct FoldersView: View {
                 }
             }
             .navigationTitle("Folders")
-            // MARK: default folder section view
-            if let defaultFolder = defaultFolder {
-                AlgorithmsView(folder: defaultFolder)
-                    .navigationTitle(defaultFolder.name)
-                    .onAppear {
-                        selectedFolder = defaultFolder
-                    }
-            } else {
-                Text("No folder selected")
+            .onAppear {
+                viewModel.selectedFolder = defaultFolder
             }
-            // MARK: default algorithm section view
-            if let defaultAlgorithm = defaultAlgorithm {
-                AlgorithmView(algorithm: defaultAlgorithm)
-                    .navigationTitle(defaultAlgorithm.name)
-            } else {
-                emptyDefaultAlgorithm
-            }
+            
+            AlgorithmsView()
+            AlgorithmView()
         }
     }
 }
@@ -77,11 +60,11 @@ struct FoldersView_Previews: PreviewProvider {
 }
 
 extension FoldersView {
+    
     private var folderList: some View {
         List(viewModel.dataManager.savedFolders) { folder in
-            NavigationLink(tag: folder, selection: $selectedFolder) {
-                AlgorithmsView(folder: folder)
-                    .navigationTitle(folder.name)
+            NavigationLink(tag: folder, selection: $viewModel.selectedFolder) {
+                AlgorithmsView()
             } label: {
                 Label {
                     Text(folder.name)
@@ -90,7 +73,13 @@ extension FoldersView {
                         .foregroundColor(.orange)
                 }
             }
-        }.listStyle(.sidebar)
+            .onTapGesture {
+                withAnimation {
+                    viewModel.selectedFolder = folder
+                }
+            }
+        }
+        .listStyle(.sidebar)
     }
     
     private var addFolderButton: some View {

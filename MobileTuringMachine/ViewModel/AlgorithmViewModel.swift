@@ -11,6 +11,9 @@ class AlgorithmViewModel: ObservableObject {
     
     let dataManager = DataManager.shared
     
+    @Published var selectedFolder: Folder?
+    @Published var selectedAlgorithm: Algorithm?
+    
     required init() {
         if dataManager.isEmpty() {
             print("Setting default data...")
@@ -354,7 +357,6 @@ extension AlgorithmViewModel {
     
     func deleteAlgorithm(_ algorithm: Algorithm) {
         algorithm.folder.removeFromAlgorithms(algorithm)
-        objectWillChange.send()
         dataManager.container.viewContext.delete(algorithm)
         dataManager.applyChanges()
         objectWillChange.send()
@@ -562,16 +564,21 @@ extension AlgorithmViewModel {
         switch sorting {
         case .name:
             return filteredAlgorithms
-                .sorted(by: { sortingOrder == .up ? $0.name < $1.name : $0.name > $1.name })
+                .sorted { lhs, rhs in
+                    if lhs.name == rhs.name {
+                        return sortingOrder == .down ? lhs.wrappedEditedDate < rhs.wrappedEditedDate : lhs.wrappedEditedDate > rhs.wrappedEditedDate
+                    }
+                    return sortingOrder == .down ? lhs.name < rhs.name : lhs.name > rhs.name
+                }
         case .dateCreated:
             return filteredAlgorithms.sorted(by: {
-                sortingOrder == .up
+                sortingOrder == .down
                 ? $0.wrappedCreationDate < $1.wrappedCreationDate
                 : $0.wrappedCreationDate > $1.wrappedCreationDate
             })
         case .dateEdited:
             return filteredAlgorithms.sorted(by: {
-                sortingOrder == .up
+                sortingOrder == .down
                 ? $0.wrappedEditedDate < $1.wrappedEditedDate
                 : $0.wrappedEditedDate > $1.wrappedEditedDate
             })
