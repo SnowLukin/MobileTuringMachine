@@ -10,15 +10,16 @@ import SwiftUI
 struct AlgorithmsView: View {
     
     @EnvironmentObject private var viewModel: AlgorithmViewModel
+    @Environment(\.colorScheme) private var colorScheme
     @State private var searchText = ""
     @State private var showInfo = false
     @State private var showEditSheet = false
 //    @State private var openFile = false
     @State private var sorting: Sortings = .dateEdited
     @State private var sortingOrder: SortingOrder = .up
-    @State private var selectedAlgorithm: Algorithm?
-    @State private var listSelection: Algorithm?
-    @Environment(\.editMode) private var editMode
+    @State private var listSelection: Set<Algorithm>?
+//    @Environment(\.editMode) private var editMode
+    @State private var editMode: EditMode = .inactive
     
     private var defaultAlgorithm: Algorithm? {
         let savedFolders = viewModel.dataManager.savedFolders
@@ -41,10 +42,14 @@ struct AlgorithmsView: View {
                 // getting rid of .transient editMode
                 // after deleting all elements in list
                 .onChange(of: searchResults) { newValue in
-                    if (editMode?.wrappedValue == .active || editMode?.wrappedValue == .transient) && newValue.isEmpty {
-                        editMode?.wrappedValue = .inactive
+                    if (editMode == .active || editMode == .transient) && newValue.isEmpty {
+                        editMode = .inactive
                     }
                 }
+                .onChange(of: listSelection, perform: { newValue in
+                    print(newValue ?? "Nothing")
+                })
+                .environment(\.editMode, $editMode)
         } else {
             Text("No folder selected")
                 .font(.title2)
@@ -118,33 +123,40 @@ extension AlgorithmsView {
             } else {
                 algorithmsList
             }
-            AddAlgorithmView(folder: folder)
+            AddAlgorithmView(editMode: $editMode, listSelection: $listSelection, folder: folder)
         }
         .toolbar {
-            ToolbarItem {
-                EditButton()
-            }
             ToolbarItem(placement: .navigationBarLeading) {
                 userHelpButton
             }
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button {
-                    withAnimation {
-                        showEditSheet.toggle()
+                if editMode == .active || editMode == .transient {
+                    Button {
+                        withAnimation {
+                            editMode = .inactive
+                        }
+                    } label: {
+                        Text("Done")
                     }
-                } label: {
-                    Image(systemName: "ellipsis.circle")
-                }
-                .popover(isPresented: $showEditSheet) {
-                    AlgorithmEditView(showEditView: $showEditSheet, sorting: $sorting, sortingOrder: $sortingOrder, folder: folder)
-                        .frame(
-                            width: UIDevice.current.userInterfaceIdiom == .pad
-                            ? UIScreen.main.bounds.width / 2.5
-                            : nil,
-                            height: UIDevice.current.userInterfaceIdiom == .pad
-                            ? 320
-                            : nil
-                        )
+                } else {
+                    Button {
+                        withAnimation {
+                            showEditSheet.toggle()
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis.circle")
+                    }
+                    .popover(isPresented: $showEditSheet) {
+                        AlgorithmEditView(showEditView: $showEditSheet, sorting: $sorting, sortingOrder: $sortingOrder, editMode: $editMode, folder: folder)
+                            .frame(
+                                width: UIDevice.current.userInterfaceIdiom == .pad
+                                ? UIScreen.main.bounds.width / 2.5
+                                : nil,
+                                height: UIDevice.current.userInterfaceIdiom == .pad
+                                ? 320
+                                : nil
+                            )
+                    }
                 }
             }
         }
@@ -152,23 +164,69 @@ extension AlgorithmsView {
     
     private var algorithmsList: some View {
         List(searchResults, selection: $listSelection) { algorithm in
-            NavigationLink(destination: AlgorithmView(), tag: algorithm, selection: $viewModel.selectedAlgorithm) {
-                customCell(algorithm)
-            }
-            .onTapGesture {
+            Button {
                 withAnimation {
                     viewModel.selectedAlgorithm = algorithm
+                }
+            } label: {
+                customCell(algorithm)
+            }
+            .listRowBackground(
+                viewModel.selectedAlgorithm == algorithm
+                ? Color.blue.opacity(0.5)
+                : colorScheme == .dark
+                    ? Color.secondaryBackground
+                    : Color.background
+            )
+            .contextMenu {
+                // Pin
+                Button {
+                    
+                } label: {
+                    Label("Pin Algorithm", systemImage: "pin")
+                }
+                // Send a copy
+                Button {
+                    
+                } label: {
+                    Label("Send a copy", systemImage: "square.and.arrow.up")
+                }
+                // Move
+                Button {
+                    
+                } label: {
+                    Label("Move", systemImage: "folder")
+                }
+                // Delete
+                Button(role: .destructive) {
+                    withAnimation {
+                        if algorithm == viewModel.selectedAlgorithm {
+                            viewModel.selectedAlgorithm = nil
+                        }
+                        viewModel.deleteAlgorithm(algorithm)
+                    }
+                } label: {
+                    Label("Delete", systemImage: "trash")
                 }
             }
             .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                 Button(role: .destructive) {
                     withAnimation {
-                        viewModel.selectedAlgorithm = nil
+                        if algorithm == viewModel.selectedAlgorithm {
+                            viewModel.selectedAlgorithm = nil
+                        }
                         viewModel.deleteAlgorithm(algorithm)
                     }
                 } label: {
                     Image(systemName: "trash.fill")
                 }
+            }
+            .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                Button(role: .cancel) {
+                    
+                } label: {
+                    Image(systemName: "pin.fill")
+                }.tint(.orange)
             }
         }
         .listStyle(.insetGrouped)

@@ -9,6 +9,11 @@ import SwiftUI
 
 struct AddAlgorithmView: View {
     @EnvironmentObject private var viewModel: AlgorithmViewModel
+    @Environment(\.colorScheme) private var colorScheme
+    @Binding var editMode: EditMode
+    @Binding var listSelection: Set<Algorithm>?
+    @State private var showPopover: Bool = false
+    @State private var showCustomSheet: Bool = false
     
     let folder: Folder
     
@@ -16,20 +21,26 @@ struct AddAlgorithmView: View {
         VStack {
             Spacer()
             ZStack(alignment: .center) {
-                Text("\(folder.wrappedAlgorithms.count) Algorithms")
-                    .font(.footnote)
-                HStack {
-                    Spacer()
-                    Button {
-                        withAnimation {
-                            viewModel.addAlgorithm(to: folder)
-                        }
-                    } label: {
-                        Image(systemName: "doc.badge.plus")
-                            .font(.title2)
-                            .foregroundColor(.blue)
-                            .padding(.trailing)
+                if editMode == .active || editMode == .transient {
+                    HStack {
+                        Button {
+                            
+                        } label: {
+                            Text("Move")
+                        }.padding(.horizontal)
+                        
+                        Spacer()
+                        
+                        deleteButton
+                        
                     }
+                    if showCustomSheet {
+                        iphoneDeleteAllCustomView
+                    }
+                } else {
+                    Text("\(folder.wrappedAlgorithms.count) Algorithms")
+                        .font(.footnote)
+                    addAlgorithmButton
                 }
             }
             .frame(minWidth: 0, maxWidth: .infinity)
@@ -45,7 +56,112 @@ struct AddAlgorithmView_Previews: PreviewProvider {
         let viewModel = AlgorithmViewModel()
         viewModel.addFolder(name: "Algorithms")
         let folder = viewModel.dataManager.savedFolders[0]
-        return AddAlgorithmView(folder: folder)
+        return AddAlgorithmView(editMode: .constant(.inactive), listSelection: .constant(nil), folder: folder)
             .environmentObject(AlgorithmViewModel())
+    }
+}
+
+extension AddAlgorithmView {
+    private var addAlgorithmButton: some View {
+        HStack {
+            Spacer()
+            Button {
+                withAnimation {
+                    viewModel.addAlgorithm(to: folder)
+                }
+            } label: {
+                Image(systemName: "doc.badge.plus")
+                    .font(.title2)
+                    .foregroundColor(.blue)
+                    .padding(.trailing)
+            }
+        }
+    }
+    
+    private var deleteButton: some View {
+        Button {
+            if let wrappedListSelection = listSelection {
+                for algorithm in wrappedListSelection {
+                    withAnimation {
+                        viewModel.deleteAlgorithm(algorithm)
+                    }
+                }
+                listSelection = nil
+                editMode = .inactive
+            } else {
+                if UIDevice.current.userInterfaceIdiom == .pad {
+                    withAnimation {
+                        showPopover = true
+                    }
+                } else {
+                    withAnimation {
+                        showCustomSheet = true
+                    }
+                }
+            }
+        } label: {
+            Text(listSelection != nil ? "Delete" : "Delete All")
+        }
+        .padding(.horizontal)
+        .popover(isPresented: $showPopover) {
+            Button(role: .destructive) {
+                withAnimation {
+                    for algorithm in folder.wrappedAlgorithms {
+                        viewModel.deleteAlgorithm(algorithm)
+                    }
+                    showPopover = false
+                    editMode = .inactive
+                }
+            } label: {
+                Text("Delete All")
+                    .font(.title3)
+                    .frame(minHeight: 0, maxHeight: .infinity)
+                    .frame(width: 300)
+            }
+        }
+    }
+    
+    private var iphoneDeleteAllCustomView: some View {
+        VStack {
+            Spacer()
+            Button(role: .destructive) {
+                withAnimation {
+                    for algorithm in folder.wrappedAlgorithms {
+                        viewModel.deleteAlgorithm(algorithm)
+                    }
+                    showCustomSheet = false
+                    editMode = .inactive
+                }
+            } label: {
+                Text("Delete All")
+                    .foregroundColor(.red)
+                    .font(.title3)
+            }
+            .padding()
+            .frame(minWidth: 0, maxWidth: .infinity)
+            .background(
+                colorScheme == .dark
+                ? Color.secondaryBackground.opacity(0.7)
+                : Color.background.opacity(0.7)
+            )
+            
+            Button(role: .cancel) {
+                withAnimation {
+                    showCustomSheet = false
+                    editMode = .inactive
+                }
+            } label: {
+                Text("Cancel")
+                    .foregroundColor(.blue)
+                    .font(.title3)
+            }
+            .padding()
+            .frame(minWidth: 0, maxWidth: .infinity)
+            .background(
+                colorScheme == .dark
+                ? Color.secondaryBackground
+                : Color.background
+            )
+        }
     }
 }

@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct AlgorithmEditView: View {
+//    @Environment(\.editMode) private var editMode
     @Binding var showEditView: Bool
     @Binding var sorting: Sortings
     @Binding var sortingOrder: SortingOrder
+    @Binding var editMode: EditMode
+    
     
     let folder: Folder
     
@@ -45,7 +48,7 @@ struct AlgorithmEditView_Previews: PreviewProvider {
         viewModel.addFolder(name: "Algorithms")
         let folder = viewModel.dataManager.savedFolders[0]
         return StatefulPreviewWrapper(true) {
-            AlgorithmEditView(showEditView: $0, sorting: .constant(.dateEdited), sortingOrder: .constant(.up), folder: folder)
+            AlgorithmEditView(showEditView: $0, sorting: .constant(.dateEdited), sortingOrder: .constant(.up), editMode: .constant(.inactive), folder: folder)
         }
     }
 }
@@ -65,8 +68,11 @@ extension AlgorithmEditView {
     }
     
     private var selectButton: some View {
-        Button {
-            
+        Button(role: .cancel) {
+            withAnimation {
+                editMode = .active
+                showEditView = false
+            }
         } label: {
             HStack {
                 Text("Select Algorithms")
