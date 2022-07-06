@@ -11,7 +11,7 @@ struct AddAlgorithmView: View {
     @EnvironmentObject private var viewModel: AlgorithmViewModel
     @Environment(\.colorScheme) private var colorScheme
     @Binding var editMode: EditMode
-    @Binding var listSelection: Set<Algorithm>?
+    @Binding var listSelection: Set<Algorithm>
     @State private var showPopover: Bool = false
     @State private var showCustomSheet: Bool = false
     
@@ -56,7 +56,7 @@ struct AddAlgorithmView_Previews: PreviewProvider {
         let viewModel = AlgorithmViewModel()
         viewModel.addFolder(name: "Algorithms")
         let folder = viewModel.dataManager.savedFolders[0]
-        return AddAlgorithmView(editMode: .constant(.inactive), listSelection: .constant(nil), folder: folder)
+        return AddAlgorithmView(editMode: .constant(.inactive), listSelection: .constant(Set<Algorithm>()), folder: folder)
             .environmentObject(AlgorithmViewModel())
     }
 }
@@ -80,14 +80,17 @@ extension AddAlgorithmView {
     
     private var deleteButton: some View {
         Button {
-            if let wrappedListSelection = listSelection {
-                for algorithm in wrappedListSelection {
-                    withAnimation {
+            if !listSelection.isEmpty {
+                withAnimation {
+                    for algorithm in listSelection {
+                        if viewModel.selectedAlgorithm == algorithm {
+                            viewModel.selectedAlgorithm = nil
+                        }
                         viewModel.deleteAlgorithm(algorithm)
                     }
+                    editMode = .inactive
+                    listSelection = []
                 }
-                listSelection = nil
-                editMode = .inactive
             } else {
                 if UIDevice.current.userInterfaceIdiom == .pad {
                     withAnimation {
@@ -100,12 +103,13 @@ extension AddAlgorithmView {
                 }
             }
         } label: {
-            Text(listSelection != nil ? "Delete" : "Delete All")
+            Text(!listSelection.isEmpty ? "Delete" : "Delete All")
         }
         .padding(.horizontal)
         .popover(isPresented: $showPopover) {
             Button(role: .destructive) {
                 withAnimation {
+                    viewModel.selectedAlgorithm = nil
                     for algorithm in folder.wrappedAlgorithms {
                         viewModel.deleteAlgorithm(algorithm)
                     }
@@ -126,6 +130,7 @@ extension AddAlgorithmView {
             Spacer()
             Button(role: .destructive) {
                 withAnimation {
+                    viewModel.selectedAlgorithm = nil
                     for algorithm in folder.wrappedAlgorithms {
                         viewModel.deleteAlgorithm(algorithm)
                     }

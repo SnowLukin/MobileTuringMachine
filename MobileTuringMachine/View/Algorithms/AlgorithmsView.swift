@@ -17,7 +17,7 @@ struct AlgorithmsView: View {
 //    @State private var openFile = false
     @State private var sorting: Sortings = .dateEdited
     @State private var sortingOrder: SortingOrder = .up
-    @State private var listSelection: Set<Algorithm>?
+    @State private var listSelection = Set<Algorithm>()
 //    @Environment(\.editMode) private var editMode
     @State private var editMode: EditMode = .inactive
     
@@ -46,8 +46,11 @@ struct AlgorithmsView: View {
                         editMode = .inactive
                     }
                 }
+                .onAppear {
+                    print(listSelection)
+                }
                 .onChange(of: listSelection, perform: { newValue in
-                    print(newValue ?? "Nothing")
+                    print(newValue.count)
                 })
                 .environment(\.editMode, $editMode)
         } else {
@@ -134,6 +137,7 @@ extension AlgorithmsView {
                     Button {
                         withAnimation {
                             editMode = .inactive
+                            listSelection = []
                         }
                     } label: {
                         Text("Done")
@@ -163,13 +167,16 @@ extension AlgorithmsView {
     }
     
     private var algorithmsList: some View {
-        List(searchResults, selection: $listSelection) { algorithm in
-            Button {
+        List(searchResults, id: \.self, selection: $listSelection) { algorithm in
+            NavigationLink(tag: algorithm, selection: $viewModel.selectedAlgorithm) {
+                AlgorithmView()
+            } label: {
+                customCell(algorithm)
+            }
+            .onTapGesture {
                 withAnimation {
                     viewModel.selectedAlgorithm = algorithm
                 }
-            } label: {
-                customCell(algorithm)
             }
             .listRowBackground(
                 viewModel.selectedAlgorithm == algorithm
@@ -179,34 +186,36 @@ extension AlgorithmsView {
                     : Color.background
             )
             .contextMenu {
-                // Pin
-                Button {
-                    
-                } label: {
-                    Label("Pin Algorithm", systemImage: "pin")
-                }
-                // Send a copy
-                Button {
-                    
-                } label: {
-                    Label("Send a copy", systemImage: "square.and.arrow.up")
-                }
-                // Move
-                Button {
-                    
-                } label: {
-                    Label("Move", systemImage: "folder")
-                }
-                // Delete
-                Button(role: .destructive) {
-                    withAnimation {
-                        if algorithm == viewModel.selectedAlgorithm {
-                            viewModel.selectedAlgorithm = nil
-                        }
-                        viewModel.deleteAlgorithm(algorithm)
+                if editMode == .inactive {
+                    // Pin
+                    Button {
+                        
+                    } label: {
+                        Label("Pin Algorithm", systemImage: "pin")
                     }
-                } label: {
-                    Label("Delete", systemImage: "trash")
+                    // Send a copy
+                    Button {
+                        
+                    } label: {
+                        Label("Send a copy", systemImage: "square.and.arrow.up")
+                    }
+                    // Move
+                    Button {
+                        
+                    } label: {
+                        Label("Move", systemImage: "folder")
+                    }
+                    // Delete
+                    Button(role: .destructive) {
+                        withAnimation {
+                            if algorithm == viewModel.selectedAlgorithm {
+                                viewModel.selectedAlgorithm = nil
+                            }
+                            viewModel.deleteAlgorithm(algorithm)
+                        }
+                    } label: {
+                        Label("Delete", systemImage: "trash")
+                    }
                 }
             }
             .swipeActions(edge: .trailing, allowsFullSwipe: false) {
