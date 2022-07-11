@@ -16,6 +16,14 @@ struct StatesHoneyGrid: View {
     let algorithm: Algorithm
     let width = UIScreen.main.bounds.width - 30
     
+    var cellSize: CGFloat {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            return 120
+        } else {
+            return 100
+        }
+    }
+    
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(spacing: -10) {
@@ -23,7 +31,7 @@ struct StatesHoneyGrid: View {
                     HStack(spacing: 10) {
                         ForEach(rows[rowIndex]) { state in
                             StateHoneyGridCell(isBeingEdited: $isBeingEdited, state: state)
-                                .frame(width: 110, height: 110)
+                                .frame(width: cellSize, height: cellSize)
                                 .offset(x: getOffset(index: rowIndex))
                         }
                     }
@@ -87,7 +95,7 @@ extension StatesHoneyGrid {
     private func getOffset(index: Int) -> CGFloat {
         let current = rows[index].count
         
-        let offset: CGFloat = (375 - 20) / 3 / 2
+        let offset: CGFloat = (405 - 20) / 3 / 2
         
         if index != 0 {
             let previous = rows[index - 1].count

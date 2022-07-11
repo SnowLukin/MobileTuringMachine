@@ -29,10 +29,33 @@ struct Hexagon: Shape {
         }
 }
 
+struct Test: View {
+    let size: CGFloat = 110
+    var body: some View {
+        VStack(spacing: 0) {
+            HStack {
+                Hexagon()
+                    .frame(width: size, height: size, alignment: .center)
+                Hexagon()
+                    .frame(width: size, height: size, alignment: .center)
+                Hexagon()
+                    .frame(width: size, height: size, alignment: .center)
+            }
+            HStack {
+                Hexagon()
+                    .frame(width: size, height: size, alignment: .center)
+                Hexagon()
+                    .frame(width: size, height: size, alignment: .center)
+            }
+        }
+    }
+}
+
 struct Hexagon_Previews: PreviewProvider {
     static var previews: some View {
-        Hexagon()
-            .frame(width: 100, height: 100, alignment: .center)
-            .padding()
+//        Hexagon()
+//            .frame(width: 100, height: 100, alignment: .center)
+//            .padding()
+        Test()
     }
 }

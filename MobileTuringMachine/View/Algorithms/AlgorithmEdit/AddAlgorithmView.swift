@@ -11,42 +11,52 @@ struct AddAlgorithmView: View {
     @EnvironmentObject private var viewModel: AlgorithmViewModel
     @Environment(\.colorScheme) private var colorScheme
     @Binding var editMode: EditMode
-    @Binding var listSelection: Set<Algorithm>
     @State private var showPopover: Bool = false
     @State private var showCustomSheet: Bool = false
     
     let folder: Folder
     
     var body: some View {
-        VStack {
-            Spacer()
-            ZStack(alignment: .center) {
-                if editMode == .active || editMode == .transient {
-                    HStack {
-                        Button {
-                            
-                        } label: {
-                            Text("Move")
-                        }.padding(.horizontal)
-                        
-                        Spacer()
-                        
-                        deleteButton
-                        
+        if showCustomSheet {
+            ZStack {
+                Color.black.opacity(0.3)
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        withAnimation {
+                            showCustomSheet = false
+                            editMode = .inactive
+                        }
                     }
-                    if showCustomSheet {
-                        iphoneDeleteAllCustomView
-                    }
-                } else {
-                    Text("\(folder.wrappedAlgorithms.count) Algorithms")
-                        .font(.footnote)
-                    addAlgorithmButton
-                }
+                iphoneDeleteAllCustomView
             }
-            .frame(minWidth: 0, maxWidth: .infinity)
-            .frame(height: 60)
-            .overlay(Divider(), alignment: .top)
-            .background(Color.secondaryBackground)
+        } else {
+            VStack {
+                Spacer()
+                ZStack(alignment: .center) {
+                    if editMode == .active {
+                        HStack {
+                            Button {
+                                
+                            } label: {
+                                Text("Move")
+                            }.padding(.horizontal)
+                            
+                            Spacer()
+                            
+                            deleteButton
+                            
+                        }
+                    } else {
+                        Text("\(folder.wrappedAlgorithms.count) Algorithms")
+                            .font(.footnote)
+                        addAlgorithmButton
+                    }
+                }
+                .frame(minWidth: 0, maxWidth: .infinity)
+                .frame(height: 60)
+                .overlay(Divider(), alignment: .top)
+                .background(Color.secondaryBackground)
+            }
         }
     }
 }
@@ -56,7 +66,7 @@ struct AddAlgorithmView_Previews: PreviewProvider {
         let viewModel = AlgorithmViewModel()
         viewModel.addFolder(name: "Algorithms")
         let folder = viewModel.dataManager.savedFolders[0]
-        return AddAlgorithmView(editMode: .constant(.inactive), listSelection: .constant(Set<Algorithm>()), folder: folder)
+        return AddAlgorithmView(editMode: .constant(.inactive), folder: folder)
             .environmentObject(AlgorithmViewModel())
     }
 }
@@ -80,16 +90,16 @@ extension AddAlgorithmView {
     
     private var deleteButton: some View {
         Button {
-            if !listSelection.isEmpty {
+            if !viewModel.listSelection.isEmpty {
                 withAnimation {
-                    for algorithm in listSelection {
+                    for algorithm in viewModel.listSelection {
                         if viewModel.selectedAlgorithm == algorithm {
                             viewModel.selectedAlgorithm = nil
                         }
                         viewModel.deleteAlgorithm(algorithm)
                     }
                     editMode = .inactive
-                    listSelection = []
+                    viewModel.listSelection = []
                 }
             } else {
                 if UIDevice.current.userInterfaceIdiom == .pad {
@@ -103,7 +113,7 @@ extension AddAlgorithmView {
                 }
             }
         } label: {
-            Text(!listSelection.isEmpty ? "Delete" : "Delete All")
+            Text(!viewModel.listSelection.isEmpty ? "Delete" : "Delete All")
         }
         .padding(.horizontal)
         .popover(isPresented: $showPopover) {
@@ -142,13 +152,14 @@ extension AddAlgorithmView {
                     .foregroundColor(.red)
                     .font(.title3)
             }
-            .padding()
             .frame(minWidth: 0, maxWidth: .infinity)
+            .frame(height: 60)
             .background(
                 colorScheme == .dark
                 ? Color.secondaryBackground.opacity(0.7)
                 : Color.background.opacity(0.7)
             )
+            .cornerRadius(12)
             
             Button(role: .cancel) {
                 withAnimation {
@@ -160,13 +171,14 @@ extension AddAlgorithmView {
                     .foregroundColor(.blue)
                     .font(.title3)
             }
-            .padding()
             .frame(minWidth: 0, maxWidth: .infinity)
+            .frame(height: 60)
             .background(
                 colorScheme == .dark
                 ? Color.secondaryBackground
                 : Color.background
             )
-        }
+            .cornerRadius(12)
+        }.padding()
     }
 }

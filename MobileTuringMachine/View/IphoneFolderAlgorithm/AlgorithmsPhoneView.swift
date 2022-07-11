@@ -1,13 +1,13 @@
 //
-//  AlgorithmsView.swift
+//  AlgorithmsPhoneView.swift
 //  MobileTuringMachine
 //
-//  Created by Snow Lukin on 22.06.2022.
+//  Created by Snow Lukin on 09.07.2022.
 //
 
 import SwiftUI
 
-struct AlgorithmsView: View {
+struct AlgorithmsPhoneView: View {
     
     @EnvironmentObject private var viewModel: AlgorithmViewModel
     @Environment(\.colorScheme) private var colorScheme
@@ -20,6 +20,8 @@ struct AlgorithmsView: View {
     @State private var editMode: EditMode = .inactive
     @State private var selectedAlgorithm: Algorithm?
     
+    @Binding var showFolders: Bool
+    
     var searchResults: [Algorithm] {
         if let folder = viewModel.selectedFolder {
             return viewModel.getSearchResult(searchText, sorting: sorting, sortingOrder: sortingOrder, folder: folder)
@@ -31,66 +33,37 @@ struct AlgorithmsView: View {
     
     var body: some View {
         if let folder = viewModel.selectedFolder {
-            wrappedAlgorithmsView(folder)
-                .navigationTitle(folder.name)
-                .onAppear {
-                    // Trying to make it as close as possible to deselection of navlink on iphones
-                    if UIDevice.current.userInterfaceIdiom == .phone {
+            NavigationView {
+                wrappedAlgorithmsView(folder)
+                    .navigationTitle(folder.name)
+                    .onAppear {
+                        // Trying to make it as close as possible to deselection of navlink on iphones
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                             viewModel.selectedAlgorithm = nil
                         }
                     }
-                }
-                .onChange(of: viewModel.selectedAlgorithm) { newValue in
-                    selectedAlgorithm = newValue
-                }
-                // getting rid of .transient editMode
-                // after deleting all elements in list
-                .onChange(of: searchResults) { newValue in
-                    if (editMode == .active || editMode == .transient) && newValue.isEmpty {
-                        editMode = .inactive
+                    .onChange(of: viewModel.selectedAlgorithm) { newValue in
+                        print("viewModel.selectedAlgorithm changed")
+                        selectedAlgorithm = newValue
                     }
-                }
-                .environment(\.editMode, $editMode)
+                    .onChange(of: searchResults) { newValue in
+                        // getting rid of .transient editMode
+                        // after deleting all elements in list
+                        if (editMode == .active || editMode == .transient) && newValue.isEmpty {
+                            editMode = .inactive
+                        }
+                    }
+                    .environment(\.editMode, $editMode)
+            }.navigationViewStyle(.stack)
         } else {
             Text("No folder selected")
                 .font(.title2)
                 .foregroundColor(.secondary)
         }
-        //        .fileImporter(isPresented: $openFile, allowedContentTypes: [.mtm], allowsMultipleSelection: false) { result in
-        //            do {
-        //                guard let selectedFileURL: URL = try result.get().first else {
-        //                    print("Failed getting url.")
-        //                    return
-        //                }
-        //
-        //                if selectedFileURL.startAccessingSecurityScopedResource() {
-        //                    guard let data = try? Data(contentsOf: selectedFileURL) else {
-        //                        print("Failed getting data from url: \(selectedFileURL)")
-        //                        return
-        //                    }
-        //                    guard let algorithm = try? JSONDecoder().decode(Algorithm.self, from: data) else {
-        //                        print("Failed decoding file.")
-        //                        return
-        //                    }
-        //                    defer {
-        //                        selectedFileURL.stopAccessingSecurityScopedResource()
-        //                    }
-        //                    withAnimation {
-        //                        viewModel.addImportedAlgorithm(algorithm: algorithm)
-        //                    }
-        //                    print("Algorithm imported successfully")
-        //                } else {
-        //                    print("Error occupied. Failed accessing security scoped resource.")
-        //                }
-        //            } catch {
-        //                print("Error occupied: \(error.localizedDescription)")
-        //            }
-        //        }
     }
 }
 
-struct AlgorithmsView_Previews: PreviewProvider {
+struct AlgorithmsPhoneView_Previews: PreviewProvider {
     static var previews: some View {
         let viewModel = AlgorithmViewModel()
         viewModel.addFolder(name: "Algorithms")
@@ -99,22 +72,12 @@ struct AlgorithmsView_Previews: PreviewProvider {
             viewModel.deleteAlgorithm(algorithm)
         }
         viewModel.addAlgorithm(to: folder)
-        return AlgorithmsView()
+        return AlgorithmsPhoneView(showFolders: .constant(false))
             .environmentObject(AlgorithmViewModel())
-            .previewInterfaceOrientation(.landscapeLeft)
     }
 }
 
-extension AlgorithmsView {
-    
-    private var userHelpButton: some View {
-        NavigationLink {
-            UserHelpView()
-        } label: {
-            Image(systemName: "questionmark.circle")
-        }
-    }
-    
+extension AlgorithmsPhoneView {
     private func wrappedAlgorithmsView(_ folder: Folder) -> some View {
         ZStack {
             if folder.wrappedAlgorithms.isEmpty {
@@ -128,7 +91,20 @@ extension AlgorithmsView {
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                userHelpButton
+                Button {
+                    withAnimation {
+                        showFolders.toggle()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            viewModel.selectedFolder = nil
+                        }
+                    }
+                } label: {
+                    HStack(alignment: .center) {
+                        Image(systemName: "chevron.left")
+                            .font(Font.headline)
+                        Image(systemName: "folder")
+                    }
+                }
             }
             ToolbarItem(placement: .navigationBarTrailing) {
                 if editMode == .active || editMode == .transient {
@@ -150,9 +126,12 @@ extension AlgorithmsView {
                     }
                     .popover(isPresented: $showEditSheet) {
                         AlgorithmEditView(
-                            showEditView: $showEditSheet, sorting: $sorting,
-                            sortingOrder: $sortingOrder, editMode: $editMode, folder: folder
-                        ).frame(width: UIScreen.main.bounds.width / 2.5, height: 320)
+                            showEditView: $showEditSheet,
+                            sorting: $sorting,
+                            sortingOrder: $sortingOrder,
+                            editMode: $editMode,
+                            folder: folder
+                        )
                     }
                 }
             }

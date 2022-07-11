@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AlgorithmEditView: View {
-//    @Environment(\.editMode) private var editMode
+    @Environment(\.colorScheme) private var colorScheme
     @Binding var showEditView: Bool
     @Binding var sorting: Sortings
     @Binding var sortingOrder: SortingOrder
@@ -38,7 +38,11 @@ struct AlgorithmEditView: View {
                 UITableView.appearance().sectionFooterHeight = 0
             }
         }
-        .background(Color.secondaryBackground)
+        .background(
+            colorScheme == .dark
+            ? Color.background
+            : Color.secondaryBackground
+        )
     }
 }
 
@@ -194,10 +198,16 @@ extension AlgorithmEditView {
         } label: {
             Image(systemName: "xmark")
                 .font(.footnote.bold())
-                .foregroundColor(.secondary)
+                .foregroundColor(
+                    colorScheme == .dark
+                    ? Color.init(uiColor: UIColor.lightGray)
+                    : Color.init(uiColor: UIColor.darkGray)
+                )
                 .padding(6)
                 .background(
-                    Color.gray.brightness(0.3)
+                    colorScheme == .dark
+                    ? Color.secondaryBackground
+                    : Color.init(uiColor: UIColor.systemGray5)
                 )
                 .clipShape(Circle())
                 .offset(y: -15)

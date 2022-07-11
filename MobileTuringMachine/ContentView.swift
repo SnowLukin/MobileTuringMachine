@@ -12,7 +12,15 @@ struct ContentView: View {
     @EnvironmentObject private var viewModel: AlgorithmViewModel
     
     var body: some View {
-        FoldersView()
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            FolderAlgorithmPhoneView()
+        } else {
+            NavigationView {
+                FoldersView()
+                AlgorithmsView()
+                AlgorithmView()
+            }.navigationViewStyle(.columns)
+        }
     }
 }
 

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D704881F2879BC4800681F4E /* FolderPhoneMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D704881E2879BC4800681F4E /* FolderPhoneMenuView.swift */; };
+		D70488252879BFEF00681F4E /* AlgorithmsPhoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70488242879BFEF00681F4E /* AlgorithmsPhoneView.swift */; };
+		D70488272879C18100681F4E /* FolderAlgorithmPhoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70488262879C18100681F4E /* FolderAlgorithmPhoneView.swift */; };
 		D7057FAF284A8CC70008E7E3 /* Extension + View.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7057FAE284A8CC70008E7E3 /* Extension + View.swift */; };
 		D7312B102862D88500AF5261 /* AlgorithmsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312B0F2862D88500AF5261 /* AlgorithmsView.swift */; };
 		D7312B122862DD1700AF5261 /* AlgorithmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312B112862DD1700AF5261 /* AlgorithmView.swift */; };
@@ -73,6 +76,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D704881E2879BC4800681F4E /* FolderPhoneMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderPhoneMenuView.swift; sourceTree = "<group>"; };
+		D70488242879BFEF00681F4E /* AlgorithmsPhoneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorithmsPhoneView.swift; sourceTree = "<group>"; };
+		D70488262879C18100681F4E /* FolderAlgorithmPhoneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderAlgorithmPhoneView.swift; sourceTree = "<group>"; };
 		D7057FAE284A8CC70008E7E3 /* Extension + View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension + View.swift"; sourceTree = "<group>"; };
 		D7312B0F2862D88500AF5261 /* AlgorithmsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorithmsView.swift; sourceTree = "<group>"; };
 		D7312B112862DD1700AF5261 /* AlgorithmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorithmView.swift; sourceTree = "<group>"; };
@@ -151,6 +157,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D704881D2879BC2300681F4E /* IphoneFolderAlgorithm */ = {
+			isa = PBXGroup;
+			children = (
+				D70488262879C18100681F4E /* FolderAlgorithmPhoneView.swift */,
+				D704881E2879BC4800681F4E /* FolderPhoneMenuView.swift */,
+				D70488242879BFEF00681F4E /* AlgorithmsPhoneView.swift */,
+			);
+			path = IphoneFolderAlgorithm;
+			sourceTree = "<group>";
+		};
 		D7312B08285F79E600AF5261 /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -387,6 +403,7 @@
 		D7CF6DDD27DE28960010949B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				D704881D2879BC2300681F4E /* IphoneFolderAlgorithm */,
 				D76E62D42871A90B00C150C7 /* Folders */,
 				D78098B8284E211400C4DDF0 /* Algorithms */,
 				D78098A7284DF23300C4DDF0 /* Tapes */,
@@ -517,13 +534,16 @@
 				D76E62E22871AD3300C150C7 /* Folder+CoreDataProperties.swift in Sources */,
 				D74428922854AA130073C9E2 /* TapButtonStyle.swift in Sources */,
 				D7CF6DE727DE312D0010949B /* TapeView.swift in Sources */,
+				D70488272879C18100681F4E /* FolderAlgorithmPhoneView.swift in Sources */,
 				D7312B282866234D00AF5261 /* AlgorithmsData.xcdatamodeld in Sources */,
 				D7312B142862EF8500AF5261 /* SizePreferenceKey.swift in Sources */,
 				D781E8C3286BD21900E08687 /* TapeComponent+CoreDataClass.swift in Sources */,
+				D704881F2879BC4800681F4E /* FolderPhoneMenuView.swift in Sources */,
 				D7C1E0F9285DED61005662A9 /* RootPresentationEnvironmentKey.swift in Sources */,
 				D781E8C4286BD21900E08687 /* TapeComponent+CoreDataProperties.swift in Sources */,
 				D781E8C9286BD21900E08687 /* Tape+CoreDataClass.swift in Sources */,
 				D781E8C7286BD21900E08687 /* StateQ+CoreDataClass.swift in Sources */,
+				D70488252879BFEF00681F4E /* AlgorithmsPhoneView.swift in Sources */,
 				D78098A4284DC83900C4DDF0 /* BindingPreviewWrapper.swift in Sources */,
 				D7753D22286EF7EE00394826 /* AddAlgorithmView.swift in Sources */,
 				D7C1E0F2285B61B7005662A9 /* StatesHoneyGrid.swift in Sources */,

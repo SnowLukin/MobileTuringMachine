@@ -9,20 +9,78 @@ import SwiftUI
 
 class AlgorithmViewModel: ObservableObject {
     
-    let dataManager = DataManager.shared
+    enum userDefaultsKeys: String {
+        case folder = "folder"
+        case algorithm = "algorithm"
+    }
     
-    @Published var selectedFolder: Folder?
-    @Published var selectedAlgorithm: Algorithm?
+    let dataManager = DataManager.shared
+    let userDefaults = UserDefaults.standard
+    @Published var listSelection = Set<Algorithm>()
+    @Published var selectedFolder: Folder? {
+        didSet {
+            print("Setting selected folder")
+            if let folderName = selectedFolder?.name {
+                print("Setting folder to userdefaults")
+                userDefaults.set(folderName, forKey: userDefaultsKeys.folder.rawValue)
+            } else {
+                print("Removing folder in userdefaults")
+                userDefaults.removeObject(forKey: userDefaultsKeys.folder.rawValue)
+            }
+        }
+    }
+    @Published var selectedAlgorithm: Algorithm? {
+        didSet {
+            print("Setting selected algorithm")
+            if let algorithmID = selectedAlgorithm?.id?.uuidString {
+                print("Setting algorithm to userdefaults")
+                userDefaults.set(algorithmID, forKey: userDefaultsKeys.algorithm.rawValue)
+            } else {
+                print("Deleting algorithm in userdefaults")
+                userDefaults.removeObject(forKey: userDefaultsKeys.algorithm.rawValue)
+            }
+        }
+    }
     
     required init() {
-        if dataManager.isEmpty() {
+        print(userDefaults.value(forKey: "folder") ?? "NIL")
+        if !dataManager.isEmpty() {
+            dataManager.getFolders()
+            guard let startFolderName = userDefaults.value(forKey: "folder") as? String else {
+                print("Start folder name wasnt found")
+                return
+            }
+            guard let startFolder = dataManager.savedFolders.first(where: { $0.name == startFolderName }) else {
+                print("Error getting start folder.")
+                return
+            }
+            selectedFolder = startFolder
+            guard let startAlgorithmID = userDefaults.value(forKey: "algorithm") as? String else {
+                print("Start algorithm id wasnt found.")
+                return
+            }
+            guard let startAlgorithm = startFolder.wrappedAlgorithms.first(where: { $0.id?.uuidString == startAlgorithmID }) else {
+                print("Error getting start algorithm")
+                return
+            }
+            selectedAlgorithm = startAlgorithm
+        } else {
             print("Setting default data...")
             addFolder(name: "Algorithms")
-            dataManager.applyChanges()
-        } else {
-            print("Loading saved data...")
-            dataManager.getFolders()
+            guard let algorithmsFolder = dataManager.savedFolders.first else {
+                print("Error getting Algorithms Folder.")
+                return
+            }
+            selectedFolder = algorithmsFolder
         }
+//        if dataManager.isEmpty() {
+//            print("Setting default data...")
+//            addFolder(name: "Algorithms")
+//            dataManager.applyChanges()
+//        } else {
+//            print("Loading saved data...")
+//            dataManager.getFolders()
+//        }
     }
 }
 
@@ -49,14 +107,14 @@ extension AlgorithmViewModel {
         let folder = Folder(context: dataManager.container.viewContext)
         folder.initValues(name: name)
         
-        objectWillChange.send()
         dataManager.applyChanges()
+        objectWillChange.send()
     }
     
     func deleteFolder(_ folder: Folder) {
         dataManager.container.viewContext.delete(folder)
-        objectWillChange.send()
         dataManager.applyChanges()
+        objectWillChange.send()
     }
     
     func updateName(with newName: String, for algorithm: Algorithm) {
@@ -174,8 +232,8 @@ extension AlgorithmViewModel {
         component.tape.headIndex = component.id
         
         component.tape.algorithm.editedDate = Date.now
-        objectWillChange.send()
         dataManager.applyChanges()
+        objectWillChange.send()
     }
     
     func setNewInputValue(_ text: String, for tape: Tape) {
@@ -241,8 +299,8 @@ extension AlgorithmViewModel {
         updateStates(for: tape.algorithm)
         
         tape.algorithm.editedDate = Date.now
-        objectWillChange.send()
         dataManager.applyChanges()
+        objectWillChange.send()
     }
     
     private func updateInput(_ text: String, for tape: Tape) {
@@ -250,8 +308,8 @@ extension AlgorithmViewModel {
         updateComponents(for: tape)
         
         tape.algorithm.editedDate = Date.now
-        objectWillChange.send()
         dataManager.applyChanges()
+        objectWillChange.send()
     }
     
     private func updateStates(for algorithm: Algorithm) {
@@ -265,8 +323,8 @@ extension AlgorithmViewModel {
         }
         
         algorithm.editedDate = Date.now
-        objectWillChange.send()
         dataManager.applyChanges()
+        objectWillChange.send()
     }
 }
 
@@ -284,8 +342,8 @@ extension AlgorithmViewModel {
         state.isForReset.toggle()
         
         state.algorithm.editedDate = Date.now
-        objectWillChange.send()
         dataManager.applyChanges()
+        objectWillChange.send()
     }
 }
 
@@ -299,8 +357,8 @@ extension AlgorithmViewModel {
         option.toStateID = id
         
         option.state.algorithm.editedDate = Date.now
-        objectWillChange.send()
         dataManager.applyChanges()
+        objectWillChange.send()
     }
     
     func isChosenToState(option: Option, currentState: StateQ) -> Bool {
@@ -319,16 +377,16 @@ extension AlgorithmViewModel {
         combination.toCharacter = alphabetElement
         
         combination.option.state.algorithm.editedDate = Date.now
-        objectWillChange.send()
         dataManager.applyChanges()
+        objectWillChange.send()
     }
     
     func updateCombinationDirection(combination: Combination, directionID: Int) {
         combination.directionID = Int16(directionID)
         
         combination.option.state.algorithm.editedDate = Date.now
-        objectWillChange.send()
         dataManager.applyChanges()
+        objectWillChange.send()
     }
     
     func isChosenChar(combination: Combination, alphabetElement: String) -> Bool {
@@ -351,8 +409,8 @@ extension AlgorithmViewModel {
         addState(algorithm: algorithm)
         
         folder.addToAlgorithms(algorithm)
-        objectWillChange.send()
         dataManager.applyChanges()
+        objectWillChange.send()
     }
     
     func deleteAlgorithm(_ algorithm: Algorithm) {
@@ -370,13 +428,14 @@ extension AlgorithmViewModel {
             algorithm.addToTapes(tape)
             
             algorithm.editedDate = Date.now
-            objectWillChange.send()
             dataManager.applyChanges()
+            objectWillChange.send()
             return
         }
         // Getting the name
         let nameIDArray = algorithm.wrappedTapes.map { $0.nameID }
         guard let max = nameIDArray.max() else {
+            print("Error finding max")
             return
         }
         let fullArray = Array(0...max)
@@ -390,6 +449,7 @@ extension AlgorithmViewModel {
         } else {
             // In case there ARE NO gaps between name ids
             guard let endElement = algorithm.wrappedTapes.last else {
+                print("Error finding end element")
                 return
             }
             tape.initValues(nameID: Int(endElement.nameID + 1), components: [], algorithm: algorithm)
@@ -399,16 +459,16 @@ extension AlgorithmViewModel {
         updateStates(for: algorithm)
         
         algorithm.editedDate = Date.now
-        objectWillChange.send()
         dataManager.applyChanges()
+        objectWillChange.send()
     }
     
     func deleteTape(_ tape: Tape) {
         tape.algorithm.removeFromTapes(tape)
         dataManager.container.viewContext.delete(tape)
         updateStates(for: tape.algorithm)
-        objectWillChange.send()
         dataManager.applyChanges()
+        objectWillChange.send()
     }
     
     func addComponent(tape: Tape) {
@@ -417,8 +477,8 @@ extension AlgorithmViewModel {
             component.initValues(id: index, tape: tape)
             tape.addToComponents(component)
         }
-        objectWillChange.send()
         dataManager.applyChanges()
+        objectWillChange.send()
     }
     
     func updateComponents(for tape: Tape) {
@@ -430,9 +490,8 @@ extension AlgorithmViewModel {
                 component.value = "_"
             }
         }
-        
-        objectWillChange.send()
         dataManager.applyChanges()
+        objectWillChange.send()
     }
     
     func addState(algorithm: Algorithm) {
@@ -449,14 +508,15 @@ extension AlgorithmViewModel {
             algorithm.addToStates(state)
             
             algorithm.editedDate = Date.now
-            objectWillChange.send()
             dataManager.applyChanges()
+            objectWillChange.send()
             return
         }
         
         // Getting the name
         let nameIDArray = algorithm.wrappedStates.map { $0.nameID }
         guard let max = nameIDArray.max() else {
+            print("Error finding max")
             return
         }
         let fullArray = Array(0...max)
@@ -470,6 +530,7 @@ extension AlgorithmViewModel {
         } else {
             // In case there ARE NO gaps between name ids
             guard let endElement = algorithm.wrappedStates.last else {
+                print("Error finding end element")
                 return
             }
             state.initValues(id: UUID(), nameID: Int(endElement.nameID + 1), options: [], algorithm: algorithm)
@@ -479,12 +540,11 @@ extension AlgorithmViewModel {
         algorithm.addToStates(state)
         
         algorithm.editedDate = Date.now
-        objectWillChange.send()
         dataManager.applyChanges()
+        objectWillChange.send()
     }
     
     func deleteState(_ state: StateQ) {
-        objectWillChange.send()
         if state.isStarting {
             if state.nameID == 0 {
                 updateStartState(state: state, id: 1)
@@ -495,6 +555,7 @@ extension AlgorithmViewModel {
         state.algorithm.removeFromStates(state)
         dataManager.container.viewContext.delete(state)
         dataManager.applyChanges()
+        objectWillChange.send()
     }
     
     private func updateStartState(state: StateQ, id: Int) {
@@ -502,8 +563,8 @@ extension AlgorithmViewModel {
         state.algorithm.wrappedStates.first(where: { $0.nameID == Int16(id) })?.isStarting.toggle()
         
         state.algorithm.editedDate = Date.now
-        objectWillChange.send()
         dataManager.applyChanges()
+        objectWillChange.send()
     }
     
     private func getCombinations(array: [[String]], word: [String], currentArrayIndex: Int, result: inout [[String]]) {
@@ -545,8 +606,8 @@ extension AlgorithmViewModel {
             addCombinations(combinations: combinations[combinationIndex], option: option)
             state.addToOptions(option)
         }
-        objectWillChange.send()
         dataManager.applyChanges()
+        objectWillChange.send()
     }
     
     func addCombinations(combinations: [String], option: Option) {

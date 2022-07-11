@@ -83,7 +83,6 @@ extension ConfigurationsView {
             Divider()
                 .padding(.leading)
             customCellButtonView("States", destination: AnyView(StatesHoneyGrid(algorithm: algorithm)))
-//            customCellButtonView("States", destination: AnyView(TestStateList(algorithm: algorithm)))
                 .padding(.top, 5)
         }
         .padding()

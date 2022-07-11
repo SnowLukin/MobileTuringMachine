@@ -23,18 +23,18 @@ struct AlgorithmView: View {
         } else {
             initualView(viewModel.selectedFolder)
         }
-//        .fileExporter(
-//            isPresented: $showExport,
-//            document: DocumentManager(algorithm: viewModel.getAlgorithm(algorithm)),
-//            contentType: .mtm
-//        ) { result in
-//            switch result {
-//            case .success:
-//                print("File successfully exported")
-//            case .failure:
-//                print("Error occupied. Failed exporting the file.")
-//            }
-//        }
+        //        .fileExporter(
+        //            isPresented: $showExport,
+        //            document: DocumentManager(algorithm: viewModel.getAlgorithm(algorithm)),
+        //            contentType: .mtm
+        //        ) { result in
+        //            switch result {
+        //            case .success:
+        //                print("File successfully exported")
+        //            case .failure:
+        //                print("Error occupied. Failed exporting the file.")
+        //            }
+        //        }
     }
 }
 
@@ -46,6 +46,7 @@ struct AlgorithmView_Previews: PreviewProvider {
         for algorithm in folder.wrappedAlgorithms {
             viewModel.deleteAlgorithm(algorithm)
         }
+        viewModel.selectedFolder = folder
         viewModel.addAlgorithm(to: folder)
         return AlgorithmView()
     }
