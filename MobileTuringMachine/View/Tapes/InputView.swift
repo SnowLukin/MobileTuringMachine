@@ -79,5 +79,6 @@ extension InputView {
                     text = newValue
                 }
             }
+            .modifier(RemoveTextTextField(text: $text))
     }
 }

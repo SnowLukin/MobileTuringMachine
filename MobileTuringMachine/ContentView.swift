@@ -15,11 +15,21 @@ struct ContentView: View {
         if UIDevice.current.userInterfaceIdiom == .phone {
             FolderAlgorithmPhoneView()
         } else {
-            NavigationView {
+            Sidebar {
                 FoldersView()
+            } detail: {
                 AlgorithmsView()
+            } secondary: {
                 AlgorithmView()
-            }.navigationViewStyle(.columns)
+            }
+            .splitViewPreferredDisplayMode(
+                .oneBesideSecondary
+            )
+//            NavigationView {
+//                FoldersView()
+//                AlgorithmsView()
+//                AlgorithmView()
+//            }.navigationViewStyle(.columns)
         }
     }
 }

@@ -61,7 +61,6 @@ extension CombinationView {
                 CombinationSettings(combination: combination, tape: combination.option.state.algorithm.wrappedTapes[Int(combination.id)])
             } label: {
                 HStack {
-                    
                     Text(combination.character)
                         .font(.title3)
                         .fontWeight(.semibold)

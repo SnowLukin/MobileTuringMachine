@@ -19,6 +19,8 @@ struct AlgorithmsPhoneView: View {
     @State private var sortingOrder: SortingOrder = .up
     @State private var editMode: EditMode = .inactive
     @State private var selectedAlgorithm: Algorithm?
+    @State private var showImport = false
+    @State private var showMoveAlgorithmView = false
     
     @Binding var showFolders: Bool
     
@@ -87,7 +89,7 @@ extension AlgorithmsPhoneView {
             } else {
                 algorithmsList
             }
-            AddAlgorithmView(editMode: $editMode, folder: folder)
+            AddAlgorithmView(showMoveAlgorithmView: $showMoveAlgorithmView, editMode: $editMode, folder: folder)
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
@@ -129,7 +131,7 @@ extension AlgorithmsPhoneView {
                             showEditView: $showEditSheet,
                             sorting: $sorting,
                             sortingOrder: $sortingOrder,
-                            editMode: $editMode,
+                            editMode: $editMode, showImport: $showImport,
                             folder: folder
                         )
                     }
@@ -139,93 +141,96 @@ extension AlgorithmsPhoneView {
     }
     
     private var algorithmsList: some View {
-        List(searchResults, id: \.self, selection: $viewModel.listSelection) { algorithm in
-            customNavigationLink(algorithm: algorithm)
-            .listRowBackground(
-                viewModel.selectedAlgorithm == algorithm
-                ? Color.blue.opacity(0.5)
-                : colorScheme == .dark
-                    ? Color.secondaryBackground
-                    : Color.background
-            )
-            .contextMenu {
-                if editMode == .inactive {
-                    // Pin
-                    Button {
-                        
-                    } label: {
-                        Label("Pin Algorithm", systemImage: "pin")
-                    }
-                    // Send a copy
-                    Button {
-                        
-                    } label: {
-                        Label("Send a copy", systemImage: "square.and.arrow.up")
-                    }
-                    // Move
-                    Button {
-                        
-                    } label: {
-                        Label("Move", systemImage: "folder")
-                    }
-                    // Delete
-                    Button(role: .destructive) {
-                        withAnimation {
-                            if algorithm == viewModel.selectedAlgorithm {
-                                viewModel.selectedAlgorithm = nil
+        let pinnedAlgorithms = searchResults.filter { $0.pinned }
+        let unpinnedAlgorithms = searchResults.filter { !$0.pinned }
+        let algorithmList = List(selection: $viewModel.listSelection) {
+            if !pinnedAlgorithms.isEmpty {
+                Section("Pinned") {
+                    ForEach(pinnedAlgorithms, id: \.self) { algorithm in
+                        customNavigationLink(algorithm: algorithm)
+                            .listRowBackground(
+                                viewModel.selectedAlgorithm == algorithm
+                                ? Color.blue.opacity(0.5)
+                                : colorScheme == .dark
+                                ? Color.secondaryBackground
+                                : Color.background
+                            )
+                            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                Button(role: .destructive) {
+                                    withAnimation {
+                                        if algorithm == viewModel.selectedAlgorithm {
+                                            viewModel.selectedAlgorithm = nil
+                                        }
+                                        viewModel.deleteAlgorithm(algorithm)
+                                    }
+                                } label: {
+                                    Image(systemName: "trash.fill")
+                                }
                             }
-                            viewModel.deleteAlgorithm(algorithm)
-                        }
-                    } label: {
-                        Label("Delete", systemImage: "trash")
+                            .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                                Button(role: .cancel) {
+                                    withAnimation {
+                                        editMode = .transient
+                                        viewModel.togglePinAlgorithm(algorithm)
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                            editMode = .inactive
+                                        }
+                                    }
+                                } label: {
+                                    Image(systemName: "pin.fill")
+                                }.tint(.orange)
+                            }
                     }
                 }
             }
-            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                Button(role: .destructive) {
-                    withAnimation {
-                        if algorithm == viewModel.selectedAlgorithm {
-                            viewModel.selectedAlgorithm = nil
-                        }
-                        viewModel.deleteAlgorithm(algorithm)
+            if !unpinnedAlgorithms.isEmpty {
+                Section("Algorithms") {
+                    ForEach(unpinnedAlgorithms, id: \.self) { algorithm in
+                        
+                        customNavigationLink(algorithm: algorithm)
+                            .listRowBackground(
+                                viewModel.selectedAlgorithm == algorithm
+                                ? Color.blue.opacity(0.5)
+                                : colorScheme == .dark
+                                ? Color.secondaryBackground
+                                : Color.background
+                            )
+                            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                Button(role: .destructive) {
+                                    withAnimation {
+                                        if algorithm == viewModel.selectedAlgorithm {
+                                            viewModel.selectedAlgorithm = nil
+                                        }
+                                        viewModel.deleteAlgorithm(algorithm)
+                                    }
+                                } label: {
+                                    Image(systemName: "trash.fill")
+                                }
+                            }
+                            .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                                Button(role: .cancel) {
+                                    withAnimation {
+                                        editMode = .transient
+                                        viewModel.togglePinAlgorithm(algorithm)
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                            editMode = .inactive
+                                        }
+                                    }
+                                } label: {
+                                    Image(systemName: "pin.fill")
+                                }.tint(.orange)
+                            }
                     }
-                } label: {
-                    Image(systemName: "trash.fill")
                 }
             }
-            .swipeActions(edge: .leading, allowsFullSwipe: true) {
-                Button(role: .cancel) {
-                    
-                } label: {
-                    Image(systemName: "pin.fill")
-                }.tint(.orange)
-            }
-        }
-        .listStyle(.insetGrouped)
-        .searchable(text: $searchText)
-    }
-    
-    private func customCell(_ algorithm: Algorithm) -> some View {
-        VStack(alignment: .leading) {
-            Text(algorithm.name)
-                .font(.headline)
-                .foregroundColor(.primary)
-            Text(viewModel.getAlgorithmEditedTimeForTextView(algorithm))
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-        }
+        }.listStyle(.insetGrouped)
+            .searchable(text: $searchText)
+        return algorithmList
     }
     
     private func customNavigationLink(algorithm: Algorithm) -> some View {
         ZStack {
-            Button {
-                viewModel.selectedAlgorithm = algorithm
-            } label: {
-                HStack {
-                    customCell(algorithm)
-                    Spacer()
-                }
-            }
+            CustomAlgorithmButton(editMode: $editMode, algorithm: algorithm)
             NavigationLink(tag: algorithm, selection: $selectedAlgorithm) {
                 AlgorithmView()
             } label: {

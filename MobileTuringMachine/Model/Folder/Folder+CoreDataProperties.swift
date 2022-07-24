@@ -31,6 +31,19 @@ extension Folder {
         return []
     }
     
+    public var optionalSubFolders: [Folder]? {
+        if let subFolders = subFolders {
+            let folders = subFolders as? Set<Folder> ?? []
+            if !folders.isEmpty {
+                return folders.sorted(by: {
+                    $0.name < $1.name
+                })
+            }
+            return nil
+        }
+        return nil
+    }
+    
     public var wrappedAlgorithms: [Algorithm] {
         if let algorithms = algorithms {
             let entities = algorithms as? Set<Algorithm> ?? []

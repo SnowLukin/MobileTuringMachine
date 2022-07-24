@@ -14,11 +14,17 @@ struct AlgorithmsView: View {
     @State private var searchText = ""
     @State private var showInfo = false
     @State private var showEditSheet = false
-//    @State private var openFile = false
     @State private var sorting: Sortings = .dateEdited
     @State private var sortingOrder: SortingOrder = .up
     @State private var editMode: EditMode = .inactive
+    @State private var showImport = false
+    @State private var showExport = false
+    @State private var showMoveAlgorithmView = false
+    @State private var showMoveSelectedAlgorithmsView = false
+    @State private var algorithmForExport: Algorithm?
     @State private var selectedAlgorithm: Algorithm?
+    @State private var pinnedExpanded = true
+    @State private var unpinnedExpanded = true
     
     var searchResults: [Algorithm] {
         if let folder = viewModel.selectedFolder {
@@ -33,14 +39,6 @@ struct AlgorithmsView: View {
         if let folder = viewModel.selectedFolder {
             wrappedAlgorithmsView(folder)
                 .navigationTitle(folder.name)
-                .onAppear {
-                    // Trying to make it as close as possible to deselection of navlink on iphones
-                    if UIDevice.current.userInterfaceIdiom == .phone {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                            viewModel.selectedAlgorithm = nil
-                        }
-                    }
-                }
                 .onChange(of: viewModel.selectedAlgorithm) { newValue in
                     selectedAlgorithm = newValue
                 }
@@ -51,42 +49,56 @@ struct AlgorithmsView: View {
                         editMode = .inactive
                     }
                 }
+                .fileImporter(isPresented: $showImport, allowedContentTypes: [.mtm], allowsMultipleSelection: false) { result in
+                    do {
+                        guard let selectedFileURL: URL = try result.get().first else {
+                            print("Failed getting url")
+                            return
+                        }
+                        if selectedFileURL.startAccessingSecurityScopedResource() {
+                            guard let data = try? Data(contentsOf: selectedFileURL) else {
+                                print("Failed getting data from url: \(selectedFileURL)")
+                                return
+                            }
+                            guard let algorithm = try? JSONDecoder().decode(AlgorithmJSON.self, from: data) else {
+                                print("Failed decoding file.")
+                                return
+                            }
+                            defer {
+                                selectedFileURL.stopAccessingSecurityScopedResource()
+                            }
+                            withAnimation {
+                                viewModel.importAlgorithm(algorithm, to: folder)
+                            }
+                            print("Algorithm imported successfully.")
+                        } else {
+                            print("Error occupied. Failed accessing security scoped resource.")
+                        }
+                    } catch {
+                        print("Error occupied: \(error.localizedDescription)")
+                    }
+                }
+                .sheet(isPresented: $showMoveSelectedAlgorithmsView) {
+                    if let chosenFolder = viewModel.selectedFolder {
+                        if viewModel.listSelection.isEmpty {
+                            MoveFolderView(
+                                folder: chosenFolder,
+                                algorithms: folder.wrappedAlgorithms, editMode: $editMode
+                            )
+                        } else {
+                            MoveFolderView(
+                                folder: chosenFolder,
+                                algorithms: Array(viewModel.listSelection), editMode: $editMode
+                            )
+                        }
+                    }
+                }
                 .environment(\.editMode, $editMode)
         } else {
             Text("No folder selected")
                 .font(.title2)
                 .foregroundColor(.secondary)
         }
-        //        .fileImporter(isPresented: $openFile, allowedContentTypes: [.mtm], allowsMultipleSelection: false) { result in
-        //            do {
-        //                guard let selectedFileURL: URL = try result.get().first else {
-        //                    print("Failed getting url.")
-        //                    return
-        //                }
-        //
-        //                if selectedFileURL.startAccessingSecurityScopedResource() {
-        //                    guard let data = try? Data(contentsOf: selectedFileURL) else {
-        //                        print("Failed getting data from url: \(selectedFileURL)")
-        //                        return
-        //                    }
-        //                    guard let algorithm = try? JSONDecoder().decode(Algorithm.self, from: data) else {
-        //                        print("Failed decoding file.")
-        //                        return
-        //                    }
-        //                    defer {
-        //                        selectedFileURL.stopAccessingSecurityScopedResource()
-        //                    }
-        //                    withAnimation {
-        //                        viewModel.addImportedAlgorithm(algorithm: algorithm)
-        //                    }
-        //                    print("Algorithm imported successfully")
-        //                } else {
-        //                    print("Error occupied. Failed accessing security scoped resource.")
-        //                }
-        //            } catch {
-        //                print("Error occupied: \(error.localizedDescription)")
-        //            }
-        //        }
     }
 }
 
@@ -106,15 +118,6 @@ struct AlgorithmsView_Previews: PreviewProvider {
 }
 
 extension AlgorithmsView {
-    
-    private var userHelpButton: some View {
-        NavigationLink {
-            UserHelpView()
-        } label: {
-            Image(systemName: "questionmark.circle")
-        }
-    }
-    
     private func wrappedAlgorithmsView(_ folder: Folder) -> some View {
         ZStack {
             if folder.wrappedAlgorithms.isEmpty {
@@ -124,12 +127,9 @@ extension AlgorithmsView {
             } else {
                 algorithmsList
             }
-            AddAlgorithmView(editMode: $editMode, folder: folder)
+            AddAlgorithmView(showMoveAlgorithmView: $showMoveSelectedAlgorithmsView, editMode: $editMode, folder: folder)
         }
         .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                userHelpButton
-            }
             ToolbarItem(placement: .navigationBarTrailing) {
                 if editMode == .active || editMode == .transient {
                     Button {
@@ -151,107 +151,101 @@ extension AlgorithmsView {
                     .popover(isPresented: $showEditSheet) {
                         AlgorithmEditView(
                             showEditView: $showEditSheet, sorting: $sorting,
-                            sortingOrder: $sortingOrder, editMode: $editMode, folder: folder
-                        ).frame(width: UIScreen.main.bounds.width / 2.5, height: 320)
+                            sortingOrder: $sortingOrder, editMode: $editMode, showImport: $showImport, folder: folder
+                        ).frame(width: UIScreen.main.bounds.width / 2.5, height: 270)
                     }
+                    
                 }
             }
         }
     }
     
     private var algorithmsList: some View {
-        List(searchResults, id: \.self, selection: $viewModel.listSelection) { algorithm in
-            customNavigationLink(algorithm: algorithm)
-            .listRowBackground(
-                viewModel.selectedAlgorithm == algorithm
-                ? Color.blue.opacity(0.5)
-                : colorScheme == .dark
-                    ? Color.secondaryBackground
-                    : Color.background
-            )
-            .contextMenu {
-                if editMode == .inactive {
-                    // Pin
-                    Button {
-                        
-                    } label: {
-                        Label("Pin Algorithm", systemImage: "pin")
-                    }
-                    // Send a copy
-                    Button {
-                        
-                    } label: {
-                        Label("Send a copy", systemImage: "square.and.arrow.up")
-                    }
-                    // Move
-                    Button {
-                        
-                    } label: {
-                        Label("Move", systemImage: "folder")
-                    }
-                    // Delete
-                    Button(role: .destructive) {
-                        withAnimation {
-                            if algorithm == viewModel.selectedAlgorithm {
-                                viewModel.selectedAlgorithm = nil
+        
+        let pinnedAlgorithms = searchResults.filter { $0.pinned }
+        let unpinnedAlgorithms = searchResults.filter { !$0.pinned }
+        let algorithmList = List(selection: $viewModel.listSelection) {
+            if !pinnedAlgorithms.isEmpty {
+                Section("Pinned") {
+                    ForEach(pinnedAlgorithms, id: \.self) { algorithm in
+                        CustomAlgorithmButton(editMode: $editMode, algorithm: algorithm)
+                            .listRowBackground(
+                                viewModel.selectedAlgorithm == algorithm
+                                ? Color.blue.opacity(0.5)
+                                : colorScheme == .dark
+                                ? Color.secondaryBackground
+                                : Color.background
+                            )
+                            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                Button(role: .destructive) {
+                                    withAnimation {
+                                        if algorithm == viewModel.selectedAlgorithm {
+                                            viewModel.selectedAlgorithm = nil
+                                        }
+                                        viewModel.deleteAlgorithm(algorithm)
+                                    }
+                                } label: {
+                                    Image(systemName: "trash.fill")
+                                }
                             }
-                            viewModel.deleteAlgorithm(algorithm)
-                        }
-                    } label: {
-                        Label("Delete", systemImage: "trash")
+                            .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                                Button(role: .cancel) {
+                                    withAnimation {
+                                        editMode = .transient
+                                        viewModel.togglePinAlgorithm(algorithm)
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                            editMode = .inactive
+                                        }
+                                    }
+                                } label: {
+                                    Image(systemName: "pin.fill")
+                                }.tint(.orange)
+                            }
                     }
                 }
             }
-            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                Button(role: .destructive) {
-                    withAnimation {
-                        if algorithm == viewModel.selectedAlgorithm {
-                            viewModel.selectedAlgorithm = nil
-                        }
-                        viewModel.deleteAlgorithm(algorithm)
+            if !unpinnedAlgorithms.isEmpty {
+                Section("Algorithms") {
+                    ForEach(unpinnedAlgorithms, id: \.self) { algorithm in
+                        CustomAlgorithmButton(editMode: $editMode, algorithm: algorithm)
+                            .listRowBackground(
+                                viewModel.selectedAlgorithm == algorithm
+                                ? Color.blue.opacity(0.5)
+                                : colorScheme == .dark
+                                ? Color.secondaryBackground
+                                : Color.background
+                            )
+                            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                Button(role: .destructive) {
+                                    withAnimation {
+                                        if algorithm == viewModel.selectedAlgorithm {
+                                            viewModel.selectedAlgorithm = nil
+                                        }
+                                        viewModel.deleteAlgorithm(algorithm)
+                                    }
+                                } label: {
+                                    Image(systemName: "trash.fill")
+                                }
+                            }
+                            .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                                Button(role: .cancel) {
+                                    withAnimation {
+                                        editMode = .transient
+                                        viewModel.togglePinAlgorithm(algorithm)
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                            editMode = .inactive
+                                        }
+                                    }
+                                } label: {
+                                    Image(systemName: "pin.fill")
+                                }.tint(.orange)
+                            }
                     }
-                } label: {
-                    Image(systemName: "trash.fill")
                 }
             }
-            .swipeActions(edge: .leading, allowsFullSwipe: true) {
-                Button(role: .cancel) {
-                    
-                } label: {
-                    Image(systemName: "pin.fill")
-                }.tint(.orange)
-            }
         }
-        .listStyle(.insetGrouped)
-        .searchable(text: $searchText)
-    }
-    
-    private func customCell(_ algorithm: Algorithm) -> some View {
-        VStack(alignment: .leading) {
-            Text(algorithm.name)
-                .font(.headline)
-                .foregroundColor(.primary)
-            Text(viewModel.getAlgorithmEditedTimeForTextView(algorithm))
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-        }
-    }
-    
-    private func customNavigationLink(algorithm: Algorithm) -> some View {
-        ZStack {
-            Button {
-                viewModel.selectedAlgorithm = algorithm
-            } label: {
-                HStack {
-                    customCell(algorithm)
-                    Spacer()
-                }
-            }
-            NavigationLink(tag: algorithm, selection: $selectedAlgorithm) {
-                AlgorithmView()
-            } label: {
-                EmptyView()
-            }.hidden()
-        }
+            .listStyle(.insetGrouped)
+            .searchable(text: $searchText)
+        return algorithmList
     }
 }

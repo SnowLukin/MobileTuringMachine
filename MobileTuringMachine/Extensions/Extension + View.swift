@@ -108,24 +108,35 @@ extension View {
                             primaryAction: @escaping (String) -> (),
                             secondaryAction: @escaping () -> ()) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addTextField { field in
-            field.placeholder = hintText
-        }
-        alert.addAction(
-            .init(title: secondaryTitle, style: .cancel) { _ in
-                secondaryAction()
-            }
-        )
         
-        alert.addAction(
-            .init(title: primaryTitle, style: .default) { _ in
-                if let text = alert.textFields?.first?.text {
-                    primaryAction(text)
-                } else {
-                    primaryAction("")
-                }
+        let saveAction = UIAlertAction(title: primaryTitle, style: .default) { _ in
+            if let text = alert.textFields?.first?.text {
+                primaryAction(text)
+            } else {
+                primaryAction("")
             }
-        )
+        }
+        saveAction.isEnabled = false
+        
+        let cancelAction = UIAlertAction(title: secondaryTitle, style: .cancel) { _ in
+            secondaryAction()
+        }
+        
+        alert.addAction(cancelAction)
+        alert.addAction(saveAction)
+        
+        alert.addTextField { textField in
+            
+            NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: OperationQueue.main, using:
+                                                    {_ in
+                let textCount = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines).count ?? 0
+                let textIsNotEmpty = textCount > 0
+                
+                saveAction.isEnabled = textIsNotEmpty
+            })
+            
+            textField.placeholder = hintText
+        }
         
         // Presenting alert
         rootController().present(alert, animated: true)
@@ -136,5 +147,9 @@ extension View {
         guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return .init() }
         guard let root = screen.windows.first?.rootViewController else { return .init() }
         return root
+    }
+    
+    func splitViewPreferredDisplayMode(_ mode: UISplitViewController.DisplayMode) -> some View {
+        self.environment(\.splitViewPreferredDisplayMode, mode)
     }
 }

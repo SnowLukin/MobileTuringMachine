@@ -24,6 +24,7 @@ struct InfoView: View {
                 Section("Name") {
                     TextField("Placeholder", text: $name)
                         .focused($nameIsFocused)
+                        .modifier(RemoveTextTextField(text: $name))
                 }
                 
                 Section("Description") {

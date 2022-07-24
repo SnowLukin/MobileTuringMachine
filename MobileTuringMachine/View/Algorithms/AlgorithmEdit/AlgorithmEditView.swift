@@ -13,7 +13,7 @@ struct AlgorithmEditView: View {
     @Binding var sorting: Sortings
     @Binding var sortingOrder: SortingOrder
     @Binding var editMode: EditMode
-    
+    @Binding var showImport: Bool
     
     let folder: Folder
     
@@ -29,7 +29,6 @@ struct AlgorithmEditView: View {
             Form {
                 importButton
                 Section {
-                    galleryButton
                     selectButton
                     sortButton
                 }
@@ -52,7 +51,7 @@ struct AlgorithmEditView_Previews: PreviewProvider {
         viewModel.addFolder(name: "Algorithms")
         let folder = viewModel.dataManager.savedFolders[0]
         return StatefulPreviewWrapper(true) {
-            AlgorithmEditView(showEditView: $0, sorting: .constant(.dateEdited), sortingOrder: .constant(.up), editMode: .constant(.inactive), folder: folder)
+            AlgorithmEditView(showEditView: $0, sorting: .constant(.dateEdited), sortingOrder: .constant(.up), editMode: .constant(.inactive), showImport: .constant(false), folder: folder)
         }
     }
 }
@@ -61,7 +60,10 @@ extension AlgorithmEditView {
     
     private var importButton: some View {
         Button {
-            
+            withAnimation {
+                showImport.toggle()
+                showEditView.toggle()
+            }
         } label: {
             HStack {
                 Text("Import Algorithm")
@@ -169,17 +171,6 @@ extension AlgorithmEditView {
         }
     }
     
-    private var galleryButton: some View {
-        Button {
-            
-        } label: {
-            HStack {
-                Text("View as Gallery")
-                Spacer()
-                Image(systemName: "square.grid.2x2")
-            }.foregroundColor(.primary)
-        }
-    }
     private var folderTitle: some View {
         HStack {
             Image(systemName: "folder.fill")

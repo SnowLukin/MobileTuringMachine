@@ -10,6 +10,10 @@
 		D704881F2879BC4800681F4E /* FolderPhoneMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D704881E2879BC4800681F4E /* FolderPhoneMenuView.swift */; };
 		D70488252879BFEF00681F4E /* AlgorithmsPhoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70488242879BFEF00681F4E /* AlgorithmsPhoneView.swift */; };
 		D70488272879C18100681F4E /* FolderAlgorithmPhoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70488262879C18100681F4E /* FolderAlgorithmPhoneView.swift */; };
+		D704882E287D9D2F00681F4E /* FolderPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D704882D287D9D2F00681F4E /* FolderPopoverView.swift */; };
+		D704883228805B8D00681F4E /* MoveFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D704883128805B8D00681F4E /* MoveFolderView.swift */; };
+		D70488342880A00300681F4E /* CustomFolderNavigationLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70488332880A00200681F4E /* CustomFolderNavigationLink.swift */; };
+		D70488362881923400681F4E /* DeviceRotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70488352881923400681F4E /* DeviceRotation.swift */; };
 		D7057FAF284A8CC70008E7E3 /* Extension + View.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7057FAE284A8CC70008E7E3 /* Extension + View.swift */; };
 		D7312B102862D88500AF5261 /* AlgorithmsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312B0F2862D88500AF5261 /* AlgorithmsView.swift */; };
 		D7312B122862DD1700AF5261 /* AlgorithmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7312B112862DD1700AF5261 /* AlgorithmView.swift */; };
@@ -32,7 +36,6 @@
 		D76E62E12871AD3300C150C7 /* Folder+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76E62DF2871AD3300C150C7 /* Folder+CoreDataClass.swift */; };
 		D76E62E22871AD3300C150C7 /* Folder+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76E62E02871AD3300C150C7 /* Folder+CoreDataProperties.swift */; };
 		D76E62E42871B09D00C150C7 /* FoldersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76E62E32871B09D00C150C7 /* FoldersView.swift */; };
-		D7753D15286D150200394826 /* UserHelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7753D14286D150200394826 /* UserHelpView.swift */; };
 		D7753D20286EECF000394826 /* AlgorithmEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7753D1F286EECF000394826 /* AlgorithmEditView.swift */; };
 		D7753D22286EF7EE00394826 /* AddAlgorithmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7753D21286EF7EE00394826 /* AddAlgorithmView.swift */; };
 		D7753D27286F658B00394826 /* SheetPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7753D26286F658B00394826 /* SheetPresentation.swift */; };
@@ -59,6 +62,17 @@
 		D781E8C8286BD21900E08687 /* StateQ+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D781E8BC286BD21900E08687 /* StateQ+CoreDataProperties.swift */; };
 		D781E8C9286BD21900E08687 /* Tape+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D781E8BD286BD21900E08687 /* Tape+CoreDataClass.swift */; };
 		D781E8CA286BD21900E08687 /* Tape+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D781E8BE286BD21900E08687 /* Tape+CoreDataProperties.swift */; };
+		D794437228833D2C0078C8B0 /* Extension + EnvironmentValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = D794437128833D2C0078C8B0 /* Extension + EnvironmentValues.swift */; };
+		D794437428833D5C0078C8B0 /* CustomSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D794437328833D5C0078C8B0 /* CustomSidebar.swift */; };
+		D794437A288714F30078C8B0 /* RemoveTextTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7944379288714F30078C8B0 /* RemoveTextTextField.swift */; };
+		D7944383288C21690078C8B0 /* CustomDisclosureGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7944382288C21690078C8B0 /* CustomDisclosureGroup.swift */; };
+		D7944388288C27CC0078C8B0 /* FolderCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7944387288C27CC0078C8B0 /* FolderCellView.swift */; };
+		D794438D288C64110078C8B0 /* AlgorithmJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = D794438C288C64100078C8B0 /* AlgorithmJSON.swift */; };
+		D794438F288C64320078C8B0 /* TapeJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = D794438E288C64320078C8B0 /* TapeJSON.swift */; };
+		D7944391288C64450078C8B0 /* StateQJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7944390288C64450078C8B0 /* StateQJSON.swift */; };
+		D7944393288C64AB0078C8B0 /* OptionJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7944392288C64AB0078C8B0 /* OptionJSON.swift */; };
+		D7944395288C64B70078C8B0 /* CombinationJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7944394288C64B70078C8B0 /* CombinationJSON.swift */; };
+		D7944397288D63850078C8B0 /* CustomAlgorithmButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7944396288D63840078C8B0 /* CustomAlgorithmButton.swift */; };
 		D7C1E0EE285B4695005662A9 /* HexagonShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C1E0ED285B4695005662A9 /* HexagonShape.swift */; };
 		D7C1E0F2285B61B7005662A9 /* StatesHoneyGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C1E0F1285B61B6005662A9 /* StatesHoneyGrid.swift */; };
 		D7C1E0F4285B6FC3005662A9 /* StateHoneyGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C1E0F3285B6FC3005662A9 /* StateHoneyGridCell.swift */; };
@@ -79,6 +93,10 @@
 		D704881E2879BC4800681F4E /* FolderPhoneMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderPhoneMenuView.swift; sourceTree = "<group>"; };
 		D70488242879BFEF00681F4E /* AlgorithmsPhoneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorithmsPhoneView.swift; sourceTree = "<group>"; };
 		D70488262879C18100681F4E /* FolderAlgorithmPhoneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderAlgorithmPhoneView.swift; sourceTree = "<group>"; };
+		D704882D287D9D2F00681F4E /* FolderPopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderPopoverView.swift; sourceTree = "<group>"; };
+		D704883128805B8D00681F4E /* MoveFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveFolderView.swift; sourceTree = "<group>"; };
+		D70488332880A00200681F4E /* CustomFolderNavigationLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFolderNavigationLink.swift; sourceTree = "<group>"; };
+		D70488352881923400681F4E /* DeviceRotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceRotation.swift; sourceTree = "<group>"; };
 		D7057FAE284A8CC70008E7E3 /* Extension + View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension + View.swift"; sourceTree = "<group>"; };
 		D7312B0F2862D88500AF5261 /* AlgorithmsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorithmsView.swift; sourceTree = "<group>"; };
 		D7312B112862DD1700AF5261 /* AlgorithmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorithmView.swift; sourceTree = "<group>"; };
@@ -102,7 +120,6 @@
 		D76E62DF2871AD3300C150C7 /* Folder+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folder+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D76E62E02871AD3300C150C7 /* Folder+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folder+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D76E62E32871B09D00C150C7 /* FoldersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoldersView.swift; sourceTree = "<group>"; };
-		D7753D14286D150200394826 /* UserHelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserHelpView.swift; sourceTree = "<group>"; };
 		D7753D1F286EECF000394826 /* AlgorithmEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorithmEditView.swift; sourceTree = "<group>"; };
 		D7753D21286EF7EE00394826 /* AddAlgorithmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAlgorithmView.swift; sourceTree = "<group>"; };
 		D7753D26286F658B00394826 /* SheetPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetPresentation.swift; sourceTree = "<group>"; };
@@ -129,6 +146,17 @@
 		D781E8BC286BD21900E08687 /* StateQ+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StateQ+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D781E8BD286BD21900E08687 /* Tape+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tape+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D781E8BE286BD21900E08687 /* Tape+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tape+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D794437128833D2C0078C8B0 /* Extension + EnvironmentValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension + EnvironmentValues.swift"; sourceTree = "<group>"; };
+		D794437328833D5C0078C8B0 /* CustomSidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSidebar.swift; sourceTree = "<group>"; };
+		D7944379288714F30078C8B0 /* RemoveTextTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveTextTextField.swift; sourceTree = "<group>"; };
+		D7944382288C21690078C8B0 /* CustomDisclosureGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDisclosureGroup.swift; sourceTree = "<group>"; };
+		D7944387288C27CC0078C8B0 /* FolderCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderCellView.swift; sourceTree = "<group>"; };
+		D794438C288C64100078C8B0 /* AlgorithmJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorithmJSON.swift; sourceTree = "<group>"; };
+		D794438E288C64320078C8B0 /* TapeJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapeJSON.swift; sourceTree = "<group>"; };
+		D7944390288C64450078C8B0 /* StateQJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateQJSON.swift; sourceTree = "<group>"; };
+		D7944392288C64AB0078C8B0 /* OptionJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionJSON.swift; sourceTree = "<group>"; };
+		D7944394288C64B70078C8B0 /* CombinationJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinationJSON.swift; sourceTree = "<group>"; };
+		D7944396288D63840078C8B0 /* CustomAlgorithmButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlgorithmButton.swift; sourceTree = "<group>"; };
 		D7C1E0ED285B4695005662A9 /* HexagonShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexagonShape.swift; sourceTree = "<group>"; };
 		D7C1E0F1285B61B6005662A9 /* StatesHoneyGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatesHoneyGrid.swift; sourceTree = "<group>"; };
 		D7C1E0F3285B6FC3005662A9 /* StateHoneyGridCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateHoneyGridCell.swift; sourceTree = "<group>"; };
@@ -259,7 +287,10 @@
 		D76E62D42871A90B00C150C7 /* Folders */ = {
 			isa = PBXGroup;
 			children = (
-				D76E62E32871B09D00C150C7 /* FoldersView.swift */,
+				D7944384288C27560078C8B0 /* FoldersView */,
+				D704882D287D9D2F00681F4E /* FolderPopoverView.swift */,
+				D704883128805B8D00681F4E /* MoveFolderView.swift */,
+				D70488332880A00200681F4E /* CustomFolderNavigationLink.swift */,
 			);
 			path = Folders;
 			sourceTree = "<group>";
@@ -313,6 +344,8 @@
 				D74428912854AA130073C9E2 /* TapButtonStyle.swift */,
 				D7C1E0F8285DED61005662A9 /* RootPresentationEnvironmentKey.swift */,
 				D7312B132862EF8500AF5261 /* SizePreferenceKey.swift */,
+				D70488352881923400681F4E /* DeviceRotation.swift */,
+				D7944379288714F30078C8B0 /* RemoveTextTextField.swift */,
 				D7753D25286F656200394826 /* SheetUIKit */,
 			);
 			path = Helpers;
@@ -337,15 +370,45 @@
 			isa = PBXGroup;
 			children = (
 				D7312B0F2862D88500AF5261 /* AlgorithmsView.swift */,
+				D7944396288D63840078C8B0 /* CustomAlgorithmButton.swift */,
 				D7753D1E286EEC8B00394826 /* AlgorithmEdit */,
 				D7312B112862DD1700AF5261 /* AlgorithmView.swift */,
 				D7312B152862F6ED00AF5261 /* InfoView.swift */,
 				D78098C5284F47BE00C4DDF0 /* ConfigurationsView.swift */,
 				D78098BB284E2A4400C4DDF0 /* ChooseStartStateView.swift */,
-				D7753D14286D150200394826 /* UserHelpView.swift */,
 				D7442899285754E20073C9E2 /* PlayButton */,
 			);
 			path = Algorithms;
+			sourceTree = "<group>";
+		};
+		D7944381288C213F0078C8B0 /* CustomViews */ = {
+			isa = PBXGroup;
+			children = (
+				D794437328833D5C0078C8B0 /* CustomSidebar.swift */,
+				D7944382288C21690078C8B0 /* CustomDisclosureGroup.swift */,
+			);
+			path = CustomViews;
+			sourceTree = "<group>";
+		};
+		D7944384288C27560078C8B0 /* FoldersView */ = {
+			isa = PBXGroup;
+			children = (
+				D76E62E32871B09D00C150C7 /* FoldersView.swift */,
+				D7944387288C27CC0078C8B0 /* FolderCellView.swift */,
+			);
+			path = FoldersView;
+			sourceTree = "<group>";
+		};
+		D794438B288C63DE0078C8B0 /* ShareStructs */ = {
+			isa = PBXGroup;
+			children = (
+				D794438C288C64100078C8B0 /* AlgorithmJSON.swift */,
+				D794438E288C64320078C8B0 /* TapeJSON.swift */,
+				D7944390288C64450078C8B0 /* StateQJSON.swift */,
+				D7944392288C64AB0078C8B0 /* OptionJSON.swift */,
+				D7944394288C64B70078C8B0 /* CombinationJSON.swift */,
+			);
+			path = ShareStructs;
 			sourceTree = "<group>";
 		};
 		D7C1E0EC285B4664005662A9 /* HoneyGrid */ = {
@@ -403,6 +466,7 @@
 		D7CF6DDD27DE28960010949B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				D7944381288C213F0078C8B0 /* CustomViews */,
 				D704881D2879BC2300681F4E /* IphoneFolderAlgorithm */,
 				D76E62D42871A90B00C150C7 /* Folders */,
 				D78098B8284E211400C4DDF0 /* Algorithms */,
@@ -423,6 +487,7 @@
 		D7CF6DE127DE28F30010949B /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D794438B288C63DE0078C8B0 /* ShareStructs */,
 				D7753D2E286FAA9300394826 /* Sortings */,
 				D7312B262866234C00AF5261 /* AlgorithmsData.xcdatamodeld */,
 				D76E62BF287199D100C150C7 /* Folder */,
@@ -443,6 +508,7 @@
 				D7057FAE284A8CC70008E7E3 /* Extension + View.swift */,
 				D7312B1A28632DBA00AF5261 /* Extension + FileManager.swift */,
 				D7312B1D286357AD00AF5261 /* Extension + UTType.swift */,
+				D794437128833D2C0078C8B0 /* Extension + EnvironmentValues.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -517,7 +583,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7753D15286D150200394826 /* UserHelpView.swift in Sources */,
 				D7C1E0EE285B4695005662A9 /* HexagonShape.swift in Sources */,
 				D7312B1928631B7D00AF5261 /* DocumentManager.swift in Sources */,
 				D7312B1E286357AD00AF5261 /* Extension + UTType.swift in Sources */,
@@ -532,31 +597,41 @@
 				D78098B5284E1AA800C4DDF0 /* TapesWorkView.swift in Sources */,
 				D744288E285385E60073C9E2 /* ChooseCharView.swift in Sources */,
 				D76E62E22871AD3300C150C7 /* Folder+CoreDataProperties.swift in Sources */,
+				D794438F288C64320078C8B0 /* TapeJSON.swift in Sources */,
 				D74428922854AA130073C9E2 /* TapButtonStyle.swift in Sources */,
 				D7CF6DE727DE312D0010949B /* TapeView.swift in Sources */,
+				D794437428833D5C0078C8B0 /* CustomSidebar.swift in Sources */,
 				D70488272879C18100681F4E /* FolderAlgorithmPhoneView.swift in Sources */,
+				D704882E287D9D2F00681F4E /* FolderPopoverView.swift in Sources */,
+				D70488362881923400681F4E /* DeviceRotation.swift in Sources */,
 				D7312B282866234D00AF5261 /* AlgorithmsData.xcdatamodeld in Sources */,
 				D7312B142862EF8500AF5261 /* SizePreferenceKey.swift in Sources */,
 				D781E8C3286BD21900E08687 /* TapeComponent+CoreDataClass.swift in Sources */,
+				D70488342880A00300681F4E /* CustomFolderNavigationLink.swift in Sources */,
 				D704881F2879BC4800681F4E /* FolderPhoneMenuView.swift in Sources */,
 				D7C1E0F9285DED61005662A9 /* RootPresentationEnvironmentKey.swift in Sources */,
 				D781E8C4286BD21900E08687 /* TapeComponent+CoreDataProperties.swift in Sources */,
+				D704883228805B8D00681F4E /* MoveFolderView.swift in Sources */,
 				D781E8C9286BD21900E08687 /* Tape+CoreDataClass.swift in Sources */,
 				D781E8C7286BD21900E08687 /* StateQ+CoreDataClass.swift in Sources */,
 				D70488252879BFEF00681F4E /* AlgorithmsPhoneView.swift in Sources */,
 				D78098A4284DC83900C4DDF0 /* BindingPreviewWrapper.swift in Sources */,
+				D794437A288714F30078C8B0 /* RemoveTextTextField.swift in Sources */,
 				D7753D22286EF7EE00394826 /* AddAlgorithmView.swift in Sources */,
 				D7C1E0F2285B61B7005662A9 /* StatesHoneyGrid.swift in Sources */,
 				D7753D30286FAAA600394826 /* Sortings.swift in Sources */,
+				D7944393288C64AB0078C8B0 /* OptionJSON.swift in Sources */,
 				D744289B285754FE0073C9E2 /* PlayStack.swift in Sources */,
 				D781E8CA286BD21900E08687 /* Tape+CoreDataProperties.swift in Sources */,
 				D7753D20286EECF000394826 /* AlgorithmEditView.swift in Sources */,
 				D780989D284CEC4E00C4DDF0 /* CombinationSettings.swift in Sources */,
+				D794438D288C64110078C8B0 /* AlgorithmJSON.swift in Sources */,
 				D7CF6DEF27DE606F0010949B /* Extension + Color.swift in Sources */,
 				D7C1E0F4285B6FC3005662A9 /* StateHoneyGridCell.swift in Sources */,
 				D74428982854EBC40073C9E2 /* ChooseStateView.swift in Sources */,
 				D78098C6284F47BE00C4DDF0 /* ConfigurationsView.swift in Sources */,
 				D7CF6DF127DE64000010949B /* ConfigTapesView.swift in Sources */,
+				D7944395288C64B70078C8B0 /* CombinationJSON.swift in Sources */,
 				D780989B284CEA2100C4DDF0 /* CombinationsListView.swift in Sources */,
 				D7753D27286F658B00394826 /* SheetPresentation.swift in Sources */,
 				D780989F284CF8F900C4DDF0 /* CombinationView.swift in Sources */,
@@ -565,6 +640,7 @@
 				D7312B102862D88500AF5261 /* AlgorithmsView.swift in Sources */,
 				D781E8C8286BD21900E08687 /* StateQ+CoreDataProperties.swift in Sources */,
 				D7442890285389DC0073C9E2 /* ChooseDirectionView.swift in Sources */,
+				D7944388288C27CC0078C8B0 /* FolderCellView.swift in Sources */,
 				D78098B7284E1CF200C4DDF0 /* RoundedCornersBackground.swift in Sources */,
 				D7CF6DEC27DE53B60010949B /* InputView.swift in Sources */,
 				D7CF6DD227DE288A0010949B /* ContentView.swift in Sources */,
@@ -572,14 +648,18 @@
 				D781E8C6286BD21900E08687 /* Option+CoreDataProperties.swift in Sources */,
 				D7312B162862F6ED00AF5261 /* InfoView.swift in Sources */,
 				D781E8C5286BD21900E08687 /* Option+CoreDataClass.swift in Sources */,
+				D794437228833D2C0078C8B0 /* Extension + EnvironmentValues.swift in Sources */,
 				D744289D285759B10073C9E2 /* InfoPopupView.swift in Sources */,
 				D78098B1284E150200C4DDF0 /* Tapes.swift in Sources */,
 				D76E62CD28719CF200C150C7 /* Algorithm+CoreDataProperties.swift in Sources */,
 				D7312B122862DD1700AF5261 /* AlgorithmView.swift in Sources */,
 				D781E8C0286BD21900E08687 /* Combination+CoreDataProperties.swift in Sources */,
+				D7944383288C21690078C8B0 /* CustomDisclosureGroup.swift in Sources */,
+				D7944391288C64450078C8B0 /* StateQJSON.swift in Sources */,
 				D7CF6DF527DE731F0010949B /* TapeView + ConfigTapesView.swift in Sources */,
 				D7CF6DD027DE288A0010949B /* MobileTuringMachineApp.swift in Sources */,
 				D7057FAF284A8CC70008E7E3 /* Extension + View.swift in Sources */,
+				D7944397288D63850078C8B0 /* CustomAlgorithmButton.swift in Sources */,
 				D7753D32286FAAAE00394826 /* SortingOrder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

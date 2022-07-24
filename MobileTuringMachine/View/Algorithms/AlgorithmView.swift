@@ -20,21 +20,21 @@ struct AlgorithmView: View {
         if let algorithm = viewModel.selectedAlgorithm {
             wrappedAlgorithmView(algorithm)
                 .navigationTitle("\(algorithm.name)")
+                .fileExporter(
+                    isPresented: $showExport,
+                    document: DocumentManager(algorithm: viewModel.convertToStruct(algorithm)),
+                    contentType: .mtm
+                ) { result in
+                    switch result {
+                    case .success:
+                        print("File successfully exported")
+                    case .failure:
+                        print("Error occupied. Failed exporting the file.")
+                    }
+                }
         } else {
             initualView(viewModel.selectedFolder)
         }
-        //        .fileExporter(
-        //            isPresented: $showExport,
-        //            document: DocumentManager(algorithm: viewModel.getAlgorithm(algorithm)),
-        //            contentType: .mtm
-        //        ) { result in
-        //            switch result {
-        //            case .success:
-        //                print("File successfully exported")
-        //            case .failure:
-        //                print("Error occupied. Failed exporting the file.")
-        //            }
-        //        }
     }
 }
 

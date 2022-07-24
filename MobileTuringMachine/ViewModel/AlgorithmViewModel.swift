@@ -16,6 +16,8 @@ class AlgorithmViewModel: ObservableObject {
     
     let dataManager = DataManager.shared
     let userDefaults = UserDefaults.standard
+    
+    @Published var isFullSecondaryScreen = false
     @Published var listSelection = Set<Algorithm>()
     @Published var selectedFolder: Folder? {
         didSet {
@@ -43,7 +45,6 @@ class AlgorithmViewModel: ObservableObject {
     }
     
     required init() {
-        print(userDefaults.value(forKey: "folder") ?? "NIL")
         if !dataManager.isEmpty() {
             dataManager.getFolders()
             guard let startFolderName = userDefaults.value(forKey: "folder") as? String else {
@@ -73,20 +74,167 @@ class AlgorithmViewModel: ObservableObject {
             }
             selectedFolder = algorithmsFolder
         }
-//        if dataManager.isEmpty() {
-//            print("Setting default data...")
-//            addFolder(name: "Algorithms")
-//            dataManager.applyChanges()
-//        } else {
-//            print("Loading saved data...")
-//            dataManager.getFolders()
-//        }
+    }
+}
+
+extension AlgorithmViewModel {
+    // MARK: Export
+    func convertToStruct(_ algorithm: Algorithm) -> AlgorithmJSON {
+        var tapes: [TapeJSON] = []
+        var states: [StateQJSON] = []
+        for tape in algorithm.wrappedTapes {
+            tapes.append(convertToStruct(tape))
+        }
+        for state in algorithm.wrappedStates {
+            states.append(convertToStruct(state))
+        }
+        return AlgorithmJSON(name: algorithm.name, algorithmDescription: algorithm.algorithmDescription, states: states, tapes: tapes)
+    }
+    private func convertToStruct(_ tape: Tape) -> TapeJSON {
+        TapeJSON(nameID: tape.nameID, headIndex: tape.headIndex, alphabet: tape.alphabet, input: tape.input)
+    }
+    private func convertToStruct(_ state: StateQ) -> StateQJSON {
+        var options: [OptionJSON] = []
+        for option in state.wrappedOptions {
+            options.append(convertToStruct(option))
+        }
+        return StateQJSON(
+            id: state.id!,
+            nameID: state.nameID,
+            isForReset: state.isForReset,
+            isStarting: state.isStarting,
+            options: options
+        )
+    }
+    private func convertToStruct(_ option: Option) -> OptionJSON {
+        var combinations: [CombinationJSON] = []
+        for combination in option.wrappedCombinations {
+            combinations.append(convertToStruct(combination))
+        }
+        return OptionJSON(id: option.id, toStateID: option.toStateID, combinations: combinations)
+    }
+    private func convertToStruct(_ combination: Combination) -> CombinationJSON {
+        CombinationJSON(
+            id: combination.id,
+            character: combination.character,
+            directionID: combination.directionID,
+            toCharacter: combination.toCharacter
+        )
+    }
+    
+    // MARK: Import
+    func importAlgorithm(_ algorithm: AlgorithmJSON, to folder: Folder) {
+        let algorithmEntity = Algorithm(context: dataManager.container.viewContext)
+        algorithmEntity.initValues(
+            name: algorithm.name,
+            algorithmDescription: algorithm.algorithmDescription,
+            folder: folder,
+            states: [],
+            tapes: []
+        )
+        
+        for tape in algorithm.tapes {
+            importTape(tape, to: algorithmEntity)
+        }
+        for state in algorithm.states {
+            importState(state, to: algorithmEntity)
+        }
+        
+        folder.addToAlgorithms(algorithmEntity)
+        dataManager.applyChanges()
+        objectWillChange.send()
+    }
+    private func importTape(_ tape: TapeJSON, to algorithm: Algorithm) {
+        let tapeEntity = Tape(context: dataManager.container.viewContext)
+        tapeEntity.initValues(
+            nameID: Int(tape.nameID),
+            alphabet: tape.alphabet,
+            input: tape.input,
+            headIndex: Int(tape.headIndex),
+            components: [],
+            algorithm: algorithm
+        )
+        addComponent(tape: tapeEntity)
+        updateComponents(for: tapeEntity)
+        
+        algorithm.addToTapes(tapeEntity)
+    }
+    private func importState(_ state: StateQJSON, to algorithm: Algorithm) {
+        let stateEntity = StateQ(context: dataManager.container.viewContext)
+        stateEntity.initValues(
+            id: state.id,
+            nameID: Int(state.nameID),
+            isStarting: state.isStarting,
+            isForReset: state.isForReset,
+            options: [],
+            algorithm: algorithm
+        )
+        for option in state.options {
+            importOption(option, to: stateEntity)
+        }
+        algorithm.addToStates(stateEntity)
+    }
+    private func importOption(_ option: OptionJSON, to state: StateQ) {
+        let optionEntity = Option(context: dataManager.container.viewContext)
+        optionEntity.initValues(id: Int(option.id), toStateID: option.toStateID, combinations: [], state: state)
+        for combination in option.combinations {
+            importCombination(combination, to: optionEntity)
+        }
+        state.addToOptions(optionEntity)
+    }
+    private func importCombination(_ combination: CombinationJSON, to option: Option) {
+        let combinationEntity = Combination(context: dataManager.container.viewContext)
+        combinationEntity.initValues(id: Int(combination.id), character: combination.character, directionID: Int(combination.directionID), option: option)
+        option.addToCombinations(combinationEntity)
     }
 }
 
 extension AlgorithmViewModel {
     
-    func handleAddingNewFolder(name newFolderName: String) -> Bool {
+    func togglePinAlgorithm(_ algorithm: Algorithm) {
+        algorithm.pinned.toggle()
+        dataManager.applyChanges()
+        objectWillChange.send()
+    }
+    
+    func moveFolder(_ folder: Folder, to destination: Folder) {
+        if let parent = folder.parentFolder {
+            parent.removeFromSubFolders(folder)
+        }
+        destination.addToSubFolders(folder)
+        dataManager.applyChanges()
+        objectWillChange.send()
+    }
+    
+    func moveAlgorithms(_ algorithms: [Algorithm], to destination: Folder) {
+        guard let folder = algorithms.first?.folder else {
+            print("Couldnt find folder.")
+            return
+        }
+        for algorithm in algorithms {
+            folder.removeFromAlgorithms(algorithm)
+            destination.addToAlgorithms(algorithm)
+        }
+        dataManager.applyChanges()
+        objectWillChange.send()
+    }
+    
+    func handleRenamingFolder(_ folder: Folder, newName: String) -> Bool {
+        let trimmedFolderNewName = newName.trimmingCharacters(in: .whitespaces)
+        for savedFolder in dataManager.savedFolders.filter({ $0 != folder }) {
+            let trimmedName = savedFolder.name.trimmingCharacters(in: .whitespaces)
+            if trimmedName == trimmedFolderNewName {
+                return true
+            }
+            continue
+        }
+        folder.name = newName
+        dataManager.applyChanges()
+        objectWillChange.send()
+        return false
+    }
+    
+    func handleAddingNewFolder(name newFolderName: String, parentFolder: Folder? = nil) -> Bool {
         let trimmedNewFolderNameResult = newFolderName.trimmingCharacters(in: .whitespaces)
         if trimmedNewFolderNameResult.isEmpty {
             return true
@@ -99,13 +247,13 @@ extension AlgorithmViewModel {
             }
             continue
         }
-        addFolder(name: newFolderName)
+        addFolder(name: newFolderName, parentFolder: parentFolder)
         return false
     }
     
     func addFolder(name: String, parentFolder: Folder? = nil) {
         let folder = Folder(context: dataManager.container.viewContext)
-        folder.initValues(name: name)
+        folder.initValues(name: name, parentFolder: parentFolder)
         
         dataManager.applyChanges()
         objectWillChange.send()
@@ -321,7 +469,6 @@ extension AlgorithmViewModel {
             let combinations = getPossibleCombinations(for: state)
             addOptions(to: state, combinations: combinations)
         }
-        
         algorithm.editedDate = Date.now
         dataManager.applyChanges()
         objectWillChange.send()
@@ -464,9 +611,10 @@ extension AlgorithmViewModel {
     }
     
     func deleteTape(_ tape: Tape) {
-        tape.algorithm.removeFromTapes(tape)
+        let algorithm = tape.algorithm
+        algorithm.removeFromTapes(tape)
         dataManager.container.viewContext.delete(tape)
-        updateStates(for: tape.algorithm)
+        updateStates(for: algorithm)
         dataManager.applyChanges()
         objectWillChange.send()
     }

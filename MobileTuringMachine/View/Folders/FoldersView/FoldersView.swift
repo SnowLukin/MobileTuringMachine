@@ -11,6 +11,7 @@ import UIKit
 struct FoldersView: View {
     @EnvironmentObject private var viewModel: AlgorithmViewModel
     @Environment(\.colorScheme) private var colorScheme
+    @State private var editMode: EditMode = .inactive
     @State private var showNameTakenAlert: Bool = false
     @State private var selectedFolder: Folder?
     
@@ -20,16 +21,28 @@ struct FoldersView: View {
             addFolderButton
         }
         .navigationTitle("Folders")
+        .onAppear {
+            selectedFolder = viewModel.selectedFolder
+        }
         .onChange(of: viewModel.selectedFolder) { newValue in
             selectedFolder = newValue
         }
+        .environment(\.editMode, $editMode)
         // Edit folders
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    
+                    if editMode != .active {
+                        withAnimation {
+                            editMode = .active
+                        }
+                    } else {
+                        withAnimation {
+                            editMode = .inactive
+                        }
+                    }
                 } label: {
-                    Text("Edit")
+                    Text(editMode != .active ? "Edit" : "Done")
                 }
             }
         }
@@ -53,41 +66,20 @@ struct FoldersView_Previews: PreviewProvider {
 extension FoldersView {
     
     private var folderPadList: some View {
-        List(viewModel.dataManager.savedFolders) { folder in
-            customNavigationLink(folder: folder)
-                .listRowBackground(
-                    viewModel.selectedFolder == folder
-                    ? Color.blue.opacity(0.5)
-                    : colorScheme == .dark
-                        ? Color.secondaryBackground
-                        : Color.background
-                )
-        }
-        .listStyle(.sidebar)
-    }
-    
-    private func customNavigationLink(folder: Folder) -> some View {
-        ZStack {
-            Button {
-                viewModel.selectedFolder = folder
-            } label: {
-                HStack {
-                    Label {
-                        Text(folder.name)
-                            .foregroundColor(.primary)
-                    } icon: {
-                        Image(systemName: "folder")
-                            .foregroundColor(.orange)
-                    }
-                    Spacer()
-                }
-            }
-            NavigationLink(tag: folder, selection: $selectedFolder) {
-                AlgorithmsView()
-            } label: {
-                EmptyView()
-            }.hidden()
-        }
+        
+        CustomExpandableList(selection: $selectedFolder, editMode: $editMode, folders: viewModel.dataManager.savedFolders.filter { $0.parentFolder == nil })
+        
+//        List(viewModel.dataManager.savedFolders.filter { $0.parentFolder == nil }, children: \.optionalSubFolders) { folder in
+//            CustomFolderNavigationLink(editMode: $editMode, selectedFolder: $selectedFolder, folder: folder)
+//                .listRowBackground(
+//                    viewModel.selectedFolder == folder
+//                    ? Color.blue.opacity(0.5)
+//                    : colorScheme == .dark
+//                        ? Color.secondaryBackground
+//                        : Color.background
+//                )
+//        }
+//        .listStyle(.insetGrouped)
     }
     
     private var addFolderButton: some View {
@@ -100,9 +92,7 @@ extension FoldersView {
                         withAnimation {
                             showNameTakenAlert = viewModel.handleAddingNewFolder(name: newFolderName)
                         }
-                    } secondaryAction: {
-                        // Nothing
-                    }
+                    } secondaryAction: {}
                 } label: {
                     Image(systemName: "folder.badge.plus")
                         .font(.title2)

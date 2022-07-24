@@ -10,9 +10,10 @@ import SwiftUI
 struct AddAlgorithmView: View {
     @EnvironmentObject private var viewModel: AlgorithmViewModel
     @Environment(\.colorScheme) private var colorScheme
+    @State private var showPopover = false
+    @State private var showCustomSheet = false
+    @Binding var showMoveAlgorithmView: Bool
     @Binding var editMode: EditMode
-    @State private var showPopover: Bool = false
-    @State private var showCustomSheet: Bool = false
     
     let folder: Folder
     
@@ -36,9 +37,9 @@ struct AddAlgorithmView: View {
                     if editMode == .active {
                         HStack {
                             Button {
-                                
+                                showMoveAlgorithmView.toggle()
                             } label: {
-                                Text("Move")
+                                Text(viewModel.listSelection.isEmpty ? "Move all" : "Move")
                             }.padding(.horizontal)
                             
                             Spacer()
@@ -66,7 +67,7 @@ struct AddAlgorithmView_Previews: PreviewProvider {
         let viewModel = AlgorithmViewModel()
         viewModel.addFolder(name: "Algorithms")
         let folder = viewModel.dataManager.savedFolders[0]
-        return AddAlgorithmView(editMode: .constant(.inactive), folder: folder)
+        return AddAlgorithmView(showMoveAlgorithmView: .constant(false), editMode: .constant(.inactive), folder: folder)
             .environmentObject(AlgorithmViewModel())
     }
 }

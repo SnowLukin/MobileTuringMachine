@@ -10,6 +10,7 @@ import SwiftUI
 struct FolderPhoneView: View {
     @EnvironmentObject private var viewModel: AlgorithmViewModel
     @Environment(\.colorScheme) private var colorScheme
+    @State private var editMode: EditMode = .inactive
     @State private var showNameTakenAlert: Bool = false
     @State private var selectedFolder: Folder?
     @Binding var showMenu: Bool
@@ -33,6 +34,7 @@ struct FolderPhoneView: View {
                 .ignoresSafeArea(.container, edges: .vertical)
         )
         .frame(maxWidth: .infinity, alignment: .leading)
+        .environment(\.editMode, $editMode)
         .navigationViewStyle(.stack)
     }
 }
@@ -54,7 +56,7 @@ struct FolderPhoneMenuView_Previews: PreviewProvider {
 extension FolderPhoneView {
     private var folderPhoneList: some View {
         List(viewModel.dataManager.savedFolders) { folder in
-            customNavigationLink(folder: folder)
+            CustomFolderNavigationLinkPhone(showMenu: $showMenu, editMode: $editMode, folder: folder)
                 .listRowBackground(
                     viewModel.selectedFolder == folder
                     ? Color.blue.opacity(0.5)
@@ -62,27 +64,6 @@ extension FolderPhoneView {
                         ? Color.secondaryBackground
                         : Color.background
                 )
-        }
-    }
-    private func customNavigationLink(folder: Folder) -> some View {
-        ZStack {
-            Button {
-                withAnimation {
-                    viewModel.selectedFolder = folder
-                    showMenu.toggle()
-                }
-            } label: {
-                HStack {
-                    Label {
-                        Text(folder.name)
-                            .foregroundColor(.primary)
-                    } icon: {
-                        Image(systemName: "folder")
-                            .foregroundColor(.orange)
-                    }
-                    Spacer()
-                }
-            }
         }
     }
     private var addFolderButton: some View {
@@ -97,9 +78,7 @@ extension FolderPhoneView {
                         withAnimation {
                             showNameTakenAlert = viewModel.handleAddingNewFolder(name: newFolderName)
                         }
-                    } secondaryAction: {
-                        // Nothing
-                    }
+                    } secondaryAction: {}
                 } label: {
                     Image(systemName: "folder.badge.plus")
                         .font(.title2)
